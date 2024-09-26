@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HomeRent.Data.Models.Entities
 {
-    public class Payment : BaseModel<Guid>
+    public class Payment : BaseDeletableModel<Guid>
     {
         [Required]
         public string StripeTransactionId { get; set; }

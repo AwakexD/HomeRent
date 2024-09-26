@@ -4,7 +4,7 @@ using HomeRent.Data.Common.Models;
 
 namespace HomeRent.Data.Models.Entities
 {
-    public class PropertyImage : BaseModel<Guid>
+    public class PropertyImage : BaseDeletableModel<Guid>
     {
 
         [Required]
@@ -14,6 +14,8 @@ namespace HomeRent.Data.Models.Entities
         [ForeignKey(nameof(Property))]
         public Guid PropertyId { get; set; }
 
-        public Property Property { get; set; }
+        public bool isMainImage { get; set; }
+
+        public Property Property { get; set; } = null;
     }
 }

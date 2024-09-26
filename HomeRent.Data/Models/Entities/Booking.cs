@@ -5,7 +5,7 @@ using HomeRent.Data.Models.User;
 
 namespace HomeRent.Data.Models.Entities
 {
-    public class Booking : BaseModel<Guid>
+    public class Booking : BaseDeletableModel<Guid>
     {
         [Required]
         public DateTime CheckInDate { get; set; }
@@ -24,14 +24,14 @@ namespace HomeRent.Data.Models.Entities
         [ForeignKey(nameof(Tenant))]
         public Guid TenantId { get; set; }
 
-        public ApplicationUser Tenant { get; set; }
+        public ApplicationUser Tenant { get; set; } = null;
 
         [Required]
         [ForeignKey(nameof(Property))]
         public Guid PropertyId { get; set; }
 
-        public Property Property { get; set; }
+        public Property Property { get; set; } = null;
 
-        public  Payment Payment { get; set; }
+        public Payment Payment { get; set; } = null;
     }
 }

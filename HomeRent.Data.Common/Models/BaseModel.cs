@@ -1,8 +1,8 @@
-﻿namespace HomeRent.Data.Common.Models
-{
-    using System;
-    using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
+namespace HomeRent.Data.Common.Models
+{
     public abstract class BaseModel<TKey> : IAuditInfo
     {
         [Key]

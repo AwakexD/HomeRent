@@ -5,7 +5,7 @@ using HomeRent.Data.Models.User;
 
 namespace HomeRent.Data.Models.Entities
 {
-    public class Review : BaseModel<int>
+    public class Review : BaseDeletableModel<int>
     {
         [Required]
         [StringLength(380)]
@@ -16,15 +16,18 @@ namespace HomeRent.Data.Models.Entities
         public int Rating { get; set; }
 
         [Required]
+        public DateTime DateReviewed { get; set; }
+
+        [Required]
         [ForeignKey(nameof(Property))]
         public Guid PropertyId { get; set; }
 
-        public Property Property { get; set; }
+        public Property Property { get; set; } = null;
 
         [Required]
         [ForeignKey(nameof(Tenant))]
         public Guid TenantId { get; set; }
 
-        public ApplicationUser Tenant { get; set; }
+        public ApplicationUser Tenant { get; set; } = null;
     }
 }

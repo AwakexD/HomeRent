@@ -5,8 +5,15 @@ using HomeRent.Data.Models.User;
 
 namespace HomeRent.Data.Models.Entities
 {
-    public class Property : BaseModel<Guid>
+    public class Property : BaseDeletableModel<Guid>
     {
+        public Property()
+        {
+            this.Images = new HashSet<PropertyImage>();
+            this.Amenities = new HashSet<Amenity>();
+            this.Bookings = new HashSet<Booking>();
+        }
+
         [Required]
         [StringLength(100)]
         public string Title { get; set; }
@@ -14,6 +21,12 @@ namespace HomeRent.Data.Models.Entities
         [Required]
         [StringLength(2000)]
         public string Description { get; set; }
+
+        [Required]
+        public int Bedrooms { get; set; }
+
+        [Required]
+        public int Bathrooms { get; set; }
 
         [Required]
         [MaxLength(50)]
@@ -46,5 +59,8 @@ namespace HomeRent.Data.Models.Entities
         public virtual ICollection<PropertyImage> Images { get; set; }
 
         public virtual ICollection<Amenity> Amenities { get; set; }
+
+        public virtual ICollection<Booking> Bookings { get; set; }
+
     }
 }
