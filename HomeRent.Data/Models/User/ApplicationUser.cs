@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using HomeRent.Data.Common.Models;
+using HomeRent.Data.Infrastructure;
 using HomeRent.Data.Models.Entities;
 using Microsoft.AspNetCore.Identity;
 

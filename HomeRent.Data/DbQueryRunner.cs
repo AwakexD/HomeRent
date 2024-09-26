@@ -1,4 +1,4 @@
-﻿using HomeRent.Data.Common;
+﻿using HomeRent.Data.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 namespace HomeRent.Data

@@ -1,4 +1,4 @@
-﻿using HomeRent.Data.Common.Models;
+﻿using HomeRent.Data.Infrastructure;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

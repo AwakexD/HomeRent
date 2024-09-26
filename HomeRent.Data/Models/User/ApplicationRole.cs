@@ -1,4 +1,4 @@
-﻿using HomeRent.Data.Common.Models;
+﻿using HomeRent.Data.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 
 namespace HomeRent.Data.Models.User

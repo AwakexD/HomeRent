@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using HomeRent.Data.Common.Models;
+using HomeRent.Data.Infrastructure;
 
 namespace HomeRent.Data.Models.Entities
 {

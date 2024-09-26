@@ -1,5 +1,5 @@
-﻿using HomeRent.Data.Common.Models;
-using HomeRent.Data.Common.Repositories;
+﻿using HomeRent.Data.Infrastructure;
+using HomeRent.Data.Repositories.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace HomeRent.Data.Repositories
