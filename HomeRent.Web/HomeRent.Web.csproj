@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-HomeRent.Web-087da532-7e10-4597-8253-582262e78662</UserSecretsId>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
 	<ItemGroup>

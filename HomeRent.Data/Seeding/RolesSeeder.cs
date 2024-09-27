@@ -9,8 +9,10 @@ namespace HomeRent.Data.Seeding
         public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
-
+                
             await SeedRoleAsync(roleManager, "Administrator");
+            await SeedRoleAsync(roleManager, "Owner");
+            await SeedRoleAsync(roleManager, "Tenant");
         }
 
         private static async Task SeedRoleAsync(RoleManager<ApplicationRole> roleManager, string roleName)

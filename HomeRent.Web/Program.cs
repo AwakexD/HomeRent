@@ -1,11 +1,12 @@
 using HomeRent.Data;
-using HomeRent.Data.Common.Repositories;
-using HomeRent.Data.Common;
+using HomeRent.Data.Repositories.Contracts;
 using HomeRent.Data.Models.User;
 using HomeRent.Data.Repositories;
+using HomeRent.Data.Infrastructure;
 using HomeRent.Data.Seeding;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace HomeRent.Web
 {
@@ -18,6 +19,7 @@ namespace HomeRent.Web
             ConfigureServices(builder.Services, builder.Configuration);
             var app = builder.Build();
             Configure(app);
+            app.UseAuthentication();
             app.Run();
         }
 

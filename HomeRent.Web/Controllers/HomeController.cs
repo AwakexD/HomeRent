@@ -1,6 +1,6 @@
-﻿using HomeRent.Web.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using HomeRent.Models.ViewModels;
 
 namespace HomeRent.Web.Controllers
 {
