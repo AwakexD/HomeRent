@@ -3,6 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+## Ingore the appsettings which contains an api key
+appsettings.Development.json
+
 # User-specific files
 *.rsuser
 *.suo

@@ -4,9 +4,12 @@ using HomeRent.Data.Models.User;
 using HomeRent.Data.Repositories;
 using HomeRent.Data.Infrastructure;
 using HomeRent.Data.Seeding;
+using HomeRent.Services;
+using HomeRent.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using CloudinaryDotNet;
 
 namespace HomeRent.Web
 {
@@ -54,6 +57,12 @@ namespace HomeRent.Web
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
             // Application services
+            services.AddTransient<ICloudinaryService, CloudinaryService>();
+
+            // Cloudinary
+            Cloudinary cloudinary = new Cloudinary(configuration["Cloudinary:CloudinaryUrl"]);
+            cloudinary.Api.Secure = true;
+            services.AddSingleton(cloudinary);
         }
 
         private static void Configure(WebApplication app)
