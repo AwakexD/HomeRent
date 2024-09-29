@@ -22,6 +22,8 @@ namespace HomeRent.Data.Seeding
             var seeders = new List<ISeeder>
             {
                 new RolesSeeder(),
+                new AmenitiesSeeder(),
+                new PropertyTypesSeeder(),
             };
 
             foreach (var seeder in seeders)
