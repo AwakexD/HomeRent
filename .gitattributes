@@ -1,0 +1,3 @@
+# Exclude files from the language statistics
+HomeRent.Web/wwwroot/theme/js/* linguist-vendored
+HomeRent.Web/wwwroot/theme/css/* linguist-vendored
