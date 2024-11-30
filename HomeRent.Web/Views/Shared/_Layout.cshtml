@@ -4,47 +4,48 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - HomeRent.Web</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/HomeRent.Web.styles.css" asp-append-version="true" />
+    <!-- Theme CSS -->
+    <!-- Font -->
+    <link rel="stylesheet" href="~/theme/fonts/fonts.css">
+    <!-- Icons -->
+    <link rel="stylesheet" href="~/theme/fonts/font-icons.css">
+    <link rel="stylesheet" href="~/theme/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/theme/css/swiper-bundle.min.css">
+    <link rel="stylesheet" href="~/theme/css/animate.css">
+    <link rel="stylesheet" type="text/css" href="~/theme/css/styles.css" />
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">HomeRent.Web</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                    <partial name="_LoginPartial" />
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+<body class="body">
+    <!-- Preload -->
+    <partial name="_PreloadPartial"/>
+            
+    <!-- Main Content -->
+    <div id="wrapper">
+        <div id="pagee" name="clearfix">
+            <!-- Navigation -->
+            <partial name="_NavigationPartial"/>
+            
+            <!-- View Rendering -->
             @RenderBody()
-        </main>
+            
+            <!-- Footer -->
+            <partial name="_FooterPartial"/>
+        </div>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - HomeRent.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <!-- Theme Scripts -->
+    <script type="text/javascript" src="~/theme/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/theme/js/jquery.min.js"></script>
+    <script type="text/javascript" src="~/theme/js/swiper-bundle.min.js"></script>
+    <script type="text/javascript" src="~/theme/js/carousel.js"></script>
+    <script type="text/javascript" src="~/theme/js/plugin.js"></script>
+    <script type="text/javascript" src="~/theme/js/jquery.nice-select.min.js"></script>
+    <script type="text/javascript" src="~/theme/js/rangle-slider.js"></script>
+    <script type="text/javascript" src="~/theme/js/countto.js"></script>
+    <script type="text/javascript" src="~/theme/js/shortcodes.js"></script>
+    <script type="text/javascript" src="~/theme/js/animation_heading.js"></script>
+    <script type="text/javascript" src="~/theme/js/lazysize.min.js"></script>
+    <script type="text/javascript" src="~/theme/js/main.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
