@@ -48,39 +48,40 @@ namespace HomeRent.Web.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "Полето е задълнително")]
             [StringLength(30, ErrorMessage = "Дължината на името не трябва да надвишава {0} символа.")]
             [Display(Name = "Име")]
             public string FirstName { get; set; }
-            
-            [Required]
+
+            [Required(ErrorMessage = "Полето е задълнително")]
             [StringLength(30, ErrorMessage = "Дължината на фамилията не трябва да надвишава {0} символа.")]
             [Display(Name = "Фамилия")]
             public string LastName { get; set; }
 
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "Полето е задълнително")]
+            [EmailAddress(ErrorMessage = "Моля въведете валиден имейл адрес.")]
             [Display(Name = "Имейл")]
             public string Email { get; set; }
 
-            [Required]
-            [StringLength(100, ErrorMessage = "Паролата трябва да бъде между {0} и {1} символа", MinimumLength = 6)]
+            [Required(ErrorMessage = "Полето е задълнително")]
+            [StringLength(100, ErrorMessage = "Паролата трябва да бъде между {2} и {1} символа", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Парола")]
             public string Password { get; set; }
 
+            [Required(ErrorMessage = "Полето е задълнително")]
             [DataType(DataType.Password)]
             [Display(Name = "Потвърди паролата")]
             [Compare(nameof(Password), ErrorMessage = "Паролите трябва да съвпадат.")]
             public string ConfirmPassword { get; set; }
 
-            [Required]
-            [StringLength(15, ErrorMessage = "Телефонният номер трябва да бъде между {0} и {1} символа.", MinimumLength = 8)]
+            [Required(ErrorMessage = "Полето е задълнително")]
+            [StringLength(15, ErrorMessage = "Телефонният номер трябва да бъде между {2} и {1} символа.", MinimumLength = 8)]
             [DataType(DataType.PhoneNumber)]
             [Display(Name = "Телефонен номер")]
             public string PhoneNumber { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Полето е задълнително")]
             [Display(Name = "Роля")]
             public string Role { get; set; }
         }
