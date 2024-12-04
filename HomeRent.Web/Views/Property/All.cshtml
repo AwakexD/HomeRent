@@ -1,0 +1,214 @@
+﻿@{
+    ViewData["Title"] = "Имоти";
+}
+
+<section class="flat-section flat-recommended flat-sidebar">
+    <div class="container">
+        <div class="box-title-listing">
+            <div class="box-left">
+                <h3 class="fw-8">Обяви за имоти</h3>
+                <p class="text">Във момента има: 12,201 обяви за имоти.</p>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-xl-4 col-lg-5">
+                <div class="widget-sidebar fixed-sidebar">
+                    <div class="flat-tab flat-tab-form widget-filter-search widget-box">
+                        <ul class="nav-tab-form" role="tablist">
+                            <li class="nav-tab-item" role="presentation">
+                                <a href="#forRent" class="nav-link-item active" data-bs-toggle="tab" aria-selected="true" role="tab">Филтри</a>
+                            </li>
+
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade active show" role="tabpanel">
+                                <div class="form-sl">
+                                    <form method="post">
+                                        <div class="wd-filter-select">
+                                            <div class="inner-group">
+                                                <div class="box">
+                                                    <div class="form-style">
+                                                        <input type="text" class="form-control" placeholder="Ключова дума" value="" name="s" title="Search for" required="">
+                                                    </div>
+                                                    <div class="form-style">
+                                                        <div class="group-ip ip-icon">
+                                                            <input type="text" class="form-control" placeholder="Локация" value="" name="s" title="Search for" required="">
+                                                            <a href="#" class="icon-right icon-location"></a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-style">
+
+                                                        <div class="group-select">
+                                                            <div class="nice-select" tabindex="0">
+                                                                <span class="current">Тип на имота</span>
+                                                                <ul class="list">
+                                                                    <li data-value="villa" class="option">Villa</li>
+                                                                    <li data-value="studio" class="option">Studio</li>
+                                                                    <li data-value="office" class="option">Office</li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-style box-select">
+                                                        <div class="nice-select" tabindex="0">
+                                                            <span class="current">Бани</span>
+                                                            <ul class="list">
+                                                                <li data-value="all" class="option">All</li>
+                                                                <li data-value="1" class="option">1</li>
+                                                                <li data-value="2" class="option">2</li>
+                                                                <li data-value="3" class="option">3</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-style box-select">
+                                                        <div class="nice-select" tabindex="0">
+                                                            <span class="current">Спални</span>
+                                                            <ul class="list">
+                                                                <li data-value="1" class="option">All</li>
+                                                                <li data-value="1" class="option">1</li>
+                                                                <li data-value="2" class="option">2</li>
+                                                                <li data-value="3" class="option">3</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="box">
+                                                    <div class="form-style widget-price">
+                                                        <div class="box-title-price">
+                                                            <span class="title-price fw-6">Цена:</span>
+                                                            <div class="caption-price">
+                                                                <span id="slider-range-value1" class="fw-6">$100</span>
+                                                                <span class="fw-6">-</span>
+                                                                <span id="slider-range-value2" class="fw-6">$650,000</span>
+                                                            </div>
+                                                        </div>
+                                                        <div id="slider-range" class="noUi-target noUi-ltr noUi-horizontal noUi-background"><div class="noUi-base"><div class="noUi-origin noUi-connect" style="left: 0%;"><div class="noUi-handle noUi-handle-lower"></div></div><div class="noUi-origin noUi-background" style="left: 100%;"><div class="noUi-handle noUi-handle-upper"></div></div></div><div class="noUi-base"><div class="noUi-origin noUi-connect" style="left: 0%;"><div class="noUi-handle noUi-handle-lower"></div></div><div class="noUi-origin noUi-background" style="left: 100%;"><div class="noUi-handle noUi-handle-upper"></div></div></div></div>
+                                                        <div class="slider-labels">
+                                                            <input type="hidden" name="min-value" value="">
+                                                            <input type="hidden" name="max-value" value="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-style widget-price wd-price-2">
+                                                        <div class="box-title-price">
+                                                            <span class="title-price fw-6">Площ:</span>
+                                                            <div class="caption-price">
+                                                                <span id="slider-range-value01" class="fw-6">500 SqFt</span>
+                                                                <span class="fw-6">to</span>
+                                                                <span id="slider-range-value02" class="fw-6">1,500 SqFt</span>
+                                                            </div>
+                                                        </div>
+                                                        <div id="slider-range2" class="noUi-target noUi-ltr noUi-horizontal noUi-background"><div class="noUi-base"><div class="noUi-origin noUi-connect" style="left: 24.2424%;"><div class="noUi-handle noUi-handle-lower"></div></div><div class="noUi-origin noUi-background" style="left: 74.7475%;"><div class="noUi-handle noUi-handle-upper"></div></div></div><div class="noUi-base"><div class="noUi-origin noUi-connect" style="left: 24.2424%;"><div class="noUi-handle noUi-handle-lower"></div></div><div class="noUi-origin noUi-background" style="left: 74.7475%;"><div class="noUi-handle noUi-handle-upper"></div></div></div></div>
+                                                        <div class="slider-labels">
+                                                            <input type="hidden" name="min-value2" value="">
+                                                            <input type="hidden" name="max-value2" value="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="box">
+                                                    <div class="form-style wd-amenities">
+                                                        <div class="group-checkbox">
+                                                            <h6 class="title text-black-2">Удобства:</h6>
+                                                            <div class="group-amenities">
+                                                                @* ToDO : Retrieve all amenities form the db and display them *@
+                                                                <fieldset class="amenities-item">
+                                                                    <input type="checkbox" class="tf-checkbox style-1" id="cb1" checked="">
+                                                                    <label for="cb1" class="text-cb-amenities">Air Condition</label>
+                                                                </fieldset>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-style">
+                                                    <button type="submit" class="tf-btn btn-view primary hover-btn-view">Търсене <span class="icon icon-arrow-right2"></span></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-xl-8 col-lg-7 flat-animate-tab">
+                <div class="tab-content">
+                    <div class="tab-pane active show" id="listLayout" role="tabpanel">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="homelengo-box list-style-1 list-style-2 line">
+                                    <div class="archive-top">
+                                        <a href="property-details-v1.html" class="images-group">
+                                            <div class="images-style">
+                                                <img class="lazyload" data-src="images/home/house-sm-11.jpg" src="images/home/house-sm-11.jpg" alt="img-property">
+                                            </div>
+                                            <div class="top">
+                                                <ul class="d-flex gap-6 flex-wrap">
+                                                    <li class="flag-tag primary">Популярно</li>
+                                                    <li class="flag-tag style-1">Под наем</li>
+                                                </ul>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="archive-bottom">
+                                        <div class="content-top">
+                                            <h6 class="text-capitalize"><a href="property-details-v1.html" class="link text-line-clamp-1"> Ritma Perdana (Townhouse), LBS Alam Perdana</a></h6>
+                                            <ul class="meta-list">
+                                                <li class="item">
+                                                    <i class="icon icon-bed"></i>
+                                                    <span class="text-variant-1">Спални:</span>
+                                                    <span class="fw-6">3</span>
+                                                </li>
+                                                <li class="item">
+                                                    <i class="icon icon-bath"></i>
+                                                    <span class="text-variant-1">Бани:</span>
+                                                    <span class="fw-6">2</span>
+                                                </li>
+                                                <li class="item">
+                                                    <i class="icon icon-sqft"></i>
+                                                    <span class="text-variant-1">Площ:</span>
+                                                    <span class="fw-6">1150 m<small>2</small></span>
+                                                </li>
+                                            </ul>
+                                            <div class="location">
+                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M10 7C10 7.53043 9.78929 8.03914 9.41421 8.41421C9.03914 8.78929 8.53043 9 8 9C7.46957 9 6.96086 8.78929 6.58579 8.41421C6.21071 8.03914 6 7.53043 6 7C6 6.46957 6.21071 5.96086 6.58579 5.58579C6.96086 5.21071 7.46957 5 8 5C8.53043 5 9.03914 5.21071 9.41421 5.58579C9.78929 5.96086 10 6.46957 10 7Z" stroke="#A3ABB0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                    <path d="M13 7C13 11.7613 8 14.5 8 14.5C8 14.5 3 11.7613 3 7C3 5.67392 3.52678 4.40215 4.46447 3.46447C5.40215 2.52678 6.67392 2 8 2C9.32608 2 10.5979 2.52678 11.5355 3.46447C12.4732 4.40215 13 5.67392 13 7Z" stroke="#A3ABB0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                </svg>
+                                                <span class="text-line-clamp-1"> 145 Brooklyn Ave, Califonia, New York </span>
+                                            </div>
+                                            <p class="description mt-20 text-line-clamp-2 text-variant-1">Sited on the 470-acre township of LBS Alam Perdana, Ritma Perdana is...</p>
+                                        </div>
+
+                                        <div class="content-bottom">
+                                            <div class="d-flex gap-8 align-items-center">
+                                                <div class="avatar avt-40 round">
+                                                    <img src="images/avatar/avt-png3.png" alt="avt">
+                                                </div>
+                                                <span>Arlene McCoy</span>
+                                            </div>
+                                            <h6 class="price">$7250,00</h6>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        @* ToDO : Extract pagination in partial view *@
+                        <ul class="wd-navigation mt-20">
+                            <li><a href="#" class="nav-item"><i class="icon icon-arr-l"></i></a></li>
+                            <li><a href="#" class="nav-item">1</a></li>
+                            <li><a href="#" class="nav-item">2</a></li>
+                            <li><a href="#" class="nav-item active">3</a></li>
+                            <li><a href="#" class="nav-item">4</a></li>
+                            <li><a href="#" class="nav-item">...</a></li>
+                            <li><a href="#" class="nav-item"><i class="icon icon-arr-r"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
