@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HomeRent.Web.Controllers
 {
@@ -10,6 +11,12 @@ namespace HomeRent.Web.Controllers
         }
 
         public IActionResult All()
+        {
+            return this.View();
+        }
+
+        [Authorize(Roles = "Owner")]
+        public IActionResult Create()
         {
             return this.View();
         }
