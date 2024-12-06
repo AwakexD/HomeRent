@@ -20,6 +20,9 @@ namespace HomeRent.Web
             var builder = WebApplication.CreateBuilder(args);
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'ApplicationDbContextConnection' not found.");
             ConfigureServices(builder.Services, builder.Configuration);
+
+            builder.Services.AddAutoMapper(typeof(Program));
+
             var app = builder.Build();
             Configure(app);
             app.UseAuthentication();

@@ -2,6 +2,15 @@
 @model HomeRent.Models.ViewModels.Property.CreatePropertyViewModel
 @{
     ViewData["Title"] = "Добавяне на обява";
+
+    // Grouping Amenities into 3 columns
+    int columnCount = 3;
+    int totalAmenities = Model.Amenities.Count();
+    int itemsPerColumn = (int)Math.Ceiling((double)totalAmenities / columnCount);
+    var groupedAmenities = Model.Amenities
+        .Select((amenity, index) => new { amenity, index })
+        .GroupBy(x => x.index / itemsPerColumn)
+        .ToList();
 }
 
 
@@ -94,21 +103,22 @@
                 <div class="widget-box-2 mb-20">
                     <h5 class="title">Удобства<span>*</span></h5>
                     <div class="box-amenities-property">
-                        @* Example of checkbox binding for AmenityIds *@
-                        <div class="list-amenities">
-                            @foreach (var amenity in Model.Amenities)
-                            {
-                                <fieldset class="amenities-item">
-                                    <input type="checkbox" value="@amenity.Id" id="amenity1">
-                                    <i class="@amenity.IconClass"></i>
-                                    <label for="amenity1">@amenity.Name</label>
-                                </fieldset>
-                            }
-                            @* <fieldset class="amenities-item">
-                                <input type="checkbox" value="2" id="amenity2">
-                                <label for="amenity2">Self check-in with lockbox</label>
-                            </fieldset> *@
-                        </div>
+                        @foreach (var group in groupedAmenities)
+                        {
+                            <div class="box-amenities">
+                                <div class="list-amenities">
+                                    @foreach (var item in group)
+                                    {
+                                        var amenity = item.amenity;
+                                        <fieldset class="amenities-item">
+                                            <input type="checkbox" value="@amenity.Id" id="amenity@amenity.Id">
+                                            <i class="@amenity.IconClass"></i>
+                                            <label for="amenity@amenity.Id">@amenity.Name</label>
+                                        </fieldset>
+                                    }
+                                </div>
+                            </div>
+                        }
                     </div>
                 </div>
                 <div class="box-btn">

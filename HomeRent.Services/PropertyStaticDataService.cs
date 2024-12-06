@@ -1,4 +1,5 @@
-﻿using HomeRent.Data.Models.Entities;
+﻿using AutoMapper;
+using HomeRent.Data.Models.Entities;
 using HomeRent.Data.Repositories.Contracts;
 using HomeRent.Models.Shared;
 using HomeRent.Services.Contracts;
@@ -9,12 +10,15 @@ namespace HomeRent.Services
 {
     public class PropertyStaticDataService : IPropertyStaticDataService
     {
+        private readonly IMapper mapper;
         private readonly IDeletableEntityRepository<PropertyType> propertyTypesRepository;
         private readonly IDeletableEntityRepository<Amenity> amenitiesRepository;
 
-        public PropertyStaticDataService(IDeletableEntityRepository<PropertyType> propertyTypesRepository,
+        public PropertyStaticDataService(IMapper mapper,
+            IDeletableEntityRepository<PropertyType> propertyTypesRepository,
             IDeletableEntityRepository<Amenity> amenitiesRepository)
         {
+            this.mapper = mapper;
             this.propertyTypesRepository = propertyTypesRepository;
             this.amenitiesRepository = amenitiesRepository;
         }
@@ -30,15 +34,9 @@ namespace HomeRent.Services
 
         public async Task<IEnumerable<AmenityViewModel>> GetAmenitiesSelectList(List<int> selectedAmenityIds = null)
         {
-            var amenities = await this.amenitiesRepository.AllAsNoTracking()
-                .Select(a => new AmenityViewModel()
-                {
-                    Id = a.Id,
-                    Name = a.Name,
-                    IconClass = a.IconClass,
-                }).ToListAsync();
+            var amenities = await this.amenitiesRepository.AllAsNoTracking().ToListAsync();
 
-            return amenities;
+            return mapper.Map<IEnumerable<AmenityViewModel>>(amenities);
         }
     }
 }
