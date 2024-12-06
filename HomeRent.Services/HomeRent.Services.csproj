@@ -10,6 +10,12 @@
   <ItemGroup>
     <PackageReference Include="CloudinaryDotNet" Version="1.26.2" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HomeRent.Data\HomeRent.Data.csproj" />
+    <ProjectReference Include="..\HomeRent.Models\HomeRent.Models.csproj" />
   </ItemGroup>
 
 </Project>

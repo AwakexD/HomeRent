@@ -1,13 +1,18 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using HomeRent.Models.ViewModels.Property;
+using HomeRent.Services.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HomeRent.Web.Controllers
 {
     public class PropertyController : Controller
     {
-        public PropertyController()
+        private readonly IPropertyStaticDataService propertyStaticDataService;
+
+        public PropertyController(IPropertyStaticDataService propertyStaticDataService)
         {
-            
+            this.propertyStaticDataService = propertyStaticDataService;
         }
 
         public IActionResult All()
@@ -16,9 +21,15 @@ namespace HomeRent.Web.Controllers
         }
 
         [Authorize(Roles = "Owner")]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return this.View();
+            var viewModel = new CreatePropertyViewModel()
+            {
+                PropertyTypes = await this.propertyStaticDataService.GetPropertyTypesSelectList(),
+                Amenities = await this.propertyStaticDataService.GetAmenitiesSelectList(),
+            };
+
+            return this.View(viewModel);
         }
     }
 }

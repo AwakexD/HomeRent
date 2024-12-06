@@ -1,4 +1,6 @@
-﻿@{
+﻿@using System.Linq
+@model HomeRent.Models.ViewModels.Property.CreatePropertyViewModel
+@{
     ViewData["Title"] = "Добавяне на обява";
 }
 
@@ -8,208 +10,113 @@
     <partial name="_SidebarMenuDashboard" />
 
     @* Create Listing Form *@
-    <div class="main-content">
-        <div class="main-content-inner">
-            <div class="button-show-hide show-mb">
-                <span class="body-1">Покажи менюто</span>
-            </div>
-            <div class="widget-box-2 mb-20">
-                <h5 class="title">Добавете снимки</h5>
-                <div class="box-uploadfile text-center">
-                    <div class="uploadfile">
-                        <div class="btn-upload tf-btn primary">
-                            <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M13.625 14.375V17.1875C13.625 17.705 13.205 18.125 12.6875 18.125H4.5625C4.31386 18.125 4.0754 18.0262 3.89959 17.8504C3.72377 17.6746 3.625 17.4361 3.625 17.1875V6.5625C3.625 6.045 4.045 5.625 4.5625 5.625H6.125C6.54381 5.62472 6.96192 5.65928 7.375 5.72834M13.625 14.375H16.4375C16.955 14.375 17.375 13.955 17.375 13.4375V9.375C17.375 5.65834 14.6725 2.57417 11.125 1.97834C10.7119 1.90928 10.2938 1.87472 9.875 1.875H8.3125C7.795 1.875 7.375 2.295 7.375 2.8125V5.72834M13.625 14.375H8.3125C8.06386 14.375 7.8254 14.2762 7.64959 14.1004C7.47377 13.9246 7.375 13.6861 7.375 13.4375V5.72834M17.375 11.25V9.6875C17.375 8.94158 17.0787 8.22621 16.5512 7.69876C16.0238 7.17132 15.3084 6.875 14.5625 6.875H13.3125C13.0639 6.875 12.8254 6.77623 12.6496 6.60041C12.4738 6.4246 12.375 6.18614 12.375 5.9375V4.6875C12.375 4.31816 12.3023 3.95243 12.1609 3.6112C12.0196 3.26998 11.8124 2.95993 11.5512 2.69876C11.2901 2.4376 10.98 2.23043 10.6388 2.08909C10.2976 1.94775 9.93184 1.875 9.5625 1.875H8.625" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                            Изберете снимки
-                            <input type="file" class="ip-file">
+    <form asp-action="Create" method="post" enctype="multipart/form-data">
+        <div class="main-content">
+            <div class="main-content-inner">
+                <div class="widget-box-2 mb-20">
+                    <h5 class="title">Добавете снимки</h5>
+                    <div class="box-uploadfile text-center">
+                        <div class="uploadfile">
+                            <div class="btn-upload tf-btn primary">
+                                <input type="file" asp-for="Property.UploadedImages" multiple class="ip-file">
+                                <span>Изберете снимки</span>
+                            </div>
+                            <span asp-validation-for="Property.UploadedImages" class="text-danger"></span>
                         </div>
-                        <p class="file-name fw-5">
-                            или пуснете снимките тук <br>
-                        </p>
                     </div>
                 </div>
-                @* ToDO : Display images here with option to be removed *@
-                <div class="box-img-upload">
-                    <div class="item-upload file-delete">
-                        <img src="images/home/house-18.jpg" alt="img">
-                        <span class="icon icon-trash remove-file"></span>
+                <div class="widget-box-2 mb-20">
+                    <h5 class="title">Информация</h5>
+                    <div class="box-info-property">
+                        <fieldset class="box box-fieldset">
+                            <label>Заглавие:<span>*</span></label>
+                            <input type="text" asp-for="Property.Title" class="form-control" placeholder="Заглавие">
+                            <span asp-validation-for="Property.Title" class="text-danger"></span>
+                        </fieldset>
+                        <fieldset class="box box-fieldset">
+                            <label>Описание:</label>
+                            <textarea asp-for="Property.Description" class="textarea" placeholder="Вашето описание"></textarea>
+                            <span asp-validation-for="Property.Description" class="text-danger"></span>
+                        </fieldset>
+                        <div class="box grid-2 gap-30">
+                            <fieldset class="box-fieldset">
+                                <label>Адрес:<span>*</span></label>
+                                <input type="text" asp-for="Property.Address" class="form-control" placeholder="Въведете адрес">
+                                <span asp-validation-for="Property.Address" class="text-danger"></span>
+                            </fieldset>
+                            <fieldset class="box-fieldset">
+                                <label>Пощенски код:<span>*</span></label>
+                                <input type="text" asp-for="Property.PostalCode" class="form-control" placeholder="Въведете пощенски код">
+                                <span asp-validation-for="Property.PostalCode" class="text-danger"></span>
+                            </fieldset>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="widget-box-2 mb-20">
-                <h5 class="title">Информация</h5>
-                <div class="box-info-property">
-                    <fieldset class="box box-fieldset">
-                        <label>
-                            Заглавие:<span>*</span>
-                        </label>
-                        <input type="text" class="form-control" placeholder="Заглавие">
-                    </fieldset>
-                    <fieldset class="box box-fieldset">
-                        <label>Описание:</label>
-                        <textarea class="textarea" placeholder="Вашето описание"></textarea>
-                    </fieldset>
+                <div class="widget-box-2 mb-20">
+                    <h5 class="title">Цена и площ</h5>
+                    <div class="box-price-property">
+                        <div class="box grid-2 gap-30">
+                            <fieldset class="box-fieldset">
+                                <label>Цена:<span>*</span></label>
+                                <input type="number" asp-for="Property.PricePerNight" class="form-control" placeholder="Цена за една нощувка">
+                                <span asp-validation-for="Property.PricePerNight" class="text-danger"></span>
+                            </fieldset>
+                            <fieldset class="box-fieldset">
+                                <label>Спални:<span>*</span></label>
+                                <input type="number" asp-for="Property.Bedrooms" class="form-control" placeholder="Брой спални">
+                                <span asp-validation-for="Property.Bedrooms" class="text-danger"></span>
+                            </fieldset>
+                            <fieldset class="box-fieldset">
+                                <label>Бани:<span>*</span></label>
+                                <input type="number" asp-for="Property.Bathrooms" class="form-control" placeholder="Брой бани">
+                                <span asp-validation-for="Property.Bathrooms" class="text-danger"></span>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+                <div class="widget-box-2 mb-20">
+                    <h5 class="title">Допълнителна информация</h5>
                     <div class="box grid-2 gap-30">
                         <fieldset class="box-fieldset">
-                            <label>
-                                Адрес:<span>*</span>
-                            </label>
-                            <input type="text" class="form-control" placeholder="Въведете адрес">
+                            <label>Град:<span>*</span></label>
+                            <input type="text" asp-for="Property.City" class="form-control" placeholder="Името на града">
+                            <span asp-validation-for="Property.City" class="text-danger"></span>
                         </fieldset>
                         <fieldset class="box-fieldset">
-                            <label>
-                                Пощенски код:<span>*</span>
-                            </label>
-                            <input type="text" class="form-control" placeholder="Въведете пощенски код">
-                        </fieldset>
-                    </div>
-
-                    @* ToDO : Integrate Google Maps location select *@
-                    @* <div class="box box-fieldset">
-                        <label>Location:<span>*</span></label>
-                        <div class="box-ip">
-                            <input type="text" class="form-control" value="None">
-                            <a href="#" class="btn-location"><i class="icon icon-location"></i></a>
-                        </div>
-                        <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d135905.11693909427!2d-73.95165795400088!3d41.17584829642291!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2s!4v1727094281524!5m2!1sen!2s" height="456" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                    </div> *@
-
-                </div>
-            </div>
-            <div class="widget-box-2 mb-20">
-                <h5 class="title">Цена и площ</h5>
-                <div class="box-price-property">
-                    <div class="box grid-2 gap-30">
-                        <fieldset class="box-fieldset">
-                            <label>Цена:<span>*</span></label>
-                            <input type="text" class="form-control" placeholder="Цена за една нощувка">
-                        </fieldset>
-                        <fieldset class="box-fieldset">
-                            <label>Площ:<span>*</span></label>
-                            <input type="text" class="form-control" placeholder="Площ в квадратни метра">
+                            <label>Тип на имота:<span>*</span></label>
+                            <select asp-for="Property.PropertyTypeId" asp-items="Model.PropertyTypes" class="nice-select">
+                                <option class="current" value="">Изберете тип на имота</option>
+                            </select>
+                            <span asp-validation-for="Property.PropertyTypeId" class="text-danger"></span>
                         </fieldset>
                     </div>
                 </div>
-            </div>
-            <div class="widget-box-2 mb-20">
-                <h5 class="title">Допълнителна информация</h5>
-                <div class="box grid-3 gap-30">
-                    <fieldset class="box-fieldset">
-                        <label>
-                            Тип на имота:<span>*</span>
-                        </label>
-                        <div class="nice-select" tabindex="0">
-                            <span class="current">Изберете</span>
-                            <ul class="list">
-                                <li data-value="1" class="option">Apartment</li>
-                                <li data-value="2" class="option">Villa</li>
-                                <li data-value="3" class="option">Studio</li>
-                            </ul>
-                        </div>
-                    </fieldset>
-                    <fieldset class="box-fieldset">
-                        <label>
-                            Bedrooms:<span>*</span>
-                        </label>
-                        <input type="text" class="form-control" placeholder="Брой спални">
-                    </fieldset>
-                    <fieldset class="box-fieldset">
-                        <label>
-                            Bathrooms:<span>*</span>
-                        </label>
-                        <input type="text" class="form-control" placeholder="Брой бани">
-                    </fieldset>
-                </div>
-            </div> @* ToDO : Retrieve amenities from db and display them *@
-            <div class="widget-box-2 mb-20">
-                <h5 class="title">Удобвства<span>*</span></h5>
-                <div class="box-amenities-property">
-                    <div class="box-amenities">
-                        <div class="title-amenities text-btn">Home safety:</div>
+                <div class="widget-box-2 mb-20">
+                    <h5 class="title">Удобства<span>*</span></h5>
+                    <div class="box-amenities-property">
+                        @* Example of checkbox binding for AmenityIds *@
                         <div class="list-amenities">
-                            <fieldset class="amenities-item">
-                                <input type="checkbox" class="tf-checkbox style-1" id="cb1" checked>
-                                <label for="cb1" class="text-cb-amenities">Smoke alarm</label>
-                            </fieldset>
-                            <fieldset class="amenities-item">
-                                <input type="checkbox" class="tf-checkbox style-1 primary" id="cb2">
-                                <label for="cb2" class="text-cb-amenities">Self check-in with lockbox</label>
-                            </fieldset>
-                            <fieldset class="amenities-item">
-                                <input type="checkbox" class="tf-checkbox style-1 primary" id="cb3" checked>
-                                <label for="cb3" class="text-cb-amenities">Carbon monoxide alarm</label>
-                            </fieldset>
-                            <fieldset class="amenities-item">
-                                <input type="checkbox" class="tf-checkbox style-1 primary" id="cb4">
-                                <label for="cb4" class="text-cb-amenities">Security cameras</label>
-                            </fieldset>
-                        </div>
-                    </div>
-                    <div class="box-amenities">
-                        <div class="title-amenities text-btn">Bedroom</div>
-                        <div class="list-amenities">
-                            <fieldset class="amenities-item">
-                                <input type="checkbox" class="tf-checkbox style-1" id="cb-bed1">
-                                <label for="cb-bed1" class="text-cb-amenities">Hangers</label>
-                            </fieldset>
-                            <fieldset class="amenities-item">
-                                <input type="checkbox" class="tf-checkbox style-1 primary" id="cb-bed2">
-                                <label for="cb-bed2" class="text-cb-amenities">Extra pillows & blankets</label>
-                            </fieldset>
-                            <fieldset class="amenities-item">
-                                <input type="checkbox" class="tf-checkbox style-1 primary" id="cb-bed3">
-                                <label for="cb-bed3" class="text-cb-amenities">Bed linens</label>
-                            </fieldset>
-                            <fieldset class="amenities-item">
-                                <input type="checkbox" class="tf-checkbox style-1 primary" id="cb-bed4">
-                                <label for="cb-bed4" class="text-cb-amenities">TV with standard cable</label>
-                            </fieldset>
-                        </div>
-                    </div>
-                    <div class="box-amenities">
-                        <div class="title-amenities text-btn">Kitchen:</div>
-                        <div class="list-amenities">
-                            <fieldset class="amenities-item">
-                                <input type="checkbox" class="tf-checkbox style-1" id="cb-kit1">
-                                <label for="cb-kit1" class="text-cb-amenities">Refrigerator</label>
-                            </fieldset>
-                            <fieldset class="amenities-item">
-                                <input type="checkbox" class="tf-checkbox style-1 primary" id="cb-kit2">
-                                <label for="cb-kit2" class="text-cb-amenities">Dishwasher</label>
-                            </fieldset>
-                            <fieldset class="amenities-item">
-                                <input type="checkbox" class="tf-checkbox style-1 primary" id="cb-kit3">
-                                <label for="cb-kit3" class="text-cb-amenities">Microwave</label>
-                            </fieldset>
-                            <fieldset class="amenities-item">
-                                <input type="checkbox" class="tf-checkbox style-1 primary" id="cb-kit4">
-                                <label for="cb-kit4" class="text-cb-amenities">Coffee maker</label>
-                            </fieldset>
+                            @foreach (var amenity in Model.Amenities)
+                            {
+                                <fieldset class="amenities-item">
+                                    <input type="checkbox" value="@amenity.Id" id="amenity1">
+                                    <i class="@amenity.IconClass"></i>
+                                    <label for="amenity1">@amenity.Name</label>
+                                </fieldset>
+                            }
+                            @* <fieldset class="amenities-item">
+                                <input type="checkbox" value="2" id="amenity2">
+                                <label for="amenity2">Self check-in with lockbox</label>
+                            </fieldset> *@
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="widget-box-2 mb-20">
-                <h5 class="title">Информация за собственика</h5>
-                <div class="box-radio-check">
-                    <div class="text-btn mb-16">Изберете опция за информация</div>
-                    <fieldset class="fieldset-radio">
-                        <input type="radio" class="tf-checkbox style-1" name="radio3" id="radio5" checked>
-                        <label for="radio5" class="text-radio">Вашата информация</label>
-                    </fieldset>
-                    <fieldset class="fieldset-radio">
-                        <input type="radio" class="tf-checkbox style-1" name="radio3" id="radio6">
-                        <label for="radio6" class="text-radio">Друга информация</label>
-                    </fieldset>
+                <div class="box-btn">
+                    <button type="submit" class="tf-btn primary">Създай обява</button>
                 </div>
-            </div>
-            <div class="box-btn">
-                <a href="#" class="tf-btn primary">Създай обява</a>
             </div>
         </div>
-    </div>
+    </form>
 
     <div class="overlay-dashboard"></div>
 </div>

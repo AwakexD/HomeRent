@@ -58,6 +58,7 @@ namespace HomeRent.Web
 
             // Application services
             services.AddTransient<ICloudinaryService, CloudinaryService>();
+            services.AddTransient<IPropertyStaticDataService, PropertyStaticDataService>();
 
             // Cloudinary
             Cloudinary cloudinary = new Cloudinary(configuration["Cloudinary:CloudinaryUrl"]);
