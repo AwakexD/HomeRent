@@ -12,7 +12,7 @@ namespace HomeRent.Services
 
         public CloudinaryService(Cloudinary cloudinary)
         {
-            this.cloudinary = new Cloudinary();
+            this.cloudinary = cloudinary;
         }
 
         public async Task<string> UploadImageAsync(IFormFile imageFile)

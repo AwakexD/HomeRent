@@ -8,8 +8,8 @@ namespace HomeRent.Models.ViewModels.Property
     {
         public CreatePropertyDto Property { get; set; } = new CreatePropertyDto();
 
-        public IEnumerable<SelectListItem> PropertyTypes { get; set; }
+        public IEnumerable<SelectListItem>? PropertyTypes { get; set; } = null;
 
-        public IEnumerable<AmenityViewModel> Amenities { get; set; }
+        public IEnumerable<AmenityViewModel>? Amenities { get; set; } = null;
     }
 }

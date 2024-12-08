@@ -41,8 +41,8 @@ namespace HomeRent.Models.DTOs.Property
 
         public IEnumerable<int> AmenityIds { get; set; } = new List<int>();
 
-        // ToDO : AllowedExtensions Attribute
-        public IEnumerable<IFormFile> UploadedImages { get; set; }
+        //[FileExtensions(Extensions = "jpg,jpeg,png,webp", ErrorMessage = "Разрешени са само файлове с разширения: .jpg, .jpeg, .png, .webp)")]
+        public IEnumerable<IFormFile>? UploadedImages { get; set; }
 
     }
 }

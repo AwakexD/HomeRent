@@ -62,9 +62,10 @@ namespace HomeRent.Web
             // Application services
             services.AddTransient<ICloudinaryService, CloudinaryService>();
             services.AddTransient<IPropertyStaticDataService, PropertyStaticDataService>();
+            services.AddTransient<IPropertyService, PropertyService>();
 
             // Cloudinary
-            Cloudinary cloudinary = new Cloudinary(configuration["Cloudinary:CloudinaryUrl"]);
+            Cloudinary cloudinary = new Cloudinary(configuration["Cloudinary:CLOUDINARY_URL"]);
             cloudinary.Api.Secure = true;
             services.AddSingleton(cloudinary);
         }
