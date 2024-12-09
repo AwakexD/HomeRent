@@ -1,4 +1,5 @@
-﻿using HomeRent.Data.Models.User;
+﻿using System.Security.Claims;
+using HomeRent.Data.Models.User;
 using HomeRent.Models.ViewModels.Property;
 using HomeRent.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
@@ -27,7 +28,7 @@ namespace HomeRent.Web.Controllers
             return this.View();
         }
 
-        [Authorize(Roles = "Owner")]
+        [Authorize]
         public async Task<IActionResult> Create()
         {
             var viewModel = new CreatePropertyViewModel()
@@ -40,20 +41,30 @@ namespace HomeRent.Web.Controllers
         }
         
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Owner")]
         public async Task<IActionResult> Create(CreatePropertyViewModel inputModel)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return NotFound();
+                inputModel.PropertyTypes = await this.propertyStaticDataService.GetPropertyTypesSelectList();
+                inputModel.Amenities = await this.propertyStaticDataService.GetAmenitiesSelectList();
+
+                return this.View(inputModel);
             }
 
-            var user = await this.userManager.GetUserAsync(this.User);
+            var user = await this.userManager.GetUserAsync(User);
 
-            await this.propertyService.CreatePropertyAsync(user.Id, inputModel.Property);
+            try
+            {
+                await this.propertyService.CreatePropertyAsync(user.Id, inputModel.Property);
 
-            return this.RedirectToAction(nameof(All));
+                return this.RedirectToAction(nameof(All));
+            }
+            catch (Exception e)
+            {
+                return this.BadRequest(e.Message);
+            }
         }
     }
 }

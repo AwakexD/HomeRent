@@ -9,6 +9,7 @@ namespace HomeRent.Data.Models.Entities
     {
         public Property()
         {
+            this.Id = Guid.NewGuid();
             this.Images = new HashSet<PropertyImage>();
             this.Amenities = new HashSet<Amenity>();
             this.Bookings = new HashSet<Booking>();

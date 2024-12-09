@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HomeRent.Data.Migrations
 {
-    public partial class InitDb : Migration
+    public partial class InitalizeDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

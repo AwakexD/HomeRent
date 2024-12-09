@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HomeRent.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240926150522_InitDb")]
-    partial class InitDb
+    [Migration("20241209135429_InitalizeDB")]
+    partial class InitalizeDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

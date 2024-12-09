@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
+using HomeRent.Models.Validation;
+
 namespace HomeRent.Models.DTOs.Property
 {
     public class CreatePropertyDto
@@ -13,7 +15,7 @@ namespace HomeRent.Models.DTOs.Property
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Полето е задължително")]
-        [Range(10, 10000000)]
+        [Range(10, 10000000, ErrorMessage = "Цената за нощувка трябва да бъде между {2} и {1}")]
         public decimal PricePerNight { get; set; }
 
         [Required(ErrorMessage = "Полето е задължително")]
@@ -41,8 +43,8 @@ namespace HomeRent.Models.DTOs.Property
 
         public IEnumerable<int> AmenityIds { get; set; } = new List<int>();
 
-        //[FileExtensions(Extensions = "jpg,jpeg,png,webp", ErrorMessage = "Разрешени са само файлове с разширения: .jpg, .jpeg, .png, .webp)")]
-        public IEnumerable<IFormFile>? UploadedImages { get; set; }
+        [AllowedExtensions(new []{ ".jpg", ".jpeg", ".png", ".webp" })]
+        public IEnumerable<IFormFile> UploadedImages { get; set; }
 
     }
 }

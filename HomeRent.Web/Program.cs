@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using CloudinaryDotNet;
+using Ganss.Xss;
 
 namespace HomeRent.Web
 {
@@ -68,6 +69,9 @@ namespace HomeRent.Web
             Cloudinary cloudinary = new Cloudinary(configuration["Cloudinary:CLOUDINARY_URL"]);
             cloudinary.Api.Secure = true;
             services.AddSingleton(cloudinary);
+
+            // HTML Sanitizer
+            services.AddSingleton<IHtmlSanitizer, HtmlSanitizer>();
         }
 
         private static void Configure(WebApplication app)
