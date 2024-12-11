@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Reflection.Metadata.Ecma335;
+using AutoMapper;
 using Ganss.Xss;
 using HomeRent.Data.Models.Entities;
 using HomeRent.Data.Repositories.Contracts;
@@ -34,11 +36,13 @@ namespace HomeRent.Services
             this.propertyTypeRepository = propertyTypeRepository;
         }
 
-        public async Task<IEnumerable<PropertyListItemViewModel>> GetListingsAsync()
+        public async Task<IEnumerable<PropertyListItemViewModel>> GetListingsAsync(int page, int itemsPerPage)
         {
             var listings = await this.propertyRepository.AllAsNoTracking()
                 .Include(p => p.Owner)
                 .Include(p => p.Images)
+                .Skip((page - 1) * itemsPerPage)
+                .Take(itemsPerPage)
                 .ToListAsync();
 
             return mapper.Map<IEnumerable<PropertyListItemViewModel>>(listings);
@@ -74,6 +78,8 @@ namespace HomeRent.Services
             await this.propertyRepository.AddAsync(property);
             await this.propertyRepository.SaveChangesAsync();
         }
+
+        public async Task<int> GetTotalListingsCountAsync() => await this.propertyRepository.AllAsNoTracking().CountAsync();
 
         private async Task<bool> ValidatePropertyForm(CreatePropertyDto propertyDto)
         {

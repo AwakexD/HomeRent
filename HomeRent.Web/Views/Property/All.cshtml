@@ -8,7 +8,7 @@
         <div class="box-title-listing">
             <div class="box-left">
                 <h3 class="fw-8">Обяви за имоти</h3>
-                <p class="text">Във момента има: 12,201 обяви за имоти.</p>
+                <p class="text">Във момента има: <span>@Model.Paging.ListingCount</span> обяви за имоти.</p>
             </div>
 
         </div>
@@ -197,15 +197,7 @@
                             }
                         </div>
                         @* ToDO : Extract pagination in partial view *@
-                        <ul class="wd-navigation mt-20">
-                            <li><a href="#" class="nav-item"><i class="icon icon-arr-l"></i></a></li>
-                            <li><a href="#" class="nav-item">1</a></li>
-                            <li><a href="#" class="nav-item">2</a></li>
-                            <li><a href="#" class="nav-item active">3</a></li>
-                            <li><a href="#" class="nav-item">4</a></li>
-                            <li><a href="#" class="nav-item">...</a></li>
-                            <li><a href="#" class="nav-item"><i class="icon icon-arr-r"></i></a></li>
-                        </ul>
+                        <partial name="_PaginationPartial" model="Model.Paging"/>
                     </div>
                 </div>
             </div>

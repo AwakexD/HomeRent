@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using HomeRent.Data.Models.User;
+using HomeRent.Models.Shared;
 using HomeRent.Models.ViewModels.Property;
 using HomeRent.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
@@ -15,7 +16,8 @@ namespace HomeRent.Web.Controllers
         private readonly IPropertyService propertyService;
         private readonly IPropertyStaticDataService propertyStaticDataService;
 
-        public PropertyController(UserManager<ApplicationUser> userManager, IPropertyService propertyService,
+        public PropertyController(UserManager<ApplicationUser> userManager, 
+            IPropertyService propertyService,
             IPropertyStaticDataService propertyStaticDataService)
         {
             this.userManager = userManager;
@@ -23,12 +25,18 @@ namespace HomeRent.Web.Controllers
             this.propertyStaticDataService = propertyStaticDataService;
         }
 
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> All(int page = 1)
         {
             var viewModel = new PropertyAllViewModel()
             {
-                Properties = await this.propertyService.GetListingsAsync(),
+                Properties = await this.propertyService.GetListingsAsync(page, 8),
                 PropertyTypes = await this.propertyStaticDataService.GetPropertyTypesSelectList(),
+                Paging = new PagingViewModel()
+                {
+                    PageNumber = page,
+                    ListingCount = await this.propertyService.GetTotalListingsCountAsync(),
+                    ItemsPerPage = 8
+                }
             };
             return this.View(viewModel);
         }

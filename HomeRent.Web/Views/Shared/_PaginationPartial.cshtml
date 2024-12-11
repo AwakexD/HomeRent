@@ -1,0 +1,63 @@
+﻿@model HomeRent.Models.Shared.PagingViewModel
+
+<ul class="wd-navigation mt-20 justify-content-center">
+    <!-- Previous Page Link -->
+    @if (Model.HasPreviousPage)
+    {
+        <li>
+            <a href="@GeneratePageUrl(Model.PreviousPageNumber)" class="nav-item">
+                <i class="icon icon-arr-l"></i>
+            </a>
+        </li>
+    }
+    else
+    {
+        <li class="disabled">
+            <a href="#" class="nav-item">
+                <i class="icon icon-arr-l"></i>
+            </a>
+        </li>
+    }
+
+    <!-- Page Numbers -->
+    @for (int i = 1; i <= Model.PagesCount; i++)
+    {
+        if (i == Model.PageNumber)
+        {
+            <li>
+                <a href="#" class="nav-item active">@i</a>
+            </li>
+        }
+        else
+        {
+            <li>
+                <a href="@GeneratePageUrl(i)" class="nav-item">@i</a>
+            </li>
+        }
+    }
+
+    <!-- Next Page Link -->
+    @if (Model.HasNextPage)
+    {
+        <li>
+            <a href="@GeneratePageUrl(Model.NextPageNumber)" class="nav-item">
+                <i class="icon icon-arr-r"></i>
+            </a>
+        </li>
+    }
+    else
+    {
+        <li class="disabled">
+            <a href="#" class="nav-item">
+                <i class="icon icon-arr-r"></i>
+            </a>
+        </li>
+    }
+</ul>
+
+@functions {
+    private string GeneratePageUrl(int pageNumber)
+    {
+        return $"?page={pageNumber}";
+    }
+}

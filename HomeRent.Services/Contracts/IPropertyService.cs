@@ -5,8 +5,10 @@ namespace HomeRent.Services.Contracts
 {
     public interface IPropertyService
     {
-        Task<IEnumerable<PropertyListItemViewModel>> GetListingsAsync();
+        Task<IEnumerable<PropertyListItemViewModel>> GetListingsAsync(int page, int itemsPerPage);
 
         Task CreatePropertyAsync(Guid creatorId, CreatePropertyDto propertyDto);
+
+        Task<int> GetTotalListingsCountAsync();
     }
 }

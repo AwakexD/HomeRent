@@ -10,5 +10,7 @@ namespace HomeRent.Models.ViewModels.Property
         public IEnumerable<SelectListItem>? PropertyTypes { get; set; }
 
         public IEnumerable<AmenityViewModel>? Amenities { get; set; }
+
+        public PagingViewModel Paging { get; set; }
     }
 }
