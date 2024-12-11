@@ -23,9 +23,14 @@ namespace HomeRent.Web.Controllers
             this.propertyStaticDataService = propertyStaticDataService;
         }
 
-        public IActionResult All()
+        public async Task<IActionResult> All()
         {
-            return this.View();
+            var viewModel = new PropertyAllViewModel()
+            {
+                Properties = await this.propertyService.GetListingsAsync(),
+                PropertyTypes = await this.propertyStaticDataService.GetPropertyTypesSelectList(),
+            };
+            return this.View(viewModel);
         }
 
         [Authorize]

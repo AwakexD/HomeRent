@@ -3,6 +3,7 @@ using Ganss.Xss;
 using HomeRent.Data.Models.Entities;
 using HomeRent.Data.Repositories.Contracts;
 using HomeRent.Models.DTOs.Property;
+using HomeRent.Models.ViewModels.Property;
 using HomeRent.Services.Contracts;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,6 +32,16 @@ namespace HomeRent.Services
             this.propertyRepository = propertyRepository;
             this.amenityRepository = amenityRepository;
             this.propertyTypeRepository = propertyTypeRepository;
+        }
+
+        public async Task<IEnumerable<PropertyListItemViewModel>> GetListingsAsync()
+        {
+            var listings = await this.propertyRepository.AllAsNoTracking()
+                .Include(p => p.Owner)
+                .Include(p => p.Images)
+                .ToListAsync();
+
+            return mapper.Map<IEnumerable<PropertyListItemViewModel>>(listings);
         }
 
         public async Task CreatePropertyAsync(Guid creatorId ,CreatePropertyDto propertyDto)

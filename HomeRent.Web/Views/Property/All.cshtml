@@ -1,4 +1,5 @@
-﻿@{
+﻿@model HomeRent.Models.ViewModels.Property.PropertyAllViewModel
+@{
     ViewData["Title"] = "Имоти";
 }
 
@@ -17,7 +18,7 @@
                     <div class="flat-tab flat-tab-form widget-filter-search widget-box">
                         <ul class="nav-tab-form" role="tablist">
                             <li class="nav-tab-item" role="presentation">
-                                <a href="#forRent" class="nav-link-item active" data-bs-toggle="tab" aria-selected="true" role="tab">Филтри</a>
+                                <a href="" class="nav-link-item active" data-bs-toggle="tab" aria-selected="true" role="tab">Филтри</a>
                             </li>
 
                         </ul>
@@ -41,12 +42,11 @@
 
                                                         <div class="group-select">
                                                             <div class="nice-select" tabindex="0">
-                                                                <span class="current">Тип на имота</span>
-                                                                <ul class="list">
-                                                                    <li data-value="villa" class="option">Villa</li>
-                                                                    <li data-value="studio" class="option">Studio</li>
-                                                                    <li data-value="office" class="option">Office</li>
-                                                                </ul>
+                                                                <label class="current">Тип на имота</label>
+                                                                <select asp-items="Model.PropertyTypes" class="nice-select">
+                                                                    <option class="current" value="">Изберете тип на имота</option>
+                                                                </select>
+                                                                @* <span asp-validation-for="" class="text-danger"></span> *@
                                                             </div>
                                                         </div>
                                                     </div>
@@ -137,64 +137,64 @@
                 <div class="tab-content">
                     <div class="tab-pane active show" id="listLayout" role="tabpanel">
                         <div class="row">
-                            <div class="col-md-12">
-                                <div class="homelengo-box list-style-1 list-style-2 line">
-                                    <div class="archive-top">
-                                        <a href="property-details-v1.html" class="images-group">
-                                            <div class="images-style">
-                                                <img class="lazyload" data-src="images/home/house-sm-11.jpg" src="images/home/house-sm-11.jpg" alt="img-property">
-                                            </div>
-                                            <div class="top">
-                                                <ul class="d-flex gap-6 flex-wrap">
-                                                    <li class="flag-tag primary">Популярно</li>
-                                                    <li class="flag-tag style-1">Под наем</li>
-                                                </ul>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="archive-bottom">
-                                        <div class="content-top">
-                                            <h6 class="text-capitalize"><a href="property-details-v1.html" class="link text-line-clamp-1"> Ritma Perdana (Townhouse), LBS Alam Perdana</a></h6>
-                                            <ul class="meta-list">
-                                                <li class="item">
-                                                    <i class="icon icon-bed"></i>
-                                                    <span class="text-variant-1">Спални:</span>
-                                                    <span class="fw-6">3</span>
-                                                </li>
-                                                <li class="item">
-                                                    <i class="icon icon-bath"></i>
-                                                    <span class="text-variant-1">Бани:</span>
-                                                    <span class="fw-6">2</span>
-                                                </li>
-                                                <li class="item">
-                                                    <i class="icon icon-sqft"></i>
-                                                    <span class="text-variant-1">Площ:</span>
-                                                    <span class="fw-6">1150 m<small>2</small></span>
-                                                </li>
-                                            </ul>
-                                            <div class="location">
-                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M10 7C10 7.53043 9.78929 8.03914 9.41421 8.41421C9.03914 8.78929 8.53043 9 8 9C7.46957 9 6.96086 8.78929 6.58579 8.41421C6.21071 8.03914 6 7.53043 6 7C6 6.46957 6.21071 5.96086 6.58579 5.58579C6.96086 5.21071 7.46957 5 8 5C8.53043 5 9.03914 5.21071 9.41421 5.58579C9.78929 5.96086 10 6.46957 10 7Z" stroke="#A3ABB0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                    <path d="M13 7C13 11.7613 8 14.5 8 14.5C8 14.5 3 11.7613 3 7C3 5.67392 3.52678 4.40215 4.46447 3.46447C5.40215 2.52678 6.67392 2 8 2C9.32608 2 10.5979 2.52678 11.5355 3.46447C12.4732 4.40215 13 5.67392 13 7Z" stroke="#A3ABB0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                </svg>
-                                                <span class="text-line-clamp-1"> 145 Brooklyn Ave, Califonia, New York </span>
-                                            </div>
-                                            <p class="description mt-20 text-line-clamp-2 text-variant-1">Sited on the 470-acre township of LBS Alam Perdana, Ritma Perdana is...</p>
-                                        </div>
-
-                                        <div class="content-bottom">
-                                            <div class="d-flex gap-8 align-items-center">
-                                                <div class="avatar avt-40 round">
-                                                    <img src="images/avatar/avt-png3.png" alt="avt">
+                            @foreach (var listing in Model.Properties)
+                            {
+                                <div class="col-md-12">
+                                    <div class="homelengo-box list-style-1 list-style-2 line">
+                                        <div class="archive-top">
+                                            <a href="property-details-v1.html" class="images-group">
+                                                <div class="images-style">
+                                                    <img class="lazyload" src="@listing.ImageUrl" alt="img-property">
                                                 </div>
-                                                <span>Arlene McCoy</span>
-                                            </div>
-                                            <h6 class="price">$7250,00</h6>
+                                                <div class="top">
+                                                    <ul class="d-flex gap-6 flex-wrap">
+                                                        <li class="flag-tag primary">Популярно</li>
+                                                        <li class="flag-tag style-1">Под наем</li>
+                                                    </ul>
+                                                </div>
+                                            </a>
                                         </div>
-                                    </div>
+                                        <div class="archive-bottom">
+                                            <div class="content-top">
+                                                <h6 class="text-capitalize"><a href="property-details-v1.html" class="link text-line-clamp-1"> @listing.Title</a></h6>
+                                                <ul class="meta-list">
+                                                    <li class="item">
+                                                        <i class="icon icon-bed"></i>
+                                                        <span class="text-variant-1">Спални:</span>
+                                                        <span class="fw-6">@listing.Bedrooms</span>
+                                                    </li>
+                                                    <li class="item">
+                                                        <i class="icon icon-bath"></i>
+                                                        <span class="text-variant-1">Бани:</span>
+                                                        <span class="fw-6">@listing.Bathrooms</span>
+                                                    </li>
+                                                    <li class="item">
+                                                        <i class="icon icon-sqft"></i>
+                                                        <span class="text-variant-1">Площ:</span>
+                                                        <span class="fw-6">@listing.Size m<small>2</small></span>
+                                                    </li>
+                                                </ul>
+                                                <div class="location">
+                                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M10 7C10 7.53043 9.78929 8.03914 9.41421 8.41421C9.03914 8.78929 8.53043 9 8 9C7.46957 9 6.96086 8.78929 6.58579 8.41421C6.21071 8.03914 6 7.53043 6 7C6 6.46957 6.21071 5.96086 6.58579 5.58579C6.96086 5.21071 7.46957 5 8 5C8.53043 5 9.03914 5.21071 9.41421 5.58579C9.78929 5.96086 10 6.46957 10 7Z" stroke="#A3ABB0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                        <path d="M13 7C13 11.7613 8 14.5 8 14.5C8 14.5 3 11.7613 3 7C3 5.67392 3.52678 4.40215 4.46447 3.46447C5.40215 2.52678 6.67392 2 8 2C9.32608 2 10.5979 2.52678 11.5355 3.46447C12.4732 4.40215 13 5.67392 13 7Z" stroke="#A3ABB0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                    </svg>
+                                                    <span class="text-line-clamp-1">@listing.Address,<span>@listing.City</span></span>
+                                                </div>
+                                                <p class="description mt-20 text-line-clamp-2 text-variant-1">@listing.Description</p>
+                                            </div>
 
+                                            <div class="content-bottom">
+                                                <div class="d-flex gap-8 align-items-center">
+                                                    <span>@listing.OwnerFullName</span>
+                                                </div>
+                                                <h6 class="price">@listing.PricePerNight</h6>
+                                            </div>
+                                        </div>
+
+                                    </div>
                                 </div>
-                            </div>
+                            }
                         </div>
                         @* ToDO : Extract pagination in partial view *@
                         <ul class="wd-navigation mt-20">
