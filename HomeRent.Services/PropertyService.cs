@@ -1,10 +1,9 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Reflection.Metadata.Ecma335;
-using AutoMapper;
+﻿using AutoMapper;
 using Ganss.Xss;
 using HomeRent.Data.Models.Entities;
 using HomeRent.Data.Repositories.Contracts;
 using HomeRent.Models.DTOs.Property;
+using HomeRent.Models.Shared;
 using HomeRent.Models.ViewModels.Property;
 using HomeRent.Services.Contracts;
 using Microsoft.EntityFrameworkCore;
@@ -36,16 +35,68 @@ namespace HomeRent.Services
             this.propertyTypeRepository = propertyTypeRepository;
         }
 
-        public async Task<IEnumerable<PropertyListItemViewModel>> GetListingsAsync(int page, int itemsPerPage)
+        public async Task<(IEnumerable<PropertyListItemViewModel>, int listingsCount)> GetListingsAsync(PropertyQueryModel query)
         {
-            var listings = await this.propertyRepository.AllAsNoTracking()
+            var queryable = this.propertyRepository.AllAsNoTracking()
                 .Include(p => p.Owner)
                 .Include(p => p.Images)
-                .Skip((page - 1) * itemsPerPage)
-                .Take(itemsPerPage)
+                .Include(p => p.Amenities)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(query.City))
+            {
+                queryable = queryable.Where(p => p.City.Contains(query.City));
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.Address))
+            {
+                queryable = queryable.Where(p => p.Address.Contains(query.Address));
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.Keyword))
+            {
+                queryable = queryable.Where(p => p.Title.Contains(query.Keyword) || p.Description.Contains(query.Keyword));
+            }
+
+            if (query.PropertyTypeId.HasValue)
+            {
+                queryable = queryable.Where(p => p.PropertyTypeId == query.PropertyTypeId);
+            }
+
+            if (query.MinPrice.HasValue)
+            {
+                queryable = queryable.Where(p => p.PricePerNight >= query.MinPrice.Value);
+            }
+
+            if (query.MaxPrice.HasValue)
+            {
+                queryable = queryable.Where(p => p.PricePerNight <= query.MaxPrice.Value);
+            }
+
+            if (query.MinBedrooms.HasValue)
+            {
+                queryable = queryable.Where(p => p.Bedrooms >= query.MinBedrooms.Value);
+            }
+
+            if (query.MinBathrooms.HasValue)
+            {
+                queryable = queryable.Where(p => p.Bathrooms == query.MinBathrooms.Value);
+            }
+
+            if (query.AmenityIds?.Any() == true)
+            {
+                queryable = queryable.Where(p => query.AmenityIds.All(a => p.Amenities.Any(pa => pa.Id == a)));
+            }
+
+            var properties = await queryable
+                .Skip((query.Page - 1) * query.ItemsPerPage)
+                .Take(query.ItemsPerPage)
                 .ToListAsync();
 
-            return mapper.Map<IEnumerable<PropertyListItemViewModel>>(listings);
+            var mappedProperties = mapper.Map<IEnumerable<PropertyListItemViewModel>>(properties);
+            var listingsCount = await queryable.CountAsync();
+
+            return (mappedProperties, listingsCount);
         }
 
         public async Task CreatePropertyAsync(Guid creatorId ,CreatePropertyDto propertyDto)

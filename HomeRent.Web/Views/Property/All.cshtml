@@ -25,57 +25,51 @@
                         <div class="tab-content">
                             <div class="tab-pane fade active show" role="tabpanel">
                                 <div class="form-sl">
-                                    <form method="post">
+                                    <form asp-action="All" method="get">
                                         <div class="wd-filter-select">
                                             <div class="inner-group">
                                                 <div class="box">
                                                     <div class="form-style">
-                                                        <input type="text" class="form-control" placeholder="Ключова дума" value="" name="s" title="Search for" required="">
+                                                        <div class="group-ip ip-icon">
+                                                            <input type="text" class="form-control" asp-for="Keyword" placeholder="Ключова дума">
+                                                            <a href="#" class="icon-right icon-lockbox"></a>
+                                                        </div>
                                                     </div>
                                                     <div class="form-style">
                                                         <div class="group-ip ip-icon">
-                                                            <input type="text" class="form-control" placeholder="Локация" value="" name="s" title="Search for" required="">
+                                                            <input type="text" class="form-control" asp-for="Address" placeholder="Адрес">
                                                             <a href="#" class="icon-right icon-location"></a>
                                                         </div>
                                                     </div>
                                                     <div class="form-style">
-
+                                                        <div class="group-ip ip-icon">
+                                                            <input type="text" class="form-control" asp-for="City" placeholder="Град">
+                                                            <a href="#" class="icon-right icon-location"></a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-style">
                                                         <div class="group-select">
-                                                            <div class="nice-select" tabindex="0">
-                                                                <label class="current">Тип на имота</label>
-                                                                <select asp-items="Model.PropertyTypes" class="nice-select">
-                                                                    <option class="current" value="">Изберете тип на имота</option>
-                                                                </select>
-                                                                @* <span asp-validation-for="" class="text-danger"></span> *@
+                                                            <select asp-for="PropertyTypeId" asp-items="Model.PropertyTypes" class="nice-select">
+                                                                <option value="">Tип на имота</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-style">
+                                                            <div class="group-ip ip-icon">
+                                                                <input type="text" class="form-control" asp-for="MinBathrooms" placeholder="Бани">
+                                                                <a href="#" class="icon-right icon-shower"></a>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="form-style box-select">
-                                                        <div class="nice-select" tabindex="0">
-                                                            <span class="current">Бани</span>
-                                                            <ul class="list">
-                                                                <li data-value="all" class="option">All</li>
-                                                                <li data-value="1" class="option">1</li>
-                                                                <li data-value="2" class="option">2</li>
-                                                                <li data-value="3" class="option">3</li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-style box-select">
-                                                        <div class="nice-select" tabindex="0">
-                                                            <span class="current">Спални</span>
-                                                            <ul class="list">
-                                                                <li data-value="1" class="option">All</li>
-                                                                <li data-value="1" class="option">1</li>
-                                                                <li data-value="2" class="option">2</li>
-                                                                <li data-value="3" class="option">3</li>
-                                                            </ul>
+                                                        <div class="form-style">
+                                                            <div class="group-ip ip-icon">
+                                                                <input type="text" class="form-control" asp-for="MinBedrooms" placeholder="Спални">
+                                                                <a href="#" class="icon-right icon-bed"></a>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="box">
                                                     <div class="form-style widget-price">
-                                                        <div class="box-title-price">
+                                                        @* <div class="box-title-price">
                                                             <span class="title-price fw-6">Цена:</span>
                                                             <div class="caption-price">
                                                                 <span id="slider-range-value1" class="fw-6">$100</span>
@@ -87,10 +81,10 @@
                                                         <div class="slider-labels">
                                                             <input type="hidden" name="min-value" value="">
                                                             <input type="hidden" name="max-value" value="">
-                                                        </div>
+                                                        </div> *@
                                                     </div>
                                                     <div class="form-style widget-price wd-price-2">
-                                                        <div class="box-title-price">
+                                                        @*  <div class="box-title-price">
                                                             <span class="title-price fw-6">Площ:</span>
                                                             <div class="caption-price">
                                                                 <span id="slider-range-value01" class="fw-6">500 SqFt</span>
@@ -102,7 +96,7 @@
                                                         <div class="slider-labels">
                                                             <input type="hidden" name="min-value2" value="">
                                                             <input type="hidden" name="max-value2" value="">
-                                                        </div>
+                                                        </div> *@
                                                     </div>
                                                 </div>
                                                 <div class="box">
@@ -110,11 +104,14 @@
                                                         <div class="group-checkbox">
                                                             <h6 class="title text-black-2">Удобства:</h6>
                                                             <div class="group-amenities">
-                                                                @* ToDO : Retrieve all amenities form the db and display them *@
-                                                                <fieldset class="amenities-item">
-                                                                    <input type="checkbox" class="tf-checkbox style-1" id="cb1" checked="">
-                                                                    <label for="cb1" class="text-cb-amenities">Air Condition</label>
-                                                                </fieldset>
+                                                                @foreach (var amenity in Model.Amenities)
+                                                                {
+                                                                    <fieldset class="amenities-item">
+                                                                        <input type="checkbox" value="@amenity.Id" name="AmenityIds[]" id="amenity@amenity.Id" class="tf-checkbox style-1">
+                                                                        <i class="@amenity.IconClass"></i>
+                                                                        <label name="Property.AmenityIds">@amenity.Name</label>
+                                                                    </fieldset>
+                                                                }
                                                             </div>
                                                         </div>
                                                     </div>

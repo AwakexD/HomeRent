@@ -25,17 +25,20 @@ namespace HomeRent.Web.Controllers
             this.propertyStaticDataService = propertyStaticDataService;
         }
 
-        public async Task<IActionResult> All(int page = 1)
+        public async Task<IActionResult> All([FromQuery] PropertyQueryModel query)
         {
+            var (propertiesList, listingsCount) = await this.propertyService.GetListingsAsync(query);
+
             var viewModel = new PropertyAllViewModel()
             {
-                Properties = await this.propertyService.GetListingsAsync(page, 8),
+                Properties = propertiesList,
                 PropertyTypes = await this.propertyStaticDataService.GetPropertyTypesSelectList(),
+                Amenities = await this.propertyStaticDataService.GetAmenitiesSelectList(),
                 Paging = new PagingViewModel()
                 {
-                    PageNumber = page,
-                    ListingCount = await this.propertyService.GetTotalListingsCountAsync(),
-                    ItemsPerPage = 8
+                    PageNumber = query.Page,
+                    ListingCount = listingsCount,
+                    ItemsPerPage = query.ItemsPerPage
                 }
             };
             return this.View(viewModel);

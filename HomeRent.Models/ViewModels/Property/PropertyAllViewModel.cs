@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HomeRent.Models.ViewModels.Property
 {
-    public class PropertyAllViewModel
+    public class PropertyAllViewModel : PropertyQueryModel
     {
         public IEnumerable<PropertyListItemViewModel>? Properties { get; set; }
 
