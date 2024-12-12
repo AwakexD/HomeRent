@@ -19,63 +19,24 @@
                                 <div class="navbar-collapse collapse clearfix" id="navbarSupportedContent">
                                     <ul class="navigation clearfix">
                                         <li class="dropdown2 home current">
-                                            <a href="#">Home</a>
+                                            <a asp-area="" asp-controller="Home" asp-action="Index">Начало</a>
                                             <ul>
                                                 <li class="current"><a href="index.html">Homepage 01</a></li>
                                                 <li><a href="home-02.html">Homepage 02</a></li>
-                                                <li><a href="home-03.html">Homepage 03</a></li>
-                                                <li><a href="home-04.html">Homepage 04</a></li>
-                                                <li><a href="home-05.html">Homepage 05</a></li>
-                                                <li><a href="home-06.html">Homepage 06</a></li>
                                             </ul>
                                             <div class="dropdown2-btn"></div>
                                         </li>
                                         <li class="dropdown2">
-                                            <a href="#">Listing</a>
+                                            <a asp-controller="Property" asp-action="All">Обяви за имоти</a>
                                             <ul>
-                                                <li><a href="property-halfmap-grid.html">Property Half Map Grid</a></li>
-                                                <li><a href="property-halfmap-list.html">Property Half Map List</a></li>
-                                                <li><a href="topmap-grid.html">Find Topmap Grid</a></li>
-                                                <li><a href="topmap-list.html">Find Topmap List</a></li>
-                                                <li><a href="sidebar-grid.html">Find Sidebar Grid</a></li>
-                                                <li><a href="sidebar-list.html">Find Sidebar List</a></li>
-
+                                                <li><a asp-controller="Property" asp-action="All">Всички обяви</a></li>
+                                                @if (SignInManager.IsSignedIn(this.User))
+                                                {
+                                                    <li><a asp-controller="Property" asp-action="Create">Добавяне на обява</a></li>
+                                                }
                                             </ul>
                                             <div class="dropdown2-btn"></div>
                                         </li>
-                                        <li class="dropdown2">
-                                            <a href="#">Properties</a>
-                                            <ul>
-                                                <li><a href="property-details-v1.html">Property Details 1</a></li>
-                                                <li><a href="property-details-v2.html">Property Details 2</a></li>
-                                                <li><a href="property-details-v3.html">Property Details 3</a></li>
-                                                <li><a href="property-details-v4.html">Property Details 4</a></li>
-                                            </ul>
-                                            <div class="dropdown2-btn"></div>
-                                        </li>
-                                        <li class="dropdown2">
-                                            <a href="#">Pages</a>
-                                            <ul>
-                                                <li><a href="about-us.html">About Us</a></li>
-                                                <li><a href="our-service.html">Our Services</a></li>
-                                                <li><a href="pricing.html">Pricing</a></li>
-                                                <li><a href="contact.html">Contact Us</a></li>
-                                                <li><a href="faq.html">FAQs</a></li>
-                                                <li><a href="privacy-policy.html">Privacy Policy</a></li>
-
-                                            </ul>
-                                            <div class="dropdown2-btn"></div>
-                                        </li>
-                                        <li class="dropdown2">
-                                            <a href="#">Blog</a>
-                                            <ul>
-                                                <li><a href="blog.html">Blog Default</a></li>
-                                                <li><a href="blog-grid.html">Blog Grid</a></li>
-                                                <li><a href="blog-detail.html">Blog Post Details</a></li>
-                                            </ul>
-                                            <div class="dropdown2-btn"></div>
-                                        </li>
-
                                         <li class="dropdown2">
                                             <a href="#">Dashboard</a>
                                             <ul>
@@ -124,106 +85,32 @@
     <div class="mobile-menu">
         <div class="menu-backdrop"></div>
         <nav class="menu-box">
-            <div class="nav-logo"><a href="index.html"><img src="images/logo/logo@2x.png" alt="nav-logo" width="174" height="44"></a></div>
+            <div class="logo d-flex justify-content-center"><a asp-area="" asp-controller="Home" asp-action="Index"><img src="https://res.cloudinary.com/dsxlhk9cg/image/upload/v1732976770/cuted-logo_slwxsi.png" alt="logo" width="166" height="48"></a></div>
             <div class="bottom-canvas">
                 <div class="login-box flex align-center">
-                    <a href="#modalLogin" data-bs-toggle="modal">Login</a>
-                    <span>/</span>
-                    <a href="#modalRegister" data-bs-toggle="modal">Register</a>
+                    <partial name="_LoginPartial" />
                 </div>
                 <div class="menu-outer">
-                    <div class="navbar-collapse collapse clearfix" id="navbarSupportedContent">
-                        <ul class="navigation clearfix">
-                            <li class="dropdown2 home current">
-                                <a href="#">Home</a>
-                                <ul>
-                                    <li class="current"><a href="index.html">Homepage 01</a></li>
-                                    <li><a href="home-02.html">Homepage 02</a></li>
-                                    <li><a href="home-03.html">Homepage 03</a></li>
-                                    <li><a href="home-04.html">Homepage 04</a></li>
-                                    <li><a href="home-05.html">Homepage 05</a></li>
-                                    <li><a href="home-06.html">Homepage 06</a></li>
-                                </ul>
-                                <div class="dropdown2-btn"></div>
-                            </li>
-                            <li class="dropdown2">
-                                <a href="#">Listing</a>
-                                <ul>
-                                    <li><a href="property-halfmap-grid.html">Property Half Map Grid</a></li>
-                                    <li><a href="property-halfmap-list.html">Property Half Map List</a></li>
-                                    <li><a href="topmap-grid.html">Find Topmap Grid</a></li>
-                                    <li><a href="topmap-list.html">Find Topmap List</a></li>
-                                    <li><a href="sidebar-grid.html">Find Sidebar Grid</a></li>
-                                    <li><a href="sidebar-list.html">Find Sidebar List</a></li>
-
-                                </ul>
-                                <div class="dropdown2-btn"></div>
-                            </li>
-                            <li class="dropdown2">
-                                <a href="#">Properties</a>
-                                <ul>
-                                    <li><a href="property-details-v1.html">Property Details 1</a></li>
-                                    <li><a href="property-details-v2.html">Property Details 2</a></li>
-                                    <li><a href="property-details-v3.html">Property Details 3</a></li>
-                                    <li><a href="property-details-v4.html">Property Details 4</a></li>
-                                </ul>
-                                <div class="dropdown2-btn"></div>
-                            </li>
-                            <li class="dropdown2">
-                                <a href="#">Pages</a>
-                                <ul>
-                                    <li><a href="about-us.html">About Us</a></li>
-                                    <li><a href="our-service.html">Our Services</a></li>
-                                    <li><a href="pricing.html">Pricing</a></li>
-                                    <li><a href="contact.html">Contact Us</a></li>
-                                    <li><a href="faq.html">FAQs</a></li>
-                                    <li><a href="privacy-policy.html">Privacy Policy</a></li>
-
-                                </ul>
-                                <div class="dropdown2-btn"></div>
-                            </li>
-                            <li class="dropdown2">
-                                <a href="#">Blog</a>
-                                <ul>
-                                    <li><a href="blog.html">Blog Default</a></li>
-                                    <li><a href="blog-grid.html">Blog Grid</a></li>
-                                    <li><a href="blog-detail.html">Blog Post Details</a></li>
-                                </ul>
-                                <div class="dropdown2-btn"></div>
-                            </li>
-
-                            <li class="dropdown2">
-                                <a href="#">Dashboard</a>
-                                <ul>
-                                    <li><a href="dashboard.html">Dashboard</a></li>
-                                    <li><a href="my-property.html">My Properties</a></li>
-                                    <li><a href="message.html">Message</a></li>
-                                    <li><a href="my-favorites.html">My Favorites</a></li>
-                                    <li><a href="reviews.html">Reviews</a></li>
-                                    <li><a href="my-profile.html">My Profile</a></li>
-                                    <li><a href="add-property.html">Add Property</a></li>
-                                </ul>
-                                <div class="dropdown2-btn"></div>
-                            </li>
-                        </ul>
-                    </div>
+                   
                 </div>
                 <div class="button-mobi-sell">
-                    <a class="tf-btn primary" href="add-property.html">Submit Property</a>
+                    @if (this.SignInManager.IsSignedIn(this.User))
+                    {
+                        <a asp-controller="Property" asp-action="Create" class="tf-btn primary">Добавяне на обява</a>
+                    }
                 </div>
                 <div class="mobi-icon-box">
                     <div class="box d-flex align-items-center">
                         <span class="icon icon-phone2"></span>
-                        <div>1-333-345-6868</div>
+                        <div>+359 879 616 731</div>
                     </div>
                     <div class="box d-flex align-items-center">
                         <span class="icon icon-mail"></span>
-                        <div>themesflat@gmail.com</div>
+                        <div>a.parvanov@outlook.com</div>
                     </div>
                 </div>
             </div>
         </nav>
     </div>
     <!-- End Mobile Menu -->
-
 </header>
