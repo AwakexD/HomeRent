@@ -5,7 +5,7 @@
     @if (Model.HasPreviousPage)
     {
         <li>
-            <a href="@GeneratePageUrl(Model.PreviousPageNumber)" class="nav-item">
+            <a href="@GeneratePageUrl(Model.PreviousPageNumber, Model.QueryParameters)" class="nav-item">
                 <i class="icon icon-arr-l"></i>
             </a>
         </li>
@@ -31,7 +31,7 @@
         else
         {
             <li>
-                <a href="@GeneratePageUrl(i)" class="nav-item">@i</a>
+                <a href="@GeneratePageUrl(i, Model.QueryParameters)" class="nav-item">@i</a>
             </li>
         }
     }
@@ -40,7 +40,7 @@
     @if (Model.HasNextPage)
     {
         <li>
-            <a href="@GeneratePageUrl(Model.NextPageNumber)" class="nav-item">
+            <a href="@GeneratePageUrl(Model.NextPageNumber, Model.QueryParameters)" class="nav-item">
                 <i class="icon icon-arr-r"></i>
             </a>
         </li>
@@ -56,8 +56,14 @@
 </ul>
 
 @functions {
-    private string GeneratePageUrl(int pageNumber)
+    private string GeneratePageUrl(int pageNumber, Dictionary<string, string> queryParams)
     {
-        return $"?Page={pageNumber}";
+        queryParams["Page"] = pageNumber.ToString();
+
+        var queryString = string.Join("&", queryParams
+            .Where(q => !string.IsNullOrEmpty(q.Value))
+            .Select(q => $"{q.Key}={Uri.EscapeDataString(q.Value)}"));
+
+        return $"?{queryString}";
     }
 }

@@ -38,7 +38,8 @@ namespace HomeRent.Web.Controllers
                 {
                     PageNumber = query.Page,
                     ListingCount = listingsCount,
-                    ItemsPerPage = query.ItemsPerPage
+                    ItemsPerPage = query.ItemsPerPage,
+                    QueryParameters = this.GenerateQueryParameters(query)
                 }
             };
             return this.View(viewModel);
@@ -81,6 +82,42 @@ namespace HomeRent.Web.Controllers
             {
                 return this.BadRequest(e.Message);
             }
+        }
+
+        private Dictionary<string, string> GenerateQueryParameters(PropertyQueryModel queryModel)
+        {
+            var queryParams = new Dictionary<string, string>();
+
+            if (!string.IsNullOrEmpty(queryModel.Keyword))
+                queryParams["Keyword"] = queryModel.Keyword;
+
+            if (!string.IsNullOrEmpty(queryModel.Address))
+                queryParams["Address"] = queryModel.Address;
+
+            if (!string.IsNullOrEmpty(queryModel.City))
+                queryParams["City"] = queryModel.City;
+
+            if (queryModel.PropertyTypeId.HasValue)
+                queryParams["PropertyTypeId"] = queryModel.PropertyTypeId.Value.ToString();
+
+            if (queryModel.MinBathrooms.HasValue)
+                queryParams["MinBathrooms"] = queryModel.MinBathrooms.Value.ToString();
+
+            if (queryModel.MinBedrooms.HasValue)
+                queryParams["MinBedrooms"] = queryModel.MinBedrooms.Value.ToString();
+
+            if (queryModel.MinPrice.HasValue)
+                queryParams["MinPrice"] = queryModel.MinPrice.Value.ToString();
+
+            if (queryModel.MaxPrice.HasValue)
+                queryParams["MaxPrice"] = queryModel.MaxPrice.Value.ToString();
+
+            if (queryModel.AmenityIds?.Any() == true)
+            {
+                queryParams["SelectedAmenities"] = string.Join(",", queryModel.AmenityIds);
+            }
+
+            return queryParams;
         }
     }
 }

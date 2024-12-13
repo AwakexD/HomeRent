@@ -20,5 +20,7 @@
         public int ListingCount { get; set; }
 
         public int ItemsPerPage { get; set; } = 6;
+
+        public Dictionary<string, string> QueryParameters { get; set; }
     }
 }
