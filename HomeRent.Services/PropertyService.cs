@@ -99,6 +99,17 @@ namespace HomeRent.Services
             return (mappedProperties, listingsCount);
         }
 
+        public async Task<IEnumerable<PropertyListItemViewModel>> GetMostRecentListingsAsync()
+        {
+            var properties = await this.propertyRepository.AllAsNoTracking()
+                .OrderByDescending(p => p.CreatedOn)
+                .Include(p => p.Images)
+                .Take(6)
+                .ToListAsync();
+
+            return this.mapper.Map<IEnumerable<PropertyListItemViewModel>>(properties);
+        }
+
         public async Task CreatePropertyAsync(Guid creatorId ,CreatePropertyDto propertyDto)
         {
             propertyDto = this.SanitizePropertyForm(propertyDto);

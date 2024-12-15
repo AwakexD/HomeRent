@@ -1,21 +1,36 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using HomeRent.Models.ViewModels;
+using HomeRent.Models.ViewModels.Home;
+using HomeRent.Services.Contracts;
 
 namespace HomeRent.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<HomeController> logger;
+        private readonly IPropertyStaticDataService propertyStaticDataService;
+        private readonly IPropertyService propertyService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger,
+            IPropertyStaticDataService propertyStaticDataService,
+            IPropertyService propertyService)
         {
-            _logger = logger;
+            this.logger = logger;
+            this.propertyStaticDataService = propertyStaticDataService;
+            this.propertyService = propertyService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var viewModel = new HomeIndexViewModel()
+            {
+                Properties = await this.propertyService.GetMostRecentListingsAsync(),
+                PropertyTypes = await this.propertyStaticDataService.GetPropertyTypesSelectList(),
+                Amenities = await this.propertyStaticDataService.GetAmenitiesSelectList()
+            };
+
+            return View(viewModel);
         }
 
         public IActionResult Privacy()

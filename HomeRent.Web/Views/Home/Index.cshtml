@@ -1,5 +1,15 @@
-﻿@{
+﻿@using CloudinaryDotNet.Core
+@model HomeRent.Models.ViewModels.Home.HomeIndexViewModel
+@{
     ViewData["Title"] = "Начало";
+
+    int columnCount = 4;
+    int totalAmenities = Model.Amenities.Count();
+    int itemsPerColumn = (int)Math.Ceiling((double)totalAmenities / columnCount);
+    var groupedAmenities = Model.Amenities
+        .Select((amenity, index) => new { amenity, index })
+        .GroupBy(x => x.index / itemsPerColumn)
+        .ToList();
 }
 
 <!-- Slider -->
@@ -27,36 +37,29 @@
                         <div class="tab-content">
                             <div class="tab-pane fade active show" role="tabpanel">
                                 <div class="form-sl">
-                                    <form method="post">
+                                    <form asp-controller="Property" asp-action="All" method="get">
                                         <div class="wd-find-select">
                                             <div class="inner-group">
                                                 <div class="form-group-1 search-form form-style">
                                                     <label>Тип</label>
                                                     <div class="group-select">
-                                                        <div class="nice-select" tabindex="0">
-                                                            <span class="current">Всички</span>
-                                                            <ul class="list">
-                                                                <li data-value="" class="option selected">All</li>
-                                                                <li data-value="villa" class="option">Villa</li>
-                                                                <li data-value="studio" class="option">Studio</li>
-                                                                <li data-value="office" class="option">Office</li>
-                                                                <li data-value="house" class="option">House</li>
-                                                            </ul>
-                                                        </div>
+                                                        <select asp-for="PropertyTypeId" asp-items="Model.PropertyTypes" class="nice-select">
+                                                            <option value="">Tип на имота</option>
+                                                        </select>
                                                     </div>
 
                                                 </div>
                                                 <div class="form-group-2 form-style">
-                                                    <label>Локация</label>
+                                                    <label>Адрес</label>
                                                     <div class="group-ip">
-                                                        <input type="text" class="form-control" placeholder="Потърси локация" value="" name="s" title="Search for" required="">
+                                                        <input type="text" asp-for="Address" class="form-control" placeholder="Потърси адрес">
                                                         <a href="#" class="icon icon-location">
                                                         </a>
                                                     </div>
                                                 </div>
                                                 <div class="form-group-3 form-style">
                                                     <label>Ключова дума</label>
-                                                    <input type="text" class="form-control" placeholder="Потърси ключова дума" value="" name="s" title="Search for" required="">
+                                                    <input type="text" asp-for="Keyword" class="form-control" placeholder="Потърси ключова дума">
                                                 </div>
 
                                             </div>
@@ -78,17 +81,9 @@
                                                 <div class="widget-price">
                                                     <div class="box-title-price">
                                                         <span class="title-price fw-6">Цена:</span>
-                                                        <div class="caption-price">
-                                                            <span id="slider-range-value1" class="fw-6">$100</span>
-                                                            <span>-</span>
-                                                            <span id="slider-range-value2" class="fw-6">$650,000</span>
-                                                        </div>
-                                                    </div>
-                                                    <div id="slider-range" class="noUi-target noUi-ltr noUi-horizontal noUi-background"><div class="noUi-base"><div class="noUi-origin noUi-connect" style="left: 0%;"><div class="noUi-handle noUi-handle-lower"></div></div><div class="noUi-origin noUi-background" style="left: 100%;"><div class="noUi-handle noUi-handle-upper"></div></div></div></div>
-                                                    <div class="slider-labels">
-                                                        <div>
-                                                            <input type="hidden" name="min-value" value="">
-                                                            <input type="hidden" name="max-value" value="">
+                                                        <div class="grid-2 gap-3">
+                                                            <input type="number" class="form-control me-2" asp-for="MinPrice" placeholder="От" />
+                                                            <input type="number" class="form-control" asp-for="MaxPrice" placeholder="До" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -96,80 +91,28 @@
                                                 <div class="widget-price">
                                                     <div class="box-title-price">
                                                         <span class="title-price fw-6">Площ:</span>
-                                                        <div class="caption-price">
-                                                            <span id="slider-range-value01" class="fw-7">500 SqFt</span>
-                                                            <span>-</span>
-                                                            <span id="slider-range-value02" class="fw-7">1,500 SqFt</span>
-                                                        </div>
-                                                    </div>
-                                                    <div id="slider-range2" class="noUi-target noUi-ltr noUi-horizontal noUi-background"><div class="noUi-base"><div class="noUi-origin noUi-connect" style="left: 24.2424%;"><div class="noUi-handle noUi-handle-lower"></div></div><div class="noUi-origin noUi-background" style="left: 74.7475%;"><div class="noUi-handle noUi-handle-upper"></div></div></div></div>
-                                                    <div class="slider-labels">
-                                                        <div>
-                                                            <input type="hidden" name="min-value2" value="">
-                                                            <input type="hidden" name="max-value2" value="">
+                                                        <div class="grid-2 gap-3">
+                                                            <input type="number" class="form-control me-2" asp-for="MinSize" placeholder="От" />
+                                                            <input type="number" class="form-control" asp-for="MaxSize" placeholder="До" />
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="grid-3 group-box">
                                                 <div class="group-select grid-1">
-                                                    <div class="box-select">
-                                                        <label class="title-select fw-6">Бани</label>
-                                                        <div class="nice-select" tabindex="0">
-                                                            <span class="current">2</span>
-                                                            <ul class="list">
-                                                                <li data-value="1" class="option">1</li>
-                                                                <li data-value="2" class="option selected">2</li>
-                                                                <li data-value="3" class="option">3</li>
-                                                                <li data-value="4" class="option">4</li>
-                                                                <li data-value="5" class="option">5</li>
-                                                                <li data-value="6" class="option">6</li>
-                                                                <li data-value="7" class="option">7</li>
-                                                                <li data-value="8" class="option">8</li>
-                                                                <li data-value="9" class="option">9</li>
-                                                                <li data-value="10" class="option">10</li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
+                                                    <label class="title-select fw-6">Бани</label>
+                                                    <input type="text" class="form-control" asp-for="MinBathrooms" placeholder="Брой Бани">
                                                 </div>
                                                 <div class="group-select grid-1">
-                                                    <div class="box-select">
-                                                        <label class="title-select fw-6">Спални</label>
-                                                        <div class="nice-select" tabindex="0">
-                                                            <span class="current">2</span>
-                                                            <ul class="list">
-                                                                <li data-value="1" class="option">1</li>
-                                                                <li data-value="2" class="option selected">2</li>
-                                                                <li data-value="3" class="option">3</li>
-                                                                <li data-value="4" class="option">4</li>
-                                                                <li data-value="5" class="option">5</li>
-                                                                <li data-value="6" class="option">6</li>
-                                                                <li data-value="7" class="option">7</li>
-                                                                <li data-value="8" class="option">8</li>
-                                                                <li data-value="9" class="option">9</li>
-                                                                <li data-value="10" class="option">10</li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
+                                                    <label class="title-select fw-6">Спални</label>
+                                                    <input type="text" class="form-control" asp-for="MinBedrooms" placeholder="Брой Спални">
                                                 </div>
                                                 <div class="group-select grid-1">
                                                     <div class="box-select">
                                                         <label class="title-select fw-6">Тип на имота</label>
-                                                        <div class="nice-select" tabindex="0">
-                                                            <span class="current">2</span>
-                                                            <ul class="list">
-                                                                <li data-value="1" class="option">1</li>
-                                                                <li data-value="2" class="option selected">2</li>
-                                                                <li data-value="3" class="option">3</li>
-                                                                <li data-value="4" class="option">4</li>
-                                                                <li data-value="5" class="option">5</li>
-                                                                <li data-value="6" class="option">6</li>
-                                                                <li data-value="7" class="option">7</li>
-                                                                <li data-value="8" class="option">8</li>
-                                                                <li data-value="9" class="option">9</li>
-                                                                <li data-value="10" class="option">10</li>
-                                                            </ul>
-                                                        </div>
+                                                        <select asp-for="PropertyTypeId" asp-items="Model.PropertyTypes" class="nice-select">
+                                                            <option value="">Tип на имота</option>
+                                                        </select>
                                                     </div>
                                                 </div>
 
@@ -177,115 +120,24 @@
 
                                             <div class="group-checkbox">
                                                 <div class="text-1 text-black-2">Удобства:</div>
-                                                @* ToDO : Retrieve amennities form the DB and display them  *@
-                                                <div class="group-amenities grid-6">
-                                                    <div class="box-amenities">
-                                                        <fieldset class="amenities-item">
-                                                            <input type="checkbox" class="tf-checkbox style-1" id="cb1" checked="">
-                                                            <label for="cb1" class="text-cb-amenities">Air Condition</label>
-                                                        </fieldset>
-                                                        <fieldset class="amenities-item mt-16">
-                                                            <input type="checkbox" class="tf-checkbox style-1" id="cb2">
-                                                            <label for="cb2" class="text-cb-amenities">Cable TV</label>
-                                                        </fieldset>
-                                                        <fieldset class="amenities-item mt-16">
-                                                            <input type="checkbox" class="tf-checkbox style-1" id="cb3">
-                                                            <label for="cb3" class="text-cb-amenities">Ceiling Height</label>
-                                                        </fieldset>
-                                                        <fieldset class="amenities-item mt-16">
-                                                            <input type="checkbox" class="tf-checkbox style-1" id="cb4">
-                                                            <label for="cb4" class="text-cb-amenities">Fireplace</label>
-                                                        </fieldset>
-                                                    </div>
-                                                    <div class="box-amenities">
-                                                        <fieldset class="amenities-item">
-                                                            <input type="checkbox" class="tf-checkbox style-1" id="cb5">
-                                                            <label for="cb5" class="text-cb-amenities">Disabled Access</label>
-                                                        </fieldset>
-                                                        <fieldset class="amenities-item mt-16">
-                                                            <input type="checkbox" class="tf-checkbox style-1" id="cb6" checked="">
-                                                            <label for="cb6" class="text-cb-amenities">Elevator</label>
-                                                        </fieldset>
-                                                        <fieldset class="amenities-item mt-16">
-                                                            <input type="checkbox" class="tf-checkbox style-1" id="cb7">
-                                                            <label for="cb7" class="text-cb-amenities">Fence</label>
-                                                        </fieldset>
-                                                        <fieldset class="amenities-item mt-16">
-                                                            <input type="checkbox" class="tf-checkbox style-1" id="cb8">
-                                                            <label for="cb8" class="text-cb-amenities">Garden</label>
-                                                        </fieldset>
-                                                    </div>
-                                                    <div class="box-amenities">
-                                                        <fieldset class="amenities-item">
-                                                            <input type="checkbox" class="tf-checkbox style-1" id="cb9" checked="">
-                                                            <label for="cb9" class="text-cb-amenities">Floor</label>
-                                                        </fieldset>
-                                                        <fieldset class="amenities-item mt-16">
-                                                            <input type="checkbox" class="tf-checkbox style-1" id="cb10">
-                                                            <label for="cb10" class="text-cb-amenities">Furnishing</label>
-                                                        </fieldset>
-                                                        <fieldset class="amenities-item mt-16">
-                                                            <input type="checkbox" class="tf-checkbox style-1" id="cb11" checked="">
-                                                            <label for="cb11" class="text-cb-amenities">Garage</label>
-                                                        </fieldset>
-                                                        <fieldset class="amenities-item mt-16">
-                                                            <input type="checkbox" class="tf-checkbox style-1" id="cb12">
-                                                            <label for="cb12" class="text-cb-amenities">Pet Friendly</label>
-                                                        </fieldset>
-                                                    </div>
-                                                    <div class="box-amenities">
-                                                        <fieldset class="amenities-item">
-                                                            <input type="checkbox" class="tf-checkbox style-1" id="cb13">
-                                                            <label for="cb13" class="text-cb-amenities">Heating</label>
-                                                        </fieldset>
-                                                        <fieldset class="amenities-item mt-16">
-                                                            <input type="checkbox" class="tf-checkbox style-1" id="cb14">
-                                                            <label for="cb14" class="text-cb-amenities">Intercom</label>
-                                                        </fieldset>
-                                                        <fieldset class="amenities-item mt-16">
-                                                            <input type="checkbox" class="tf-checkbox style-1" id="cb15">
-                                                            <label for="cb15" class="text-cb-amenities">Parking</label>
-                                                        </fieldset>
-                                                        <fieldset class="amenities-item mt-16">
-                                                            <input type="checkbox" class="tf-checkbox style-1" id="cb16">
-                                                            <label for="cb16" class="text-cb-amenities">WiFi</label>
-                                                        </fieldset>
-                                                    </div>
-                                                    <div class="box-amenities">
-                                                        <fieldset class="amenities-item">
-                                                            <input type="checkbox" class="tf-checkbox style-1" id="cb17">
-                                                            <label for="cb17" class="text-cb-amenities">Renovation</label>
-                                                        </fieldset>
-                                                        <fieldset class="amenities-item mt-16">
-                                                            <input type="checkbox" class="tf-checkbox style-1" id="cb18">
-                                                            <label for="cb18" class="text-cb-amenities">Security</label>
-                                                        </fieldset>
-                                                        <fieldset class="amenities-item mt-16">
-                                                            <input type="checkbox" class="tf-checkbox style-1" id="cb19">
-                                                            <label for="cb19" class="text-cb-amenities">Swimming Pool</label>
-                                                        </fieldset>
-
-                                                    </div>
-                                                    <div class="box-amenities">
-                                                        <fieldset class="amenities-item">
-                                                            <input type="checkbox" class="tf-checkbox style-1" id="cb20">
-                                                            <label for="cb20" class="text-cb-amenities">Window Type</label>
-                                                        </fieldset>
-                                                        <fieldset class="amenities-item mt-16">
-                                                            <input type="checkbox" class="tf-checkbox style-1" id="cb21">
-                                                            <label for="cb21" class="text-cb-amenities">Search property</label>
-                                                        </fieldset>
-                                                        <fieldset class="amenities-item mt-16">
-                                                            <input type="checkbox" class="tf-checkbox style-1" id="cb22">
-                                                            <label for="cb22" class="text-cb-amenities">Construction Year</label>
-                                                        </fieldset>
-                                                    </div>
-
+                                                <div class="group-amenities grid-4">
+                                                    @foreach (var group in groupedAmenities)
+                                                    {
+                                                        <div class="box-amenities">
+                                                                @foreach (var item in group)
+                                                                {
+                                                                    var amenity = item.amenity;
+                                                                    <fieldset class="amenities-item mb-2">
+                                                                        <input type="checkbox" value="@amenity.Id" name="Property.AmenityIds[]" id="amenity@amenity.Id" class="tf-checkbox style-1">
+                                                                        <i class="@amenity.IconClass"></i>
+                                                                        <label name="Property.AmenityIds">@amenity.Name</label>
+                                                                    </fieldset>
+                                                                }
+                                                        </div>
+                                                    }
                                                 </div>
-
                                             </div>
                                         </div>
-                                        <input name="__RequestVerificationToken" type="hidden" value="CfDJ8Eu9JMxVqohArn5zmVzzT5Er5wXUgfi-vEGkFFJIL9fK5zT9Jc3dvP_zy_JjltiiFLgvPxQlmfy1me3Cvx5W2yL-WxmOZfdYLD6OTD7J9llqRP9nacxuGVXnaK8J5xebtCm85_iFBIby0pCS-jpPXDQ">
                                     </form>
                                 </div>
                             </div>
@@ -311,186 +163,68 @@
             <div class="tab-content">
                 <div class="tab-pane active show" id="viewAll" role="tabpanel">
                     <div class="row">
-                        <div class="col-xl-4 col-lg-6 col-md-6">
-                            <div class="homelengo-box">
-                                <div class="archive-top">
-                                    <a href="property-details-v1.html" class="images-group">
-                                        <div class="images-style">
-                                            <img class=" ls-is-cached lazyloaded" data-src="images/home/house-1.jpg" src="images/home/house-1.jpg" alt="img">
-                                        </div>
-                                        <div class="top">
-                                            <ul class="d-flex gap-6">
-                                                <li class="flag-tag primary">Featured</li>
-                                                <li class="flag-tag style-1">For Sale</li>
+                        @foreach (var property in Model.Properties)
+                        {
+                            <div class="col-xl-4 col-lg-6 col-md-6">
+                                <div class="homelengo-box">
+                                    <div class="archive-top">
+                                        <a href="property-details-v1.html" class="images-group">
+                                            <div class="images-style">
+                                                <img src="@property.ImageUrl" alt="img">
+                                            </div>
+                                            <div class="top">
+                                                <ul class="d-flex gap-6">
+                                                    <li class="flag-tag primary">Featured</li>
+                                                    <li class="flag-tag style-1">For Sale</li>
+                                                </ul>
+
+                                            </div>
+                                            <div class="bottom">
+                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M10 7C10 7.53043 9.78929 8.03914 9.41421 8.41421C9.03914 8.78929 8.53043 9 8 9C7.46957 9 6.96086 8.78929 6.58579 8.41421C6.21071 8.03914 6 7.53043 6 7C6 6.46957 6.21071 5.96086 6.58579 5.58579C6.96086 5.21071 7.46957 5 8 5C8.53043 5 9.03914 5.21071 9.41421 5.58579C9.78929 5.96086 10 6.46957 10 7Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                    <path d="M13 7C13 11.7613 8 14.5 8 14.5C8 14.5 3 11.7613 3 7C3 5.67392 3.52678 4.40215 4.46447 3.46447C5.40215 2.52678 6.67392 2 8 2C9.32608 2 10.5979 2.52678 11.5355 3.46447C12.4732 4.40215 13 5.67392 13 7Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                </svg>
+                                                @(property.Address + ", " + property.City) 
+                                            </div>
+                                        </a>
+
+                                    </div>
+                                    <div class="archive-bottom">
+                                        <div class="content-top">
+                                            <h6 class="text-capitalize"><a href="property-details-v1.html" class="link">@property.Title</a></h6>
+                                            <ul class="meta-list">
+                                                <li class="item">
+                                                    <i class="icon icon-bed"></i>
+                                                    <span class="text-variant-1">Beds:</span>
+                                                    <span class="fw-6">@property.Bedrooms</span>
+                                                </li>
+                                                <li class="item">
+                                                    <i class="icon icon-bath"></i>
+                                                    <span class="text-variant-1">Baths:</span>
+                                                    <span class="fw-6">@property.Bathrooms</span>
+                                                </li>
+                                                <li class="item">
+                                                    <i class="icon icon-sqft"></i>
+                                                    <span class="text-variant-1">Sqft:</span>
+                                                    <span class="fw-6">@property.Size</span>
+                                                </li>
                                             </ul>
 
                                         </div>
-                                        <div class="bottom">
-                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M10 7C10 7.53043 9.78929 8.03914 9.41421 8.41421C9.03914 8.78929 8.53043 9 8 9C7.46957 9 6.96086 8.78929 6.58579 8.41421C6.21071 8.03914 6 7.53043 6 7C6 6.46957 6.21071 5.96086 6.58579 5.58579C6.96086 5.21071 7.46957 5 8 5C8.53043 5 9.03914 5.21071 9.41421 5.58579C9.78929 5.96086 10 6.46957 10 7Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                <path d="M13 7C13 11.7613 8 14.5 8 14.5C8 14.5 3 11.7613 3 7C3 5.67392 3.52678 4.40215 4.46447 3.46447C5.40215 2.52678 6.67392 2 8 2C9.32608 2 10.5979 2.52678 11.5355 3.46447C12.4732 4.40215 13 5.67392 13 7Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                            </svg>
-                                            145 Brooklyn Ave, Califonia, New York
-                                        </div>
-                                    </a>
 
-                                </div>
-                                <div class="archive-bottom">
-                                    <div class="content-top">
-                                        <h6 class="text-capitalize"><a href="property-details-v1.html" class="link"> Casa Lomas de Machalí Machas</a></h6>
-                                        <ul class="meta-list">
-                                            <li class="item">
-                                                <i class="icon icon-bed"></i>
-                                                <span class="text-variant-1">Beds:</span>
-                                                <span class="fw-6">3</span>
-                                            </li>
-                                            <li class="item">
-                                                <i class="icon icon-bath"></i>
-                                                <span class="text-variant-1">Baths:</span>
-                                                <span class="fw-6">2</span>
-                                            </li>
-                                            <li class="item">
-                                                <i class="icon icon-sqft"></i>
-                                                <span class="text-variant-1">Sqft:</span>
-                                                <span class="fw-6">1150</span>
-                                            </li>
-                                        </ul>
-
-                                    </div>
-
-                                    <div class="content-bottom">
-                                        <div class="d-flex gap-8 align-items-center">
-                                            <div class="avatar avt-40 round">
-                                                <img src="images/avatar/avt-png1.png" alt="avt">
+                                        <div class="content-bottom">
+                                            <div class="d-flex gap-8 align-items-center">
+                                                <span>@property.OwnerFullName</span>
                                             </div>
-                                            <span>Arlene McCoy</span>
+                                            <h6 class="price">@property.PricePerNight лв. нощ</h6>
                                         </div>
-                                        <h6 class="price">$7250,00</h6>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-xl-4 col-lg-6 col-md-6">
-                            <div class="homelengo-box">
-                                <div class="archive-top">
-                                    <a href="property-details-v1.html" class="images-group">
-                                        <div class="images-style">
-                                            <img class=" ls-is-cached lazyloaded" data-src="images/home/house-2.jpg" src="images/home/house-2.jpg" alt="img">
-                                        </div>
-                                        <div class="top">
-                                            <ul class="d-flex gap-6">
-                                                <li class="flag-tag primary">Featured</li>
-                                                <li class="flag-tag style-1">For Sale</li>
-                                            </ul>
-
-                                        </div>
-                                        <div class="bottom">
-                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M10 7C10 7.53043 9.78929 8.03914 9.41421 8.41421C9.03914 8.78929 8.53043 9 8 9C7.46957 9 6.96086 8.78929 6.58579 8.41421C6.21071 8.03914 6 7.53043 6 7C6 6.46957 6.21071 5.96086 6.58579 5.58579C6.96086 5.21071 7.46957 5 8 5C8.53043 5 9.03914 5.21071 9.41421 5.58579C9.78929 5.96086 10 6.46957 10 7Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                <path d="M13 7C13 11.7613 8 14.5 8 14.5C8 14.5 3 11.7613 3 7C3 5.67392 3.52678 4.40215 4.46447 3.46447C5.40215 2.52678 6.67392 2 8 2C9.32608 2 10.5979 2.52678 11.5355 3.46447C12.4732 4.40215 13 5.67392 13 7Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                            </svg>
-                                            145 Brooklyn Ave, Califonia, New York
-                                        </div>
-                                    </a>
-
-                                </div>
-                                <div class="archive-bottom">
-                                    <div class="content-top">
-                                        <h6 class="text-capitalize"><a href="property-details-v1.html" class="link"> Casa Lomas de Machalí Machas</a></h6>
-                                        <ul class="meta-list">
-                                            <li class="item">
-                                                <i class="icon icon-bed"></i>
-                                                <span class="text-variant-1">Beds:</span>
-                                                <span class="fw-6">3</span>
-                                            </li>
-                                            <li class="item">
-                                                <i class="icon icon-bath"></i>
-                                                <span class="text-variant-1">Baths:</span>
-                                                <span class="fw-6">2</span>
-                                            </li>
-                                            <li class="item">
-                                                <i class="icon icon-sqft"></i>
-                                                <span class="text-variant-1">Sqft:</span>
-                                                <span class="fw-6">1150</span>
-                                            </li>
-                                        </ul>
-
-                                    </div>
-
-                                    <div class="content-bottom">
-                                        <div class="d-flex gap-8 align-items-center">
-                                            <div class="avatar avt-40 round">
-                                                <img src="images/avatar/avt-png2.png" alt="avt">
-                                            </div>
-                                            <span>Arlene McCoy</span>
-                                        </div>
-                                        <h6 class="price">$7250,00</h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-4 col-lg-6 col-md-6">
-                            <div class="homelengo-box">
-                                <div class="archive-top">
-                                    <a href="property-details-v1.html" class="images-group">
-                                        <div class="images-style">
-                                            <img class=" ls-is-cached lazyloaded" data-src="images/home/house-3.jpg" src="images/home/house-3.jpg" alt="img">
-                                        </div>
-                                        <div class="top">
-                                            <ul class="d-flex gap-6">
-                                                <li class="flag-tag primary">Featured</li>
-                                                <li class="flag-tag style-1">For Sale</li>
-                                            </ul>
-
-                                        </div>
-                                        <div class="bottom">
-                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M10 7C10 7.53043 9.78929 8.03914 9.41421 8.41421C9.03914 8.78929 8.53043 9 8 9C7.46957 9 6.96086 8.78929 6.58579 8.41421C6.21071 8.03914 6 7.53043 6 7C6 6.46957 6.21071 5.96086 6.58579 5.58579C6.96086 5.21071 7.46957 5 8 5C8.53043 5 9.03914 5.21071 9.41421 5.58579C9.78929 5.96086 10 6.46957 10 7Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                <path d="M13 7C13 11.7613 8 14.5 8 14.5C8 14.5 3 11.7613 3 7C3 5.67392 3.52678 4.40215 4.46447 3.46447C5.40215 2.52678 6.67392 2 8 2C9.32608 2 10.5979 2.52678 11.5355 3.46447C12.4732 4.40215 13 5.67392 13 7Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                            </svg>
-                                            145 Brooklyn Ave, Califonia, New York
-                                        </div>
-                                    </a>
-
-                                </div>
-                                <div class="archive-bottom">
-                                    <div class="content-top">
-                                        <h6 class="text-capitalize"><a href="property-details-v1.html" class="link"> Casa Lomas de Machalí Machas</a></h6>
-                                        <ul class="meta-list">
-                                            <li class="item">
-                                                <i class="icon icon-bed"></i>
-                                                <span class="text-variant-1">Beds:</span>
-                                                <span class="fw-6">3</span>
-                                            </li>
-                                            <li class="item">
-                                                <i class="icon icon-bath"></i>
-                                                <span class="text-variant-1">Baths:</span>
-                                                <span class="fw-6">2</span>
-                                            </li>
-                                            <li class="item">
-                                                <i class="icon icon-sqft"></i>
-                                                <span class="text-variant-1">Sqft:</span>
-                                                <span class="fw-6">1150</span>
-                                            </li>
-                                        </ul>
-
-                                    </div>
-
-                                    <div class="content-bottom">
-                                        <div class="d-flex gap-8 align-items-center">
-                                            <div class="avatar avt-40 round">
-                                                <img src="images/avatar/avt-png3.png" alt="avt">
-                                            </div>
-                                            <span>Arlene McCoy</span>
-                                        </div>
-                                        <h6 class="price">$7250,00</h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        }
                     </div>
                     <div class="text-center">
-                        <a href="sidebar-grid.html" class="tf-btn btn-view primary size-1 hover-btn-view">Разгледайте всички имоти <span class="icon icon-arrow-right2"></span></a>
+                        <a asp-controller="Property" asp-action="All" class="tf-btn btn-view primary size-1 hover-btn-view">Разгледайте всички имоти <span class="icon icon-arrow-right2"></span></a>
                     </div>
                 </div>
             </div>

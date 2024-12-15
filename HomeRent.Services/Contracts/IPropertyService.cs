@@ -8,6 +8,8 @@ namespace HomeRent.Services.Contracts
     {
         Task<(IEnumerable<PropertyListItemViewModel>, int listingsCount)> GetListingsAsync(PropertyQueryModel query);
 
+        Task<IEnumerable<PropertyListItemViewModel>> GetMostRecentListingsAsync();
+
         Task CreatePropertyAsync(Guid creatorId, CreatePropertyDto propertyDto);
 
         Task<int> GetTotalListingsCountAsync();
