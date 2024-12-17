@@ -190,7 +190,9 @@
                                     </div>
                                     <div class="archive-bottom">
                                         <div class="content-top">
-                                            <h6 class="text-capitalize"><a href="property-details-v1.html" class="link">@property.Title</a></h6>
+                                            <h6 class="text-capitalize">
+                                                <a asp-controller="Property" asp-action="Details" asp-route-id="@property.Id" class="link">@property.Title</a>
+                                            </h6>
                                             <ul class="meta-list">
                                                 <li class="item">
                                                     <i class="icon icon-bed"></i>

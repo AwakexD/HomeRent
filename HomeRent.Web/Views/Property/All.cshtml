@@ -118,7 +118,7 @@
                                 <div class="col-md-12">
                                     <div class="homelengo-box list-style-1 list-style-2 line">
                                         <div class="archive-top">
-                                            <a href="property-details-v1.html" class="images-group">
+                                            <a asp-controller="Property" asp-action="Details" asp-route-id="@listing.Id" class="images-group">
                                                 <div class="images-style">
                                                     <img class="lazyload" src="@listing.ImageUrl" alt="img-property">
                                                 </div>
@@ -132,7 +132,9 @@
                                         </div>
                                         <div class="archive-bottom">
                                             <div class="content-top">
-                                                <h6 class="text-capitalize"><a href="property-details-v1.html" class="link text-line-clamp-1"> @listing.Title</a></h6>
+                                                <h6 class="text-capitalize">
+                                                    <a asp-controller="Property" asp-action="Details" asp-route-id="@listing.Id" class="link text-line-clamp-1"> @listing.Title</a>
+                                                </h6>
                                                 <ul class="meta-list">
                                                     <li class="item">
                                                         <i class="icon icon-bed"></i>
@@ -172,7 +174,6 @@
                                 </div>
                             }
                         </div>
-                        @* ToDO : Extract pagination in partial view *@
                         <partial name="_PaginationPartial" model="Model.Paging"/>
                     </div>
                 </div>
