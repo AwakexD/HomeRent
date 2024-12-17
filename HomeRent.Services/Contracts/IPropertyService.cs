@@ -12,6 +12,8 @@ namespace HomeRent.Services.Contracts
 
         Task CreatePropertyAsync(Guid creatorId, CreatePropertyDto propertyDto);
 
+        Task<SinglePropertyViewModel> GetPropertyDetails(Guid propertyId);
+
         Task<int> GetTotalListingsCountAsync();
     }
 }

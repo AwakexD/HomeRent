@@ -84,6 +84,16 @@ namespace HomeRent.Web.Controllers
             }
         }
 
+        public async Task<IActionResult> Details(string id)
+        {
+            var viewModel = new PropertyDetailsViewModel()
+            {
+                Property = await this.propertyService.GetPropertyDetails(new Guid(id))
+            };
+
+            return this.View(viewModel);
+        }
+
         private Dictionary<string, string> GenerateQueryParameters(PropertyQueryModel queryModel)
         {
             var queryParams = new Dictionary<string, string>();

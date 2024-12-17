@@ -8,15 +8,12 @@ namespace HomeRent.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> logger;
         private readonly IPropertyStaticDataService propertyStaticDataService;
         private readonly IPropertyService propertyService;
 
-        public HomeController(ILogger<HomeController> logger,
-            IPropertyStaticDataService propertyStaticDataService,
+        public HomeController(IPropertyStaticDataService propertyStaticDataService,
             IPropertyService propertyService)
         {
-            this.logger = logger;
             this.propertyStaticDataService = propertyStaticDataService;
             this.propertyService = propertyService;
         }

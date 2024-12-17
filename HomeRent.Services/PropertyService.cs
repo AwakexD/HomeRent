@@ -141,6 +141,18 @@ namespace HomeRent.Services
             await this.propertyRepository.SaveChangesAsync();
         }
 
+        public async Task<SinglePropertyViewModel> GetPropertyDetails(Guid propertyId)
+        {
+            var property = await this.propertyRepository.AllAsNoTracking()
+                .Include(p => p.Images)
+                .Include(p => p.Owner)
+                .Include(p => p.PropertyType)
+                .Include(p => p.Amenities)
+                .FirstOrDefaultAsync(p => p.Id == propertyId);
+
+            return this.mapper.Map<SinglePropertyViewModel>(property);
+        }
+
         public async Task<int> GetTotalListingsCountAsync() => await this.propertyRepository.AllAsNoTracking().CountAsync();
 
         private async Task<bool> ValidatePropertyForm(CreatePropertyDto propertyDto)

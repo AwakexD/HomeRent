@@ -1,5 +1,4 @@
-﻿@using CloudinaryDotNet.Core
-@model HomeRent.Models.ViewModels.Home.HomeIndexViewModel
+﻿@model HomeRent.Models.ViewModels.Home.HomeIndexViewModel
 @{
     ViewData["Title"] = "Начало";
 
@@ -168,7 +167,7 @@
                             <div class="col-xl-4 col-lg-6 col-md-6">
                                 <div class="homelengo-box">
                                     <div class="archive-top">
-                                        <a href="property-details-v1.html" class="images-group">
+                                        <a asp-controller="Property" asp-action="Details" asp-route-id="@property.Id" class="images-group">
                                             <div class="images-style">
                                                 <img src="@property.ImageUrl" alt="img">
                                             </div>
