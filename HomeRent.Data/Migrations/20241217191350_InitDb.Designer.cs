@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HomeRent.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241209135429_InitalizeDB")]
-    partial class InitalizeDB
+    [Migration("20241217191350_InitDb")]
+    partial class InitDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -214,6 +214,9 @@ namespace HomeRent.Data.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("PropertyTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Size")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -658,7 +661,7 @@ namespace HomeRent.Data.Migrations
             modelBuilder.Entity("HomeRent.Data.Models.Entities.Review", b =>
                 {
                     b.HasOne("HomeRent.Data.Models.Entities.Property", "Property")
-                        .WithMany()
+                        .WithMany("Reviews")
                         .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -730,6 +733,8 @@ namespace HomeRent.Data.Migrations
                     b.Navigation("Bookings");
 
                     b.Navigation("Images");
+
+                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("HomeRent.Data.Models.User.ApplicationUser", b =>

@@ -13,6 +13,7 @@ namespace HomeRent.Data.Models.Entities
             this.Images = new HashSet<PropertyImage>();
             this.Amenities = new HashSet<Amenity>();
             this.Bookings = new HashSet<Booking>();
+            this.Reviews = new HashSet<Review>();
         }
 
         [Required]
@@ -28,6 +29,10 @@ namespace HomeRent.Data.Models.Entities
 
         [Required]
         public int Bathrooms { get; set; }
+
+        [Required]
+        [Range(0, 50000)]
+        public int Size { get; set; }
 
         [Required]
         [MaxLength(50)]
@@ -63,5 +68,6 @@ namespace HomeRent.Data.Models.Entities
 
         public virtual ICollection<Booking> Bookings { get; set; }
 
+        public virtual ICollection<Review> Reviews { get; set; }
     }
 }

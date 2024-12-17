@@ -214,6 +214,9 @@ namespace HomeRent.Data.Migrations
                     b.Property<int>("PropertyTypeId")
                         .HasColumnType("int");
 
+                    b.Property<int>("Size")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -656,7 +659,7 @@ namespace HomeRent.Data.Migrations
             modelBuilder.Entity("HomeRent.Data.Models.Entities.Review", b =>
                 {
                     b.HasOne("HomeRent.Data.Models.Entities.Property", "Property")
-                        .WithMany()
+                        .WithMany("Reviews")
                         .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -728,6 +731,8 @@ namespace HomeRent.Data.Migrations
                     b.Navigation("Bookings");
 
                     b.Navigation("Images");
+
+                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("HomeRent.Data.Models.User.ApplicationUser", b =>
