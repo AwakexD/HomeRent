@@ -3,7 +3,6 @@ using HomeRent.Data.Models.Entities;
 using HomeRent.Models.DTOs.Property;
 using HomeRent.Models.Shared;
 using HomeRent.Models.ViewModels.Property;
-using Microsoft.EntityFrameworkCore.Sqlite.Storage.Internal;
 
 namespace HomeRent.Web.Mappings
 {
@@ -14,8 +13,15 @@ namespace HomeRent.Web.Mappings
             CreateMap<Amenity, AmenityViewModel>();
 
             CreateMap<CreatePropertyDto, Property>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.Amenities, opt => opt.Ignore())
                 .ForMember(dest => dest.Images, opt => opt.Ignore());
+
+            CreateMap<Property, CreatePropertyDto>()
+                .ForMember(dest => dest.AmenityIds, opt =>
+                    opt.MapFrom(p => p.Amenities.Select(a => a.Id)))
+                .ForMember(dest => dest.UploadedImagesUrls, opt =>
+                    opt.MapFrom(p => p.Images.Select(i => i.ImageUrl)));
 
             CreateMap<Property, PropertyListItemViewModel>()
                 .ForMember(dest => dest.Description, opt => 

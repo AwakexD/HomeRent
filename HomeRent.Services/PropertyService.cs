@@ -110,7 +110,7 @@ namespace HomeRent.Services
             return this.mapper.Map<IEnumerable<PropertyListItemViewModel>>(properties);
         }
 
-        public async Task CreatePropertyAsync(Guid creatorId ,CreatePropertyDto propertyDto)
+        public async Task CreatePropertyAsync(Guid creatorId, CreatePropertyDto propertyDto)
         {
             propertyDto = this.SanitizePropertyForm(propertyDto);
 
@@ -138,6 +138,56 @@ namespace HomeRent.Services
             property.OwnerId = creatorId;
 
             await this.propertyRepository.AddAsync(property);
+            await this.propertyRepository.SaveChangesAsync();
+        }
+
+        public async Task<CreatePropertyDto> GetPropertyEditDataAsync(Guid propertyId, Guid userId)
+        {
+            var property = await this.propertyRepository.AllAsNoTracking()
+                .Where(p => p.Id == propertyId && p.OwnerId == userId)
+                .Include(p => p.Amenities)
+                .Include(p => p.PropertyType)
+                .Include(p => p.Images)
+                .SingleOrDefaultAsync();
+
+            if (property == null)
+            {
+                throw new UnauthorizedAccessException("You do not have permission to edit this property.");
+            }
+
+            return this.mapper.Map<CreatePropertyDto>(property);
+        }
+
+        public async Task UpdatePropertyAsync(Guid propertyId, Guid userId, CreatePropertyDto updatedPropertyDto)
+        {
+            updatedPropertyDto = this.SanitizePropertyForm(updatedPropertyDto);
+
+            var isValid = await this.ValidatePropertyForm(updatedPropertyDto);
+            if (!isValid)
+            {
+                throw new ArgumentException("Invalid data in property edit form.");
+            }
+
+            var property = await this.propertyRepository.All()
+                .Include(p => p.Images)
+                .Include(p => p.Amenities)
+                .Include(p => p.PropertyType)
+                .FirstOrDefaultAsync();
+
+            if (property == null)
+            {
+                throw new InvalidOperationException("Property not found or access denied.");
+            }
+
+            this.mapper.Map(updatedPropertyDto, property);
+
+            var selectedAmenities = await amenityRepository.All()
+                .Where(a => updatedPropertyDto.AmenityIds.Contains(a.Id))
+                .ToListAsync();
+
+            property.Amenities.Clear();
+            property.Amenities = selectedAmenities;
+
             await this.propertyRepository.SaveChangesAsync();
         }
 
@@ -176,6 +226,5 @@ namespace HomeRent.Services
 
             return propertyDto;
         }
-
     }
 }

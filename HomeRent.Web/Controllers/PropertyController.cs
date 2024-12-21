@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using HomeRent.Data.Models.User;
+using HomeRent.Models.DTOs.Property;
 using HomeRent.Models.Shared;
 using HomeRent.Models.ViewModels.Property;
 using HomeRent.Services.Contracts;
@@ -92,6 +93,32 @@ namespace HomeRent.Web.Controllers
             };
 
             return this.View(viewModel);
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Edit(string id)
+        {
+            var user = await this.userManager.GetUserAsync(User);
+
+            var viewModel = new CreatePropertyViewModel()
+            {
+                Property = await this.propertyService.GetPropertyEditDataAsync(new Guid(id), user.Id),
+                PropertyTypes = await this.propertyStaticDataService.GetPropertyTypesSelectList(),
+                Amenities = await this.propertyStaticDataService.GetAmenitiesSelectList()
+            };
+
+            return this.View(viewModel);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Edit(CreatePropertyDto updatedPropertyDto)
+        {
+            var user = await this.userManager.GetUserAsync(User);
+
+            await this.propertyService.UpdatePropertyAsync(updatedPropertyDto.Id, user.Id, updatedPropertyDto);
+
+            return this.RedirectToAction(nameof(All));
         }
 
         private Dictionary<string, string> GenerateQueryParameters(PropertyQueryModel queryModel)
