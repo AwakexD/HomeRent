@@ -3,7 +3,6 @@
 @{
     ViewData["Title"] = "Добавяне на обява";
 
-    // Grouping Amenities into 3 columns
     int columnCount = 3;
     int totalAmenities = Model.Amenities.Count();
     int itemsPerColumn = (int)Math.Ceiling((double)totalAmenities / columnCount);
@@ -33,11 +32,11 @@
                                 <input type="file" asp-for="Property.UploadedImages" multiple class="ip-file">
                                 <span>Изберете снимки</span>
                             </div>
-                            <p class="file-name fw-5">или пуснете снимките тук <br>
-                                <span>До 20 снимки</span>
-                            </p>
                             <span asp-validation-for="Property.UploadedImages" class="text-danger"></span>
                         </div>
+                    </div>
+                    <div class="box-img-upload">
+
                     </div>
                 </div>
                 <div class="widget-box-2 mb-20">
@@ -139,4 +138,5 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script type="text/javascript" src="~/js/previewUploadedImages.js"></script>
 }
