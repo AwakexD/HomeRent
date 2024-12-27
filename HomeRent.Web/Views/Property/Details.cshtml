@@ -268,7 +268,6 @@
                             </li>
                         </ul>
                     </form>
-                    @* Posting a content *@
                     <div class="wrap-form-comment">
                         <h5 class="text-black-2">Leave A comment</h5>
                         <p class="text-variant-1 mt-8">Your email address will not be published. Required fields are marked *</p>
@@ -301,7 +300,7 @@
             <div class="col-xl-4 col-lg-5">
                 <div class="single-sidebar fixed-sidebar">
                     <div class="widget-box single-property-contact">
-                        <h5 class="title fw-6">Свържете се със собственика</h5>
+                        <h5 class="title fw-6">Направете резервация</h5>
                         <div class="box-avatar">
                             <div class="info">
                                 <h6 class="name">@Model.Property.OwnerFullName</h6>
@@ -313,18 +312,21 @@
                         </div>
                         <form action="#" class="contact-form">
                             <div class="ip-group">
-                                <input type="text" placeholder="Jony Dane" class="form-control">
+                                <input placeholder="Изберете дати" class="booking-calendar form-control">
                             </div>
                             <div class="ip-group">
-                                <input type="text" placeholder="ex 0123456789" class="form-control">
+                                <input type="text" placeholder="Телефон" class="form-control">
                             </div>
                             <div class="ip-group">
-                                <input type="text" placeholder="user@gmail.com" class="form-control">
+                                <input type="text" placeholder="Имейл" class="form-control">
                             </div>
                             <div class="ip-group">
-                                <textarea name="message" rows="4" tabindex="4" placeholder="Message" aria-required="true"></textarea>
+                                <textarea name="message" rows="4" tabindex="4" placeholder="Съобщение до собственика" aria-required="true"></textarea>
                             </div>
-                            <button type="submit" class="tf-btn btn-view primary hover-btn-view w-100">Find Properties <span class="icon icon-arrow-right2"></span></button>
+                            <div class="ip-group">
+                                <h6 class="name">Обща цена · 250лв.</h6>
+                            </div>
+                            <button type="submit" class="tf-btn btn-view primary hover-btn-view w-100">Резервирай <span class="icon icon-arrow-right2"></span></button>
                         </form>
                     </div>
 
@@ -337,3 +339,8 @@
     </div>
 
 </section>
+
+@section Scripts
+{
+    <script type="text/javascript" src="~/js/dynamicCalendar.js" asp-append-version="true"></script>    
+}
