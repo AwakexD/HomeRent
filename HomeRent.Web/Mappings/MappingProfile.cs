@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HomeRent.Data.Models.Entities;
 using HomeRent.Models.DTOs.Property;
+using HomeRent.Models.DTOs.Review;
 using HomeRent.Models.Shared;
 using HomeRent.Models.ViewModels.Property;
 
@@ -50,6 +51,9 @@ namespace HomeRent.Web.Mappings
                 .ForMember(dest => dest.Amenities,
                     opt => opt.MapFrom(
                         p => p.Amenities.Select(a => new AmenityViewModel() { Id = a.Id, IconClass = a.IconClass, Name = a.Name})));
+
+            CreateMap<ReviewCreateDto, Review>()
+                .ForMember(dest => dest.TenantId, opt => opt.Ignore());
         }
     }
 }

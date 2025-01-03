@@ -1,4 +1,5 @@
-﻿using HomeRent.Models.DTOs.Property;
+﻿using HomeRent.Data.Models.Entities;
+using HomeRent.Models.DTOs.Property;
 using HomeRent.Models.Shared;
 using HomeRent.Models.ViewModels.Property;
 
