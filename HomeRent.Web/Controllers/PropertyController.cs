@@ -16,14 +16,17 @@ namespace HomeRent.Web.Controllers
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IPropertyService propertyService;
         private readonly IPropertyStaticDataService propertyStaticDataService;
+        private readonly IReviewService reviewService;
 
         public PropertyController(UserManager<ApplicationUser> userManager, 
             IPropertyService propertyService,
-            IPropertyStaticDataService propertyStaticDataService)
+            IPropertyStaticDataService propertyStaticDataService,
+            IReviewService reviewService)
         {
             this.userManager = userManager;
             this.propertyService = propertyService;
             this.propertyStaticDataService = propertyStaticDataService;
+            this.reviewService = reviewService;
         }
 
         public async Task<IActionResult> All([FromQuery] PropertyQueryModel query)
@@ -89,7 +92,8 @@ namespace HomeRent.Web.Controllers
         {
             var viewModel = new PropertyDetailsViewModel()
             {
-                Property = await this.propertyService.GetPropertyDetails(new Guid(id))
+                Property = await this.propertyService.GetPropertyDetails(new Guid(id)),
+                Reviews = await this.reviewService.GetPropertyReviewsAsync(new Guid(id)),
             };
 
             return this.View(viewModel);

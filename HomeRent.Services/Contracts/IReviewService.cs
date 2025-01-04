@@ -6,6 +6,8 @@ namespace HomeRent.Services.Contracts
     {
         Task<bool> CreateReviewAsync(ReviewCreateDto reviewDto, Guid tenantId);
 
+        Task<IEnumerable<ReviewViewModel>> GetPropertyReviewsAsync(Guid propertyId);
+
         Task<bool> DeleteReviewAsync(int reviewId, string username);
     }
 }

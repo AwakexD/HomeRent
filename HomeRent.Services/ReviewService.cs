@@ -3,6 +3,7 @@ using HomeRent.Data.Models.Entities;
 using HomeRent.Data.Repositories.Contracts;
 using HomeRent.Models.DTOs.Review;
 using HomeRent.Services.Contracts;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace HomeRent.Services
@@ -12,16 +13,21 @@ namespace HomeRent.Services
         private readonly IMapper mapper;
 
         private readonly IDeletableEntityRepository<Property> propertyRepository;
+        private readonly IDeletableEntityRepository<Review> reviewRepository;
 
         public ReviewService(IMapper mapper,
-            IDeletableEntityRepository<Property> propertyRepository)
+            IDeletableEntityRepository<Property> propertyRepository,
+            IDeletableEntityRepository<Review> reviewRepository)
         {
             this.mapper = mapper;
             this.propertyRepository = propertyRepository;
+            this.reviewRepository = reviewRepository;
+            
         }
 
         public async Task<bool> CreateReviewAsync(ReviewCreateDto reviewDto, Guid tenantId)
         {
+            // Use the reviewRepository instead of propertyRepository
             var property = await this.propertyRepository.All()
                 .FirstAsync(p => p.Id == new Guid(reviewDto.PropertyId));
 
@@ -36,8 +42,16 @@ namespace HomeRent.Services
             property.Reviews.Add(review);
             
             await this.propertyRepository.SaveChangesAsync();
-
             return true;
+        }
+
+        public async Task<IEnumerable<ReviewViewModel>> GetPropertyReviewsAsync(Guid propertyId)
+        {
+            var reviews = await this.reviewRepository.AllAsNoTracking()
+                .Where(r => r.PropertyId == propertyId)
+                .ToListAsync();
+
+            return this.mapper.Map<IEnumerable<ReviewViewModel>>(reviews);
         }
 
         public Task<bool> DeleteReviewAsync(int reviewId, string username)

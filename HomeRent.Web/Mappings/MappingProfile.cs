@@ -54,6 +54,10 @@ namespace HomeRent.Web.Mappings
 
             CreateMap<ReviewCreateDto, Review>()
                 .ForMember(dest => dest.TenantId, opt => opt.Ignore());
+
+            CreateMap<Review, ReviewViewModel>()
+                .ForMember(dest => dest.TenantFullName, opt =>
+                    opt.MapFrom(r => string.Join(" ", r.Tenant.FirstName, r.Tenant.LastName)));
         }
     }
 }
