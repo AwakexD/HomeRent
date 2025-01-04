@@ -1,4 +1,8 @@
-﻿@model HomeRent.Models.ViewModels.Property.PropertyDetailsViewModel
+﻿@inject SignInManager<ApplicationUser> SignInManager;
+@using HomeRent.Data.Models.User
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model HomeRent.Models.ViewModels.Property.PropertyDetailsViewModel
 @{
     this.ViewData["Title"] = Model.Property.Title;
 
@@ -236,35 +240,44 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="wrap-form-comment">
-                        <h5 class="text-black-2">Оставете ревю</h5>
-                        <p class="text-variant-1 mt-8">Вашият имейл адрес няма да бъде публикуван.</p>
-                        <div id="comments" class="comments">
-                            <div class="respond-comment">
-                                <form class="comment-form form-submit" id="review-form">
-                                    <div class="form-wg group-ip">
-                                        <fieldset>
-                                            <label class="sub-ip">Име</label>
-                                            <input type="text" class="form-control" name="name" placeholder="Име и фамилия">
+                    @if (this.SignInManager.IsSignedIn(User))
+                    {
+                        <div class="wrap-form-comment">
+                            <h5 class="text-black-2">Оставете ревю</h5>
+                            <p class="text-variant-1 mt-8">Вашият имейл адрес няма да бъде публикуван.</p>
+                            <div id="comments" class="comments">
+                                <div class="respond-comment">
+                                    <form class="comment-form form-submit" id="review-form">
+                                        <div class="form-wg group-ip">
+                                            <fieldset>
+                                                <label class="sub-ip">Име</label>
+                                                <input type="text" class="form-control" name="name" placeholder="Име и фамилия">
+                                            </fieldset>
+                                            <fieldset>
+                                                <label class="sub-ip" style="width: 100%;text-align: center;margin-bottom: 30px;">Рейтинг</label>
+                                                <div id="divRating" class="rating d-flex justify-content-center form-box">
+                                                    <span id="spanRating5" class="star" title="Excellent">☆</span>
+                                                    <span id="spanRating4" class="star" title="Good">☆</span>
+                                                    <span id="spanRating3" class="star" title="Fair">☆</span>
+                                                    <span id="spanRating2" class="star" title="Poor">☆</span>
+                                                    <span id="spanRating1" class="star" title="Awful">☆</span>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <fieldset class="form-wg">
+                                            <label class="sub-ip">Вашето ревю</label>
+                                            <textarea name="Comment" rows="4" tabindex="4" placeholder="Напишете вашето ревю" aria-required="true"></textarea>
                                         </fieldset>
-                                        <fieldset>
-                                            <label class="sub-ip">Имейл</label>
-                                            <input type="email" class="form-control" name="email" placeholder="Имейл">
-                                        </fieldset>
-                                    </div>
-                                    <fieldset class="form-wg">
-                                        <label class="sub-ip">Вашето ревю</label>
-                                        <textarea name="Comment" rows="4" tabindex="4" placeholder="Напишете вашето ревю" aria-required="true"></textarea>
-                                    </fieldset>
-                                    <input type="hidden" name="PropertyId" value="@Model.Property.Id"/>
-                                    @* ToDO : Add Rating Selection *@
-                                    <button class="form-wg tf-btn primary w-100" name="submit" type="submit">
-                                        <span>Качи ревю</span>
-                                    </button>
-                                </form>
+                                        <input type="hidden" name="Rating" id="ratingValue" value="0">
+                                        <input type="hidden" name="PropertyId" value="@Model.Property.Id"/>
+                                        <button class="form-wg tf-btn primary w-100" name="submit" type="submit">
+                                            <span>Качи ревю</span>
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    }
                 </div>
             </div>
             <div class="col-xl-4 col-lg-5">
@@ -314,4 +327,35 @@
 {
     <script type="text/javascript" src="~/js/dynamicCalendar.js" asp-append-version="true"></script>    
     <script type="text/javascript" src="~/js/reviewPublishing.js" asp-append-version="true"></script>    
+}
+
+@section Styles
+{
+    @* Styling of the rating stars *@
+    <style>
+        .rating {
+            unicode-bidi: bidi-override;
+            direction: rtl;
+            font-size: 36px;
+            margin-top: -11px;
+            color: #ffa800;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+            .rating > span {
+                display: inline-block;
+                position: relative;
+                width: 1em;
+                cursor: pointer;
+            }
+
+                .rating > span:hover:before,
+                .rating > span:hover ~ span:before,
+                .rating > span.rated:before,
+                .rating > span.rated ~ span:before {
+                    content: "\2605";
+                    position: absolute;
+                }
+    </style>
 }
