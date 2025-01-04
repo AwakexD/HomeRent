@@ -24,7 +24,6 @@ namespace HomeRent.Web.Controllers
 
         [HttpPost]
         [Authorize]
-        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> Create(ReviewCreateDto reviewDto)
         {
             if (!ModelState.IsValid)

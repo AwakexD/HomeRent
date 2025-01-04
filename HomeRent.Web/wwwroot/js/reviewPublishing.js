@@ -31,7 +31,7 @@
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-VERIFICATION-TOKEN': antiForgeryToken,
+                'RequestVerificationToken': antiForgeryToken,
             },
             body: JSON.stringify(data),
         });
