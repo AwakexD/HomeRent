@@ -27,7 +27,6 @@ namespace HomeRent.Services
 
         public async Task<bool> CreateReviewAsync(ReviewCreateDto reviewDto, Guid tenantId)
         {
-            // Use the reviewRepository instead of propertyRepository
             var property = await this.propertyRepository.All()
                 .FirstAsync(p => p.Id == new Guid(reviewDto.PropertyId));
 
@@ -49,14 +48,21 @@ namespace HomeRent.Services
         {
             var reviews = await this.reviewRepository.AllAsNoTracking()
                 .Where(r => r.PropertyId == propertyId)
+                .Include(r => r.Tenant)
                 .ToListAsync();
 
             return this.mapper.Map<IEnumerable<ReviewViewModel>>(reviews);
         }
 
-        public Task<bool> DeleteReviewAsync(int reviewId, string username)
+        public async Task<bool> DeleteReviewAsync(int reviewId, Guid tenantId)
         {
-            throw new NotImplementedException();
+            var review = await this.reviewRepository.All()
+                .FirstAsync(r => r.Id == reviewId && r.TenantId == tenantId);
+
+            this.reviewRepository.Delete(review);
+            var result = await this.reviewRepository.SaveChangesAsync();
+
+            return result > 0;
         }
     }
 }

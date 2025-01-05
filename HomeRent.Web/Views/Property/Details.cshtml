@@ -192,6 +192,10 @@
                     <h5 class="title fw-6">Ревюта</h5>
                     <div class="wrap-review">
                         <ul class="box-review">
+                            @if (!Model.Reviews.Any())
+                            {
+                                <p>Все още няма ревюта.</p>
+                            }
                             @foreach (var review in Model.Reviews)
                             {
                                 <li class="list-review-item">
@@ -226,9 +230,12 @@
                                     </div>
                                 </li>
                             }
-                            <li class="list-review-item">
-                                <button class="tf-btn btn-line">Вижте всички ревюта</button>
-                            </li>
+                            @if (Model.Reviews.Count() > 3)
+                            {
+                                <li class="list-review-item">
+                                    <button class="tf-btn btn-line">Вижте всички ревюта</button>
+                                </li>
+                            }
                         </ul>
                     </div>
                     @if (this.SignInManager.IsSignedIn(User))

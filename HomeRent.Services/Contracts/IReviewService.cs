@@ -8,6 +8,6 @@ namespace HomeRent.Services.Contracts
 
         Task<IEnumerable<ReviewViewModel>> GetPropertyReviewsAsync(Guid propertyId);
 
-        Task<bool> DeleteReviewAsync(int reviewId, string username);
+        Task<bool> DeleteReviewAsync(int reviewId, Guid tenantId);
     }
 }
