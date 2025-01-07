@@ -35,5 +35,9 @@
             },
             body: JSON.stringify(data),
         });
+
+        if (response.ok) {
+            location.reload();
+        }
     });
 })

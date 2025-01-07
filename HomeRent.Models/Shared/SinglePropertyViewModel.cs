@@ -31,7 +31,5 @@
         public IEnumerable<string> Images { get; set; }
 
         public IEnumerable<AmenityViewModel> Amenities { get; set; }
-
-        // ToDO : Add Reviews
     }
 }
