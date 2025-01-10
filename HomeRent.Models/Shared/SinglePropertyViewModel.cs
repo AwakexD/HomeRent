@@ -28,6 +28,8 @@
 
         public string OwnerEmail { get; set; }
 
+        public DateTime CreatedOn { get; set; }
+
         public IEnumerable<string> Images { get; set; }
 
         public IEnumerable<AmenityViewModel> Amenities { get; set; }
