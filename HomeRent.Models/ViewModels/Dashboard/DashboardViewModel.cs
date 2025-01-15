@@ -7,5 +7,7 @@
         public bool IsTenant { get; set; }
 
         public OwnerDashboardViewModel OwnerDashboard { get; set; }
+
+        public TenantDashboardViewModel TenantDashboard { get; set; }
     }
 }

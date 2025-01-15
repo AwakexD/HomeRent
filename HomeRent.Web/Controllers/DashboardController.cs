@@ -36,6 +36,10 @@ namespace HomeRent.Web.Controllers
             {
                 viewModel.OwnerDashboard = await this.dashbaordService.GetOwenerDashboardVM(currentUser.Id);
             }
+            else if (isTenant)
+            {
+                viewModel.TenantDashboard = await this.dashbaordService.GetTenantDashboardVM(currentUser.Id);
+            }
 
             return this.View(viewModel);
         }

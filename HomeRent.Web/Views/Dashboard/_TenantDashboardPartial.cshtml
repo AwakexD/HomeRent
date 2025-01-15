@@ -1,34 +1,22 @@
-﻿@{
+﻿@model HomeRent.Models.ViewModels.Dashboard.TenantDashboardViewModel
+@{
     
 }
 
 <div class="main-content-inner">
     <div class="button-show-hide show-mb">
-        <span class="body-1">Show Dashboard</span>
+        <span class="body-1">Покажи страничното меню</span>
     </div>
 
-    <div class="flat-counter-v2 tf-counter">
-        <div class="counter-box">
-            <div class="box-icon">
-                <span class="icon icon-listing"></span>
-            </div>
-            <div class="content-box">
-                <div class="title-count text-variant-1">Your listing</div>
-                <div class="box-count d-flex align-items-end">
-                    <h3 class="fw-8">32</h3>
-                    <span class="text">/50 remaining</span>
-                </div>
-
-            </div>
-        </div>
+    <div class="flat-counter-v2 tf-counter" style="grid-template-columns: repeat(3, 1fr)">
         <div class="counter-box">
             <div class="box-icon">
                 <span class="icon icon-pending"></span>
             </div>
             <div class="content-box">
-                <div class="title-count text-variant-1">Pending</div>
+                <div class="title-count text-variant-1">Резервации</div>
                 <div class="box-count d-flex align-items-end">
-                    <h3 class="fw-8">02</h3>
+                    <h3 class="fw-8">@Model.BookingsCount</h3>
                 </div>
             </div>
         </div>
@@ -37,9 +25,9 @@
                 <span class="icon icon-favorite"></span>
             </div>
             <div class="content-box">
-                <div class="title-count text-variant-1">Favorites</div>
+                <div class="title-count text-variant-1">Любими</div>
                 <div class="d-flex align-items-end">
-                    <h3 class="fw-8">06</h3>
+                    <h3 class="fw-8">@Model.FavoritesCount</h3>
                 </div>
 
             </div>
@@ -49,9 +37,9 @@
                 <span class="icon icon-review"></span>
             </div>
             <div class="content-box">
-                <div class="title-count text-variant-1">Reviews</div>
+                <div class="title-count text-variant-1">Ревюта</div>
                 <div class="d-flex align-items-end">
-                    <h3 class="fw-8">1.483</h3>
+                    <h3 class="fw-8">@Model.ReviewsCount</h3>
                 </div>
 
             </div>
@@ -61,7 +49,7 @@
     <div class="wrapper-content row">
         <div class="col-xl-10" style="margin: auto;">
             <div class="widget-box-2 wd-listing">
-                <h5 class="title">New Listing</h5>
+                <h5 class="title">Резервации</h5>
                 <div class="wd-filter">
                     <div class="ip-group icon-left">
                         <input type="text" placeholder="Search">
@@ -84,16 +72,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="d-flex gap-4"><span class="text-primary fw-7">26</span><span class="fw-6">Results found</span></div>
                 <div class="wrap-table">
                     <div class="table-responsive">
 
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Listing</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
+                                    <th>Обява</th>
+                                    <th>Статус</th>
+                                    <th>Опции</th>
                                 </tr>
                             </thead>
                             <tbody>

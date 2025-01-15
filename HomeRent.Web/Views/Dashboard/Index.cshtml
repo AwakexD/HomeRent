@@ -13,7 +13,7 @@
     <div class="main-content">
         @if(Model.IsTenant)
         {
-            <partial name="_TenantDashbaordPartial" />   
+            <partial name="_TenantDashboardPartial" model="@Model.TenantDashboard" />
         }
         else if (Model.IsOwner) 
         {

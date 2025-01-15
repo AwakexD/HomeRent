@@ -57,6 +57,25 @@ namespace HomeRent.Services
             return viewModel;
         }
 
+        public async Task<TenantDashboardViewModel> GetTenantDashboardVM(Guid userId)
+        {
+            // ToDO : Complete method
+            int bookingsCount = 0;
+            int favoritesCount = 0;
+            int reviewsCount = await this.reviewRepository.AllAsNoTracking()
+                .Where(r => r.TenantId == userId)
+                .CountAsync();
+
+            var viewModel = new TenantDashboardViewModel
+            {
+                BookingsCount = bookingsCount,
+                FavoritesCount = favoritesCount,
+                ReviewsCount = reviewsCount,
+            };
+
+            return viewModel;
+        }
+
         private async Task<IEnumerable<SinglePropertyViewModel>> GetOwnerProperties(Guid userId)
         {
             var properties = await this.propertyRepository.AllAsNoTrackingWithDeleted()
