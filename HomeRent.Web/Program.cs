@@ -66,6 +66,7 @@ namespace HomeRent.Web
             services.AddTransient<IPropertyService, PropertyService>();
             services.AddTransient<IReviewService, ReviewService>();
             services.AddTransient<IDashboardService, DashboardService>();
+            services.AddTransient<IBookingService, BookingService>();
 
             // Cloudinary
             Cloudinary cloudinary = new Cloudinary(configuration["Cloudinary:CLOUDINARY_URL"]);
