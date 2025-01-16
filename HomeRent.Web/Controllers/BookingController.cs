@@ -22,14 +22,9 @@ namespace HomeRent.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetPrice(string propertyId)
+        public async Task<IActionResult> GetPrice(Guid propertyId)
         {
-            if (!Guid.TryParse(propertyId, out var propertyGuid))
-            {
-                return BadRequest(new { message = "Invalid property ID format." });
-            }
-
-            decimal? pricePerNight = await this.bookingService.GetPropertyPriceAsync(propertyGuid);
+            decimal? pricePerNight = await this.bookingService.GetPropertyPriceAsync(propertyId);
              
             if (pricePerNight == null)
             {
@@ -37,6 +32,14 @@ namespace HomeRent.Web.Controllers
             }
 
             return Json(new { pricePerNight });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetBookedDates(Guid propertyId)
+        {
+            var bookedDateRanges = await bookingService.GetBookedDateRanges(propertyId);
+
+            return Json(new { disable = bookedDateRanges });
         }
     }
 }
