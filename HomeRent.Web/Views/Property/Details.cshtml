@@ -267,7 +267,7 @@
                                             <textarea name="Comment" rows="4" tabindex="4" placeholder="Напишете вашето ревю" aria-required="true"></textarea>
                                         </fieldset>
                                         <input type="hidden" name="Rating" id="ratingValue" value="0">
-                                        <input type="hidden" name="PropertyId" id="propertyId" value="@Model.Property.Id"/>
+                                        <input type="hidden" name="PropertyId" id="propertyId" value="@Model.Property.Id" />
                                         <button class="form-wg tf-btn primary w-100" name="submit" type="submit">
                                             <span>Качи ревю</span>
                                         </button>
@@ -304,13 +304,14 @@
                                 <input type="text" placeholder="Имейл" class="form-control">
                             </div>
                             <div class="ip-group">
-                                <textarea name="message" rows="4" tabindex="4" placeholder="Съобщение до собственика" aria-required="true"></textarea>
+                                <textarea name="Message" rows="4" tabindex="4" placeholder="Съобщение до собственика" aria-required="true"></textarea>
                             </div>
                             <div class="ip-group">
                                 <h6 class="name" id="total-price">Обща цена · </h6>
                             </div>
                             <input type="hidden" id="start-date" name="CheckInDate"/>
                             <input type="hidden" id="end-date" name="CheckOutDate"/>
+                            <input type="hidden" name="PropertyId" value="@Model.Property.Id"/>
                             <button type="submit" class="tf-btn btn-view primary hover-btn-view w-100">Резервирай <span class="icon icon-arrow-right2"></span></button>
                         </form>
                     </div>

@@ -1,4 +1,5 @@
-﻿using HomeRent.Services.Contracts;
+﻿using HomeRent.Models.DTOs.Booking;
+using HomeRent.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HomeRent.Web.Controllers
@@ -14,15 +15,26 @@ namespace HomeRent.Web.Controllers
             this.bookingService = bookingService;
         }
 
-        public IActionResult Create()
+        [HttpPost]
+        public IActionResult Create(CreateBookingDto bookingDto)
         {
-            return NotFound();
+            return Ok(bookingDto);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetPrice(string propertyId)
         {
-            decimal pricePerNight = await this.bookingService.GetPropertyPriceAsync(new Guid(propertyId));
+            if (!Guid.TryParse(propertyId, out var propertyGuid))
+            {
+                return BadRequest(new { message = "Invalid property ID format." });
+            }
+
+            decimal? pricePerNight = await this.bookingService.GetPropertyPriceAsync(propertyGuid);
+             
+            if (pricePerNight == null)
+            {
+                return NotFound(new { message = "Property not found." });
+            }
 
             return Json(new { pricePerNight });
         }

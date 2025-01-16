@@ -2,6 +2,7 @@
 
 // Flatpickr calendar config
 flatpickr(calendarElement, {
+    minDate: "today",
     mode: "range",
     dateFormat: "d-m-Y",
     onChange: async function (selectedDates, dateStr, instance) {
@@ -20,7 +21,6 @@ flatpickr(calendarElement, {
                         'Content-Type': 'application/json',
                     }
                 });
-                console.log(response);
                 if (response.ok) {
                     const data = await response.json();
                     const pricePerNight = data.pricePerNight;
@@ -43,5 +43,30 @@ flatpickr(calendarElement, {
         }
     }
 });
+
+// Create booking form handler
+
+const bookingFrom = document.getElementById("booking-form")
+bookingFrom.addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+    const data = Object.fromEntries(formData.entries());
+
+    const antiForgeryToken = document.getElementsByName('__RequestVerificationToken')[1].value;
+
+    try {
+        const response = await fetch("/api/Booking/Create", {
+            method: "POST",
+            headers: {
+                'Content-Type': "application/json",
+                'RequestVerificationToken': antiForgeryToken,
+            },
+            body: JSON.stringify(data),
+        });
+    } catch (error) {
+        console.error("Error submitting form:", error);
+    }
+})
 
 // ToDO : Fetch booked dates from the BookingsController (API Controller) and make them as disabled
