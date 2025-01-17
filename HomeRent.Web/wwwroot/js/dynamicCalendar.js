@@ -1,91 +1,86 @@
 ﻿const calendarElement = document.querySelector(".booking-calendar");
-const propertyId = document.getElementById('propertyId').value;
+const propertyId = document.getElementById("propertyId").value;
 
-async function fetchBookedDates() {
+// Reusable function for API calls
+async function fetchAPI(url, options = {}) {
     try {
-        const response = await fetch(`/api/Booking/GetBookedDates?propertyId=${propertyId}`)
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
 
-        const data = await response.json();
-
-        return data.disable || [];
-
+        return await response.json();
     } catch (error) {
-        console.error("Error fetching booked dates", error);
+        console.error(`Error fetching data from ${url}:`, error);
+        throw error;
     }
 }
 
-// Flatpickr calendar config
+// Fetch booked dates
+async function fetchBookedDates(propertyId) {
+    const url = `/api/Booking/GetBookedDates?propertyId=${propertyId}`;
+    return (await fetchAPI(url)).disable || [];
+}
+
+// Flatpickr initialization
 async function initializeFlatpickr() {
-    const bookedDates = await fetchBookedDates();
+    const bookedDates = await fetchBookedDates(propertyId);
 
     flatpickr(calendarElement, {
         minDate: "today",
         mode: "range",
         dateFormat: "d-m-Y",
         disable: bookedDates,
-        onChange: async function (selectedDates, dateStr, instance) {
-
+        onChange: async (selectedDates) => {
             const startDateInput = document.getElementById("start-date");
             const endDateInput = document.getElementById("end-date");
+            const priceDisplay = document.querySelector("#total-price");
+
             if (selectedDates.length === 2) {
-                startDateInput.value = selectedDates[0].toISOString().split("T")[0];
-                endDateInput.value = selectedDates[1].toISOString().split("T")[0];
+                const [startDate, endDate] = selectedDates;
+                startDateInput.value = startDate.toISOString().split("T")[0];
+                endDateInput.value = endDate.toISOString().split("T")[0];
 
-                const propertyId = document.getElementById("propertyId").value;
                 try {
-                    const response = await fetch(`/api/Booking/GetPrice?propertyId=${propertyId}`, {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        }
-                    });
-                    if (response.ok) {
-                        const data = await response.json();
-                        const pricePerNight = data.pricePerNight;
-
-                        const msPerDay = 24 * 60 * 60 * 1000;
-                        const numDays = Math.ceil((selectedDates[1] - selectedDates[0]) / msPerDay);
-                        const totalPrice = numDays * pricePerNight;
-
-                        const priceDisplay = document.querySelector("#total-price");
-                        priceDisplay.textContent = `Обща цена · ${totalPrice}лв.`;
-                    }
-                } catch (error) {
-                    console.error("Error fetching price:", error);
+                    const { pricePerNight } = await fetchAPI(`/api/Booking/GetPrice?propertyId=${propertyId}`);
+                    const msPerDay = 24 * 60 * 60 * 1000;
+                    const numDays = Math.ceil((endDate - startDate) / msPerDay);
+                    const totalPrice = numDays * pricePerNight;
+                    priceDisplay.textContent = `Обща цена · ${totalPrice}лв.`;
+                } catch {
+                    priceDisplay.textContent = "Грешка при изчисляване на цената.";
                 }
             } else {
                 startDateInput.value = "";
                 endDateInput.value = "";
-                const priceDisplay = document.querySelector("#total-price");
                 priceDisplay.textContent = "Обща цена · 0лв.";
             }
-        }
+        },
     });
 }
 
-initializeFlatpickr();
-
-// Create booking form handler
-
-const bookingFrom = document.getElementById("booking-form")
-bookingFrom.addEventListener("submit", async function (e) {
-    e.preventDefault();
+// Booking form submission
+async function handleFormSubmit(event) {
+    event.preventDefault();
 
     const formData = new FormData(this);
     const data = Object.fromEntries(formData.entries());
-
-    const antiForgeryToken = document.getElementsByName('__RequestVerificationToken')[1].value;
+    const antiForgeryToken = document.querySelector("[name='__RequestVerificationToken']").value;
 
     try {
-        const response = await fetch("/api/Booking/Create", {
+        await fetchAPI("/api/Booking/Create", {
             method: "POST",
             headers: {
-                'Content-Type': "application/json",
-                'RequestVerificationToken': antiForgeryToken,
+                "Content-Type": "application/json",
+                "RequestVerificationToken": antiForgeryToken,
             },
             body: JSON.stringify(data),
         });
-    } catch (error) {
-        console.error("Error submitting form:", error);
+    } catch {
+        throw new Error("Failed to submit booking. Please try again.");
     }
-})
+}
+
+// Initialize components
+document.getElementById("booking-form").addEventListener("submit", handleFormSubmit);
+initializeFlatpickr();
