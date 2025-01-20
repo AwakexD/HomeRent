@@ -18,11 +18,11 @@ namespace HomeRent.Services
             this.bookingReposotory = bookingRepository;
         }
 
-        public async Task<decimal> GetPropertyPriceAsync(Guid propertyId)
+        public async Task<decimal?> GetPropertyPriceAsync(Guid propertyId)
         {
             return await this.propertyReposiotry.AllAsNoTracking()
                 .Where(p => p.Id == propertyId)
-                .Select(p => p.PricePerNight)
+                .Select(p => (decimal?)p.PricePerNight)
                 .FirstOrDefaultAsync();
         } 
 
@@ -38,6 +38,34 @@ namespace HomeRent.Services
                 .ToListAsync();
                 
             return bookedDates;
+        }
+
+        public async Task<Guid?> CreateBookingAsync(Guid userId, CreateBookingDto bookingDto)
+        {
+            var property = await this.propertyReposiotry.AllAsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == bookingDto.PropertyId);
+
+            if (property == null)
+            {
+                return null;
+            }
+
+            var totalAmount = (bookingDto.CheckOutDate - bookingDto.CheckInDate).Days * property.PricePerNight;
+
+            var booking = new Booking()
+            {
+                CheckInDate = bookingDto.CheckInDate,
+                CheckOutDate = bookingDto.CheckOutDate,
+                TotalAmount = totalAmount,
+                PropertyId = bookingDto.PropertyId,
+                TenantId = userId,
+                IsConfirmed = false,
+            };
+
+            await bookingReposotory.AddAsync(booking);
+            await bookingReposotory.SaveChangesAsync();
+
+            return booking.Id;
         }
     }
 }

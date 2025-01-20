@@ -4,8 +4,10 @@ namespace HomeRent.Services.Contracts
 {
     public interface IBookingService
     {
-        Task<decimal> GetPropertyPriceAsync(Guid propertyId);
+        Task<decimal?> GetPropertyPriceAsync(Guid propertyId);
 
         Task<IEnumerable<BookedDateRangeDto>> GetBookedDateRanges(Guid propertyId);
+
+        Task<Guid?> CreateBookingAsync(Guid userId, CreateBookingDto bookingDto);
     }
 }
