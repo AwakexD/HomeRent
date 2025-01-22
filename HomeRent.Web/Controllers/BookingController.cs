@@ -51,9 +51,9 @@ namespace HomeRent.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateBooking(CreateBookingDto bookingDto)
         {
-            var user = this.userManager.GetUserAsync(this.User);
+            var user = await this.userManager.GetUserAsync(this.User);
 
-            var bookingId = await this.bookingService.CreateBookingAsync(user.Id,bookingDto);
+            var bookingId = await this.bookingService.CreateBookingAsync(user.Id, bookingDto);
 
             if (bookingId == null)
             {

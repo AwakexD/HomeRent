@@ -16,5 +16,7 @@ namespace HomeRent.Data.Models.Entities
         [Required]
         [StringLength(30)]
         public string Status { get; set; }
+
+        public Booking Booking { get; set; }
     }
 }

@@ -68,7 +68,7 @@ async function handleFormSubmit(event) {
     const antiForgeryToken = document.querySelector("[name='__RequestVerificationToken']").value;
 
     try {
-        await fetchAPI("/api/Booking/Create", {
+        await fetchAPI("/api/Booking/CreateBooking", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

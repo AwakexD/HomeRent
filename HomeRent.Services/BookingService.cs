@@ -58,8 +58,11 @@ namespace HomeRent.Services
                 CheckOutDate = bookingDto.CheckOutDate,
                 TotalAmount = totalAmount,
                 PropertyId = bookingDto.PropertyId,
+                Message = bookingDto.Message,
                 TenantId = userId,
+                PaymentId = null,
                 IsConfirmed = false,
+
             };
 
             await bookingReposotory.AddAsync(booking);

@@ -7,5 +7,7 @@
         public DateTime CheckInDate { get; set; }
 
         public DateTime CheckOutDate { get; set; }
+
+        public string Message { get; set; }
     }
 }

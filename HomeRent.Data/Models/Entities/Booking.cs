@@ -15,10 +15,13 @@ namespace HomeRent.Data.Models.Entities
 
         [Required]
         [Column(TypeName = "decimal(18, 2)")]
-        public decimal TotalAmount { get; set; }
+        public decimal TotalAmount { get; set; }    
 
         [Required]
         public bool IsConfirmed { get; set; }
+
+        [Required]
+        public string Message { get; set; }
 
         [Required]
         [ForeignKey(nameof(Tenant))]
@@ -32,6 +35,9 @@ namespace HomeRent.Data.Models.Entities
 
         public Property Property { get; set; } = null;
 
-        public Payment Payment { get; set; } = null;
+        [ForeignKey(nameof(Payment))]
+        public Guid? PaymentId { get; set; }
+
+        public Payment? Payment { get; set; } = null;
     }
 }
