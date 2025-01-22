@@ -1,0 +1,94 @@
+﻿@{
+}
+
+<!-- Booking Overview -->
+<div class="row" style="justify-content: center; margin-top: 30px; margin-bottom: 30px;">
+    <div class="col-lg-5">
+        <div class="contact-info" style="border-radius: 40px;">
+            <div class="d-flex justify-content-center">
+                <img src="https://res.cloudinary.com/dsxlhk9cg/image/upload/v1732976770/cuted-logo_slwxsi.png" alt="logo">
+            </div>
+            <hr>
+            <h5 class="title text-center">
+                Резервация
+            </h5>
+            <hr>
+            <ul style="">
+                <li class="box">
+                    <h6 class="title">Информация</h6>
+                    <p class="text-variant-1">Cozy 2-Bedroom Apartment in the Heart of the City</p>
+                    <p class="text-variant-1">str. Struma 16, Pernik</p>
+                </li>
+                <li class="box">
+                    <h6 class="title">Дати</h6>
+                    <p class="text-variant-1">Дата на настаняване: 20-04-2025</p>
+                    <p class="text-variant-1">Дата на напускане: 27-04-2025</p>
+                </li>
+                <li class="box">
+                    <h6 class="title">Контакт със собственика</h6>
+                    <p class="text-variant-1">+359 87 8787 878</p>
+                    <p class="text-variant-1">owner@abv.bg</p>
+
+                </li>
+                <hr>
+                <li class="box">
+                    <h6 class="title">Цена за престоя · 560 лв.</h6>
+                </li>
+                <hr>
+            </ul>
+            <p class="text-variant-1 text-center mb-3">Моля изберете метод на плащане</p>
+            <div class="segmented-buttons">
+                <input type="radio" id="cash" name="paymentMethod" value="cash">
+                <label for="cash" style="border-top-left-radius: 10px;border-bottom-left-radius: 10px;">В Брой</label>
+                <input type="radio" id="card" name="paymentMethod" value="card">
+                <label for="card">Карта</label>
+            </div>
+            <div class="d-flex justify-content-center gap-5 mt-8">
+                <button class="tf-btn primary">Продължи</button>
+                <button class="tf-btn">Отказ</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* ToDO : Remove footer *@
+
+@section Styles {
+    <style>
+        .segmented-buttons {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+            .segmented-buttons label {
+                flex: 1;
+                text-align: center;
+                padding: 10px 15px;
+                border: 1px solid #007bff;
+                color: #007bff;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                margin: 0;
+            }
+
+            .segmented-buttons input {
+                display: none;
+            }
+
+            .segmented-buttons label:first-child {
+                border-top-left-radius: 10px;
+                border-bottom-left-radius: 10px;
+            }
+
+            .segmented-buttons label:last-child {
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+            }
+
+            .segmented-buttons input:checked + label {
+                background-color: #007bff;
+                color: #fff;
+            }
+    </style>
+}
