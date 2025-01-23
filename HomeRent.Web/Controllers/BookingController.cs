@@ -60,8 +60,9 @@ namespace HomeRent.Web.Controllers
                 return BadRequest(new { message = "Failed to create the booking. " });
             }
 
-            //return RedirectToAction("Overview", "Payment", new { bookingId })
-            return Ok(bookingId);
+            var redirectUrl = Url.Action("BookingOverview", "Payment", new { bookingId });
+
+            return Ok(redirectUrl);
         }
     }
 }

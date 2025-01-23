@@ -1,4 +1,5 @@
 ﻿using HomeRent.Models.DTOs.Booking;
+using HomeRent.Models.ViewModels.Booking;
 
 namespace HomeRent.Services.Contracts
 {
@@ -9,5 +10,7 @@ namespace HomeRent.Services.Contracts
         Task<IEnumerable<BookedDateRangeDto>> GetBookedDateRanges(Guid propertyId);
 
         Task<Guid?> CreateBookingAsync(Guid userId, CreateBookingDto bookingDto);
+
+        Task<BookingOverviewViewModel> GetBookingOverviewAsync(Guid bookingId);
     }
 }

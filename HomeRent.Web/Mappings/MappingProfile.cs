@@ -3,6 +3,7 @@ using HomeRent.Data.Models.Entities;
 using HomeRent.Models.DTOs.Property;
 using HomeRent.Models.DTOs.Review;
 using HomeRent.Models.Shared;
+using HomeRent.Models.ViewModels.Booking;
 using HomeRent.Models.ViewModels.Property;
 
 namespace HomeRent.Web.Mappings
@@ -58,6 +59,12 @@ namespace HomeRent.Web.Mappings
             CreateMap<Review, ReviewViewModel>()
                 .ForMember(dest => dest.TenantFullName, opt =>
                     opt.MapFrom(r => string.Join(" ", r.Tenant.FirstName, r.Tenant.LastName)));
+
+            CreateMap<Booking, BookingOverviewViewModel>()
+                .ForMember(dest => dest.PropertyTitle, opt => opt.MapFrom(b => b.Property.Title))
+                .ForMember(dest => dest.PropertyAddress, opt => opt.MapFrom(b => b.Property.Address))
+                .ForMember(dest => dest.OwnerPhone, opt => opt.MapFrom(b => b.Property.Owner.PhoneNumber))
+                .ForMember(dest => dest.OwnerEmail, opt => opt.MapFrom(b => b.Property.Owner.Email));
         }
     }
 }

@@ -14,7 +14,22 @@ namespace HomeRent.Web.Controllers
 
         public async Task<IActionResult> BookingOverview(Guid bookingId)
         {
-            return this.View();
+            try
+            {
+                var viewModel = await this.bookingService.GetBookingOverviewAsync(bookingId);
+
+                if (viewModel == null)
+                {
+                    return NotFound();
+                }
+
+                return this.View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
         }
     }
 }

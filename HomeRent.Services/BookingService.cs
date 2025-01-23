@@ -1,6 +1,8 @@
-﻿using HomeRent.Data.Models.Entities;
+﻿using AutoMapper;
+using HomeRent.Data.Models.Entities;
 using HomeRent.Data.Repositories.Contracts;
 using HomeRent.Models.DTOs.Booking;
+using HomeRent.Models.ViewModels.Booking;
 using HomeRent.Services.Contracts;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,12 +10,16 @@ namespace HomeRent.Services
 {
     public class BookingService : IBookingService
     {
+        private readonly IMapper mapper;
+
         private readonly IDeletableEntityRepository<Property> propertyReposiotry;
         private readonly IDeletableEntityRepository<Booking> bookingReposotory;
 
-        public BookingService(IDeletableEntityRepository<Property> propertyReposiotry,
+        public BookingService(IMapper mapper,
+            IDeletableEntityRepository<Property> propertyReposiotry,
             IDeletableEntityRepository<Booking> bookingRepository)
         {
+            this.mapper = mapper;
             this.propertyReposiotry = propertyReposiotry;
             this.bookingReposotory = bookingRepository;
         }
@@ -69,6 +75,16 @@ namespace HomeRent.Services
             await bookingReposotory.SaveChangesAsync();
 
             return booking.Id;
+        }
+
+        public async Task<BookingOverviewViewModel> GetBookingOverviewAsync(Guid bookingId)
+        {
+            var booking = await this.bookingReposotory.AllAsNoTracking()
+                .Include(b => b.Property)
+                .Include(b => b.Property.Owner)
+                .FirstOrDefaultAsync(b => b.Id == bookingId);
+
+            return this.mapper.Map<BookingOverviewViewModel>(booking);
         }
     }
 }

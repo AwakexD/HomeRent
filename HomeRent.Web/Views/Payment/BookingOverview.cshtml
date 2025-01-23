@@ -1,4 +1,6 @@
-﻿@{
+﻿@model HomeRent.Models.ViewModels.Booking.BookingOverviewViewModel;
+@{
+
 }
 
 <!-- Booking Overview -->
@@ -16,28 +18,30 @@
             <ul style="">
                 <li class="box">
                     <h6 class="title">Информация</h6>
-                    <p class="text-variant-1">Cozy 2-Bedroom Apartment in the Heart of the City</p>
-                    <p class="text-variant-1">str. Struma 16, Pernik</p>
+                    <p class="text-variant-1">@Model.PropertyTitle</p>
+                    <p class="text-variant-1">@Model.PropertyAddress</p>
                 </li>
                 <li class="box">
                     <h6 class="title">Дати</h6>
-                    <p class="text-variant-1">Дата на настаняване: 20-04-2025</p>
-                    <p class="text-variant-1">Дата на напускане: 27-04-2025</p>
+                    <p class="text-variant-1">Дата на настаняване: @Model.CheckInDate.ToString("d.M.yyyy'г.'")</p>
+                    <p class="text-variant-1">Дата на напускане: @Model.CheckOutDate.ToString("d.M.yyyy'г.'")</p>
                 </li>
                 <li class="box">
                     <h6 class="title">Контакт със собственика</h6>
-                    <p class="text-variant-1">+359 87 8787 878</p>
-                    <p class="text-variant-1">owner@abv.bg</p>
+                    <p class="text-variant-1">@Model.OwnerPhone</p>
+                    <p class="text-variant-1">@Model.OwnerEmail</p>
 
                 </li>
                 <hr>
                 <li class="box">
-                    <h6 class="title">Цена за престоя · 560 лв.</h6>
+                    <h6 class="title">Цена за престоя · @Model.TotalAmount.ToString("C0")</h6>
                 </li>
                 <hr>
             </ul>
             <p class="text-variant-1 text-center mb-3">Моля изберете метод на плащане</p>
+
             <div class="segmented-buttons">
+                <input type="hidden" value="@Model.Id" name="BookingId"/>
                 <input type="radio" id="cash" name="paymentMethod" value="cash">
                 <label for="cash" style="border-top-left-radius: 10px;border-bottom-left-radius: 10px;">В Брой</label>
                 <input type="radio" id="card" name="paymentMethod" value="card">
@@ -51,7 +55,7 @@
     </div>
 </div>
 
-@* ToDO : Remove footer *@
+@* ToDO : Remove Footer *@
 
 @section Styles {
     <style>

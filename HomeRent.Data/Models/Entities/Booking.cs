@@ -7,6 +7,11 @@ namespace HomeRent.Data.Models.Entities
 {
     public class Booking : BaseDeletableModel<Guid>
     {
+        public Booking()
+        {
+            this.Id = Guid.NewGuid();
+        }
+
         [Required]
         public DateTime CheckInDate { get; set; }
 

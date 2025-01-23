@@ -5,11 +5,14 @@ const propertyId = document.getElementById("propertyId").value;
 async function fetchAPI(url, options = {}) {
     try {
         const response = await fetch(url, options);
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
 
-        return await response.json();
+        // Check if the response is JSON or plain text
+        const contentType = response.headers.get("Content-Type");
+        if (contentType && contentType.includes("application/json")) {
+            return await response.json();
+        } else {
+            return await response.text();
+        }
     } catch (error) {
         console.error(`Error fetching data from ${url}:`, error);
         throw error;
@@ -68,7 +71,7 @@ async function handleFormSubmit(event) {
     const antiForgeryToken = document.querySelector("[name='__RequestVerificationToken']").value;
 
     try {
-        await fetchAPI("/api/Booking/CreateBooking", {
+        const redirectUrl = await fetchAPI("/api/Booking/CreateBooking", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -76,8 +79,11 @@ async function handleFormSubmit(event) {
             },
             body: JSON.stringify(data),
         });
-    } catch {
-        throw new Error("Failed to submit booking. Please try again.");
+
+        // Redirect to the provided URL
+        window.location.href = redirectUrl;
+    } catch (error) {
+        console.error("Failed to submit booking:", error);
     }
 }
 
