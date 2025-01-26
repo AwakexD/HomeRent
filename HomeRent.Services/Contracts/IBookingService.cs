@@ -1,4 +1,5 @@
-﻿using HomeRent.Models.DTOs.Booking;
+﻿using HomeRent.Data.Models.Entities;
+using HomeRent.Models.DTOs.Booking;
 using HomeRent.Models.ViewModels.Booking;
 
 namespace HomeRent.Services.Contracts
@@ -11,6 +12,12 @@ namespace HomeRent.Services.Contracts
 
         Task<Guid?> CreateBookingAsync(Guid userId, CreateBookingDto bookingDto);
 
-        Task<BookingOverviewViewModel> GetBookingOverviewAsync(Guid bookingId);
+        Task<BookingOverviewViewModel> GetBookingOverviewAsync(Guid bookingId, Guid userId);
+
+        Task<decimal> GetBookingTotalAmount(Guid bookingId);
+
+        Task SavePaymentAndConfirmBooking(Guid bookingId, Payment payment);
+
+        Task<bool> IsConfirmed(Guid bookingId);
     }
 }

@@ -1,0 +1,21 @@
+﻿@{
+    this.ViewData["Title"] = "Payment Failure";
+}
+
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="text-center p-4 border rounded shadow-sm">
+        <h2 class="mb-4">Плащането е отменено</h2>
+        <p class="mb-3">
+            Изглежда, че плащането Ви не е завършено. Моля, опитайте отново или се свържете с нас, ако имате нужда от помощ.
+        </p>
+
+        <div class="d-flex justify-content-center gap-3 mt-4">
+            <form asp-action="BookingOverview" asp-controller="Payment" method="get">
+                <input type="hidden" name="bookingId" value="@ViewBag.BookingId" />
+                <button type="submit" class="tf-btn">Опитайте отново</button>
+            </form>
+
+            <a asp-action="Index" asp-controller="Home" asp-area="" class="tf-btn btn-secondary">Върнете се към началната страница</a>
+        </div>
+    </div>
+</div>

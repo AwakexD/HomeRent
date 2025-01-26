@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using CloudinaryDotNet;
 using Ganss.Xss;
+using Stripe;
 
 namespace HomeRent.Web
 {
@@ -32,6 +33,8 @@ namespace HomeRent.Web
 
         private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
+            StripeConfiguration.ApiKey = configuration["Stripe:SecretKey"];
+
             services.AddDbContext<ApplicationDbContext>(
                 options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
@@ -64,9 +67,10 @@ namespace HomeRent.Web
             services.AddTransient<ICloudinaryService, CloudinaryService>();
             services.AddTransient<IPropertyStaticDataService, PropertyStaticDataService>();
             services.AddTransient<IPropertyService, PropertyService>();
-            services.AddTransient<IReviewService, ReviewService>();
+            services.AddTransient<IReviewService, HomeRent.Services.ReviewService>();
             services.AddTransient<IDashboardService, DashboardService>();
             services.AddTransient<IBookingService, BookingService>();
+            services.AddTransient<IStripeService, StripeService>();
 
             // Cloudinary
             Cloudinary cloudinary = new Cloudinary(configuration["Cloudinary:CLOUDINARY_URL"]);
@@ -86,7 +90,6 @@ namespace HomeRent.Web
                 dbContext.Database.Migrate();
                 new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
             }
-
 
             if (app.Environment.IsDevelopment())
             {

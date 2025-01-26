@@ -1,0 +1,12 @@
+﻿@{
+    this.ViewData["Title"] = "Payment Success";
+}
+
+<div class="d-flex justify-content-center align-items-center vh-100" style="border-radius: 30px;">
+    <div class="text-center p-4 border shadow-sm" style="border-radius: 30px;">
+        <h2 class="mb-4">Плащането е успешно</h2>
+        <p class="mb-3">Вашето плащане беше успешно обработено. Благодарим Ви, че избрахте нашата услуга!</p>
+        <p class="mb-4">Идентификатор на резервацията: <strong>@ViewBag.BookingId</strong></p>
+        <a asp-action="Index" asp-controller="Home" asp-area="" class="tf-btn primary">Върни се към началната страница</a>
+    </div>
+</div>

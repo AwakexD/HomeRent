@@ -6,7 +6,7 @@
 <!-- Booking Overview -->
 <div class="row" style="justify-content: center; margin-top: 30px; margin-bottom: 30px;">
     <div class="col-lg-5">
-        <div class="contact-info" style="border-radius: 40px;">
+        <div class="contact-info shadow-sm" style="border-radius: 40px;">
             <div class="d-flex justify-content-center">
                 <img src="https://res.cloudinary.com/dsxlhk9cg/image/upload/v1732976770/cuted-logo_slwxsi.png" alt="logo">
             </div>
@@ -40,17 +40,19 @@
             </ul>
             <p class="text-variant-1 text-center mb-3">Моля изберете метод на плащане</p>
 
-            <div class="segmented-buttons">
-                <input type="hidden" value="@Model.Id" name="BookingId"/>
-                <input type="radio" id="cash" name="paymentMethod" value="cash">
-                <label for="cash" style="border-top-left-radius: 10px;border-bottom-left-radius: 10px;">В Брой</label>
-                <input type="radio" id="card" name="paymentMethod" value="card">
-                <label for="card">Карта</label>
-            </div>
-            <div class="d-flex justify-content-center gap-5 mt-8">
-                <button class="tf-btn primary">Продължи</button>
-                <button class="tf-btn">Отказ</button>
-            </div>
+            <form asp-action="ProcessPayment" asp-controller="Payment" method="post">
+                <div class="segmented-buttons">
+                    <input type="hidden" value="@Model.Id" name="BookingId" />
+                    <input type="radio" id="cash" name="PaymentMethod" value="cash">
+                    <label for="cash" style="border-top-left-radius: 10px; border-bottom-left-radius: 10px;">В Брой</label>
+                    <input type="radio" id="card" name="PaymentMethod" value="card">
+                    <label for="card">Карта</label>
+                </div>
+                <div class="d-flex justify-content-center gap-5 mt-8">
+                    <button type="submit" class="tf-btn primary">Продължи</button>
+                    <a href="/" class="tf-btn">Отказ</a>
+                </div>
+            </form>
         </div>
     </div>
 </div>
