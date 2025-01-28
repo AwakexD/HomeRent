@@ -64,11 +64,19 @@ namespace HomeRent.Web.Controllers
 
             if (paymentMethod == "cash")
             {
-                // ToDO
-                // Service method to mark the booking as confirmed
-                // Redirect to the PaymentSuccess action
+                var payment = new Payment
+                {
+                    Id = Guid.NewGuid(),
+                    BookingId = bookingId,
+                    StripeTransactionId = "CASH_PAYMENT",
+                    AmountPaid = await this.bookingService.GetBookingTotalAmount(bookingId),
+                    PaymentDate = DateTime.UtcNow,
+                    Status = "Cash Payment",
+                };
 
-                return NotFound();
+                await this.bookingService.SavePaymentAndConfirmBooking(bookingId, payment);
+
+                return RedirectToAction("PaymentSuccess", new { bookingId });
             }
             else if (paymentMethod == "card")
             {
