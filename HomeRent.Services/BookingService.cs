@@ -124,6 +124,22 @@ namespace HomeRent.Services
             }
         }
 
+        public async Task<bool> CancelBookingAsync(Guid bookingId, Guid userId)
+        {
+            var booking = await this.bookingReposotory.All()
+                .FirstOrDefaultAsync(b => b.Id == bookingId && b.TenantId == userId);
+
+            if (booking == null) 
+            {
+                return false;   
+            }
+
+            this.bookingReposotory.Delete(booking);
+            await this.bookingReposotory.SaveChangesAsync();
+
+            return true;
+        }
+
         public async Task<bool> IsConfirmed(Guid bookingId)
         {
             return await this.bookingReposotory.AllAsNoTracking()

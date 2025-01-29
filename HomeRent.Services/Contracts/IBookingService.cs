@@ -18,6 +18,8 @@ namespace HomeRent.Services.Contracts
 
         Task SavePaymentAndConfirmBooking(Guid bookingId, Payment payment);
 
+        Task<bool> CancelBookingAsync(Guid bookingId, Guid userId);
+
         Task<bool> IsConfirmed(Guid bookingId);
     }
 }

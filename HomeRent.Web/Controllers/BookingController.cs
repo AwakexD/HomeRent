@@ -64,5 +64,20 @@ namespace HomeRent.Web.Controllers
 
             return Ok(redirectUrl);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> CancelBooking(Guid bookingId)
+        {
+            var user = await this.userManager.GetUserAsync(this.User);
+
+            var isCanceled = await this.bookingService.CancelBookingAsync(bookingId, user.Id);
+
+            if (!isCanceled)
+            {
+                return NotFound(new { message = "Booking not found or cannot be canceled." });
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
     }
 }
