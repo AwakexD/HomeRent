@@ -101,31 +101,47 @@ namespace HomeRent.Web.Controllers
             return BadRequest("An error occurr while proccessing the payment");
         }
 
-        public async Task<IActionResult> PaymentSuccess(Guid bookingId, string sessionId)
+        public async Task<IActionResult> PaymentSuccess(Guid bookingId, string? sessionId = null)
         {
-            var service = new Stripe.Checkout.SessionService();
-            var session = service.Get(sessionId);
-
-            if (session.PaymentStatus == "paid")
+            if (string.IsNullOrEmpty(sessionId))
             {
-                var payment = new Payment
+                var isConfirmed = await this.bookingService.IsConfirmed(bookingId);
+                if (isConfirmed)
                 {
-                    BookingId = bookingId,
-                    StripeTransactionId = session.Id,
-                    AmountPaid = (session.AmountTotal / 100m),
-                    PaymentDate = DateTime.UtcNow,
-                    Status = "Succeeded"
-                };
-
-                await this.bookingService.SavePaymentAndConfirmBooking(bookingId, payment);
-
-                this.ViewBag.BookingId = bookingId;
-                return this.View();
+                    ViewBag.BookingId = bookingId;
+                    return View();
+                }
+                return RedirectToAction(nameof(PaymentFailure), new { bookingId });
             }
-            else
+
+            try
             {
-                return this.View(nameof(PaymentFailure), new { bookingId });
+                var service = new Stripe.Checkout.SessionService();
+                var session = service.Get(sessionId);
+
+                if (session.PaymentStatus == "paid")
+                {
+                    var payment = new Payment
+                    {
+                        BookingId = bookingId,
+                        StripeTransactionId = session.Id,
+                        AmountPaid = (session.AmountTotal / 100m),
+                        PaymentDate = DateTime.UtcNow,
+                        Status = "Succeeded"
+                    };
+
+                    await this.bookingService.SavePaymentAndConfirmBooking(bookingId, payment);
+
+                    ViewBag.BookingId = bookingId;
+                    return View();
+                }
             }
+            catch (Exception ex)
+            {
+                throw new InvalidDataException(ex.Message);
+            }
+
+            return RedirectToAction(nameof(PaymentFailure), new { bookingId });
         }
 
         [HttpGet]
