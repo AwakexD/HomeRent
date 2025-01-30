@@ -11,7 +11,6 @@ namespace HomeRent.Web.Controllers
     public class PaymentController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;
-
         private readonly IBookingService bookingService;
         private readonly IStripeService stripeService;
 
@@ -32,90 +31,104 @@ namespace HomeRent.Web.Controllers
 
                 if (isConfirmed)
                 {
-                    return this.BadRequest("Booking is already confirmed.");
+                    return this.BadRequest(new { message = "Booking is already confirmed." });
                 }
 
                 var user = await this.userManager.GetUserAsync(this.User);
+                if (user == null)
+                {
+                    return Unauthorized(new { message = "User not found." });
+                }
 
                 var viewModel = await this.bookingService.GetBookingOverviewAsync(bookingId, user.Id);
                 if (viewModel == null)
                 {
-                    return NotFound("Booking not found.");
+                    return NotFound(new { message = "Booking not found." });
                 }
 
                 return this.View(viewModel);
             }
             catch (Exception ex)
             {
-                throw;
+                return StatusCode(500, new { message = "An error occurred while retrieving the booking overview.", error = ex.Message });
             }
         }
 
         [HttpPost]
         public async Task<IActionResult> ProcessPayment(Guid bookingId, string paymentMethod)
         {
-            if (string.IsNullOrEmpty(paymentMethod))
+            try
             {
-                var user = await this.userManager.GetUserAsync(User);
-                var viewModel = await this.bookingService.GetBookingOverviewAsync(bookingId, user.Id);
-
-                return View(nameof(BookingOverview), viewModel);
-            }
-
-            if (paymentMethod == "cash")
-            {
-                var payment = new Payment
+                if (string.IsNullOrEmpty(paymentMethod))
                 {
-                    Id = Guid.NewGuid(),
-                    BookingId = bookingId,
-                    StripeTransactionId = "CASH_PAYMENT",
-                    AmountPaid = await this.bookingService.GetBookingTotalAmount(bookingId),
-                    PaymentDate = DateTime.UtcNow,
-                    Status = "Cash Payment",
-                };
+                    var user = await this.userManager.GetUserAsync(User);
+                    if (user == null)
+                    {
+                        return Unauthorized(new { message = "User not found." });
+                    }
 
-                await this.bookingService.SavePaymentAndConfirmBooking(bookingId, payment);
+                    var viewModel = await this.bookingService.GetBookingOverviewAsync(bookingId, user.Id);
+                    return View(nameof(BookingOverview), viewModel);
+                }
 
-                return RedirectToAction("PaymentSuccess", new { bookingId });
+                if (paymentMethod == "cash")
+                {
+                    var payment = new Payment
+                    {
+                        Id = Guid.NewGuid(),
+                        BookingId = bookingId,
+                        StripeTransactionId = "CASH_PAYMENT",
+                        AmountPaid = await this.bookingService.GetBookingTotalAmount(bookingId),
+                        PaymentDate = DateTime.UtcNow,
+                        Status = "Cash Payment",
+                    };
+
+                    await this.bookingService.SavePaymentAndConfirmBooking(bookingId, payment);
+
+                    return RedirectToAction("PaymentSuccess", new { bookingId });
+                }
+                else if (paymentMethod == "card")
+                {
+                    var domain = $"{Request.Scheme}://{Request.Host}";
+                    var successUrl = $"{domain}/Payment/PaymentSuccess?bookingId={bookingId}&sessionId={{CHECKOUT_SESSION_ID}}";
+                    var cancelUrl = $"{domain}/Payment/PaymentCancel?bookingId={bookingId}";
+
+                    var totalAmount = await this.bookingService.GetBookingTotalAmount(bookingId);
+
+                    var session = this.stripeService.CreateStripeSession(
+                        bookingId,
+                        totalAmount,
+                        "BGN",
+                        successUrl,
+                        cancelUrl
+                    );
+
+                    return Redirect(session.Url);
+                }
+
+                return BadRequest(new { message = "Invalid payment method." });
             }
-            else if (paymentMethod == "card")
+            catch (Exception ex)
             {
-                // Initiate Stripe Payment Session
-                var domain = $"{Request.Scheme}://{Request.Host}";
-                var successUrl = $"{domain}/Payment/PaymentSuccess?bookingId={bookingId}&sessionId={{CHECKOUT_SESSION_ID}}";
-                var cancelUrl = $"{domain}/Payment/PaymentCancel?bookingId={bookingId}";
-
-                var totalAmount = await this.bookingService.GetBookingTotalAmount(bookingId);
-
-                var session = this.stripeService.CreateStripeSession(
-                bookingId,
-                    totalAmount,
-                    "BGN",
-                    successUrl,
-                    cancelUrl
-                );
-
-                return Redirect(session.Url);
+                return StatusCode(500, new { message = "An error occurred while processing the payment.", error = ex.Message });
             }
-
-            return BadRequest("An error occurr while proccessing the payment");
         }
 
         public async Task<IActionResult> PaymentSuccess(Guid bookingId, string? sessionId = null)
         {
-            if (string.IsNullOrEmpty(sessionId))
-            {
-                var isConfirmed = await this.bookingService.IsConfirmed(bookingId);
-                if (isConfirmed)
-                {
-                    ViewBag.BookingId = bookingId;
-                    return View();
-                }
-                return RedirectToAction(nameof(PaymentFailure), new { bookingId });
-            }
-
             try
             {
+                if (string.IsNullOrEmpty(sessionId))
+                {
+                    var isConfirmed = await this.bookingService.IsConfirmed(bookingId);
+                    if (isConfirmed)
+                    {
+                        ViewBag.BookingId = bookingId;
+                        return View();
+                    }
+                    return RedirectToAction(nameof(PaymentFailure), new { bookingId });
+                }
+
                 var service = new Stripe.Checkout.SessionService();
                 var session = service.Get(sessionId);
 
@@ -135,21 +148,27 @@ namespace HomeRent.Web.Controllers
                     ViewBag.BookingId = bookingId;
                     return View();
                 }
+
+                return RedirectToAction(nameof(PaymentFailure), new { bookingId });
             }
             catch (Exception ex)
             {
-                throw new InvalidDataException(ex.Message);
+                return StatusCode(500, new { message = "An error occurred while confirming the payment.", error = ex.Message });
             }
-
-            return RedirectToAction(nameof(PaymentFailure), new { bookingId });
         }
 
         [HttpGet]
         public IActionResult PaymentFailure(Guid bookingId)
         {
-            ViewBag.BookingId = bookingId;
-
-            return this.View();
+            try
+            {
+                ViewBag.BookingId = bookingId;
+                return this.View();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred while loading the payment failure page.", error = ex.Message });
+            }
         }
     }
 }

@@ -11,11 +11,10 @@ namespace HomeRent.Web.Controllers
     public class BookingController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;
-
         private readonly IBookingService bookingService;
 
         public BookingController(UserManager<ApplicationUser> userManager, 
-            IBookingService bookingService) 
+            IBookingService bookingService)
         {
             this.bookingService = bookingService;
             this.userManager = userManager;
@@ -24,60 +23,102 @@ namespace HomeRent.Web.Controllers
         [HttpPost]
         public IActionResult Create(CreateBookingDto bookingDto)
         {
-            return Ok(bookingDto);
+            try
+            {
+                return Ok(bookingDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred while creating the booking.", error = ex.Message });
+            }
         }
 
         [HttpGet]
         public async Task<IActionResult> GetPrice(Guid propertyId)
         {
-            decimal? pricePerNight = await this.bookingService.GetPropertyPriceAsync(propertyId);
-             
-            if (pricePerNight == null)
+            try
             {
-                return NotFound(new { message = "Property not found." });
-            }
+                decimal? pricePerNight = await this.bookingService.GetPropertyPriceAsync(propertyId);
 
-            return Json(new { pricePerNight });
+                if (pricePerNight == null)
+                {
+                    return NotFound(new { message = "Property not found." });
+                }
+
+                return Json(new { pricePerNight });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred while retrieving the price.", error = ex.Message });
+            }
         }
 
         [HttpGet]
         public async Task<IActionResult> GetBookedDates(Guid propertyId)
         {
-            var bookedDateRanges = await bookingService.GetBookedDateRanges(propertyId);
-
-            return Json(new { disable = bookedDateRanges });
+            try
+            {
+                var bookedDateRanges = await bookingService.GetBookedDateRanges(propertyId);
+                return Json(new { disable = bookedDateRanges });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred while retrieving booked dates.", error = ex.Message });
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateBooking(CreateBookingDto bookingDto)
         {
-            var user = await this.userManager.GetUserAsync(this.User);
-
-            var bookingId = await this.bookingService.CreateBookingAsync(user.Id, bookingDto);
-
-            if (bookingId == null)
+            try
             {
-                return BadRequest(new { message = "Failed to create the booking. " });
+                var user = await this.userManager.GetUserAsync(this.User);
+                if (user == null)
+                {
+                    return Unauthorized(new { message = "User not found." });
+                }
+
+                var bookingId = await this.bookingService.CreateBookingAsync(user.Id, bookingDto);
+
+                if (bookingId == null)
+                {
+                    return BadRequest(new { message = "Failed to create the booking." });
+                }
+
+                var redirectUrl = Url.Action("BookingOverview", "Payment", new { bookingId });
+
+                return Ok(redirectUrl);
             }
-
-            var redirectUrl = Url.Action("BookingOverview", "Payment", new { bookingId });
-
-            return Ok(redirectUrl);
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred while creating the booking.", error = ex.Message });
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> CancelBooking(Guid bookingId)
         {
-            var user = await this.userManager.GetUserAsync(this.User);
-
-            var isCanceled = await this.bookingService.CancelBookingAsync(bookingId, user.Id);
-
-            if (!isCanceled)
+            try
             {
-                return NotFound(new { message = "Booking not found or cannot be canceled." });
-            }
+                var user = await this.userManager.GetUserAsync(this.User);
+                if (user == null)
+                {
+                    return Unauthorized(new { message = "User not found." });
+                }
 
-            return RedirectToAction("Index", "Home");
+                var isCanceled = await this.bookingService.CancelBookingAsync(bookingId, user.Id);
+
+                if (!isCanceled)
+                {
+                    return NotFound(new { message = "Booking not found or cannot be canceled." });
+                }
+
+                return RedirectToAction("Index", "Home");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred while canceling the booking.", error = ex.Message });
+            }
         }
     }
 }
