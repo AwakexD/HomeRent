@@ -32,7 +32,10 @@
             @RenderBody()
             
             <!-- Footer -->
-            <partial name="_FooterPartial"/>
+            @if (ViewBag.HideFooter != true)
+            {
+                <partial name="_FooterPartial"/>
+            }
         </div>
     </div>
 
