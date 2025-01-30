@@ -13,6 +13,10 @@
         .Select((amenity, index) => new { amenity, index })
         .GroupBy(x => x.index / itemsPerColumn)
         .ToList();
+
+     var userEmail = User.Identity?.Name;
+     var ownerEmail = Model.Property.OwnerEmail;
+     bool isOwner = string.Equals(userEmail, ownerEmail, StringComparison.OrdinalIgnoreCase);
 }
 
 
@@ -238,7 +242,7 @@
                             }
                         </ul>
                     </div>
-                    @if (this.SignInManager.IsSignedIn(User))
+                    @if (this.SignInManager.IsSignedIn(User) && !isOwner)
                     {
                         <div class="wrap-form-comment">
                             <h5 class="text-black-2">Оставете ревю</h5>
@@ -293,27 +297,30 @@
                         </div>
 
                         @* Booking From *@
-                        <form id="booking-form" class="contact-form">
-                            <div class="ip-group">
-                                <input placeholder="Изберете дати" class="booking-calendar form-control">
-                            </div>
-                            <div class="ip-group">
-                                <input type="text" placeholder="Телефон" class="form-control">
-                            </div>
-                            <div class="ip-group">
-                                <input type="text" placeholder="Имейл" class="form-control">
-                            </div>
-                            <div class="ip-group">
-                                <textarea name="Message" rows="4" tabindex="4" placeholder="Съобщение до собственика" aria-required="true"></textarea>
-                            </div>
-                            <div class="ip-group">
-                                <h6 class="name" id="total-price">Обща цена · </h6>
-                            </div>
-                            <input type="hidden" id="start-date" name="CheckInDate"/>
-                            <input type="hidden" id="end-date" name="CheckOutDate"/>
-                            <input type="hidden" name="PropertyId" value="@Model.Property.Id"/>
-                            <button type="submit" class="tf-btn btn-view primary hover-btn-view w-100">Резервирай <span class="icon icon-arrow-right2"></span></button>
-                        </form>
+                        @if (!isOwner)
+                        {
+                            <form id="booking-form" class="contact-form">
+                                <div class="ip-group">
+                                    <input placeholder="Изберете дати" class="booking-calendar form-control">
+                                </div>
+                                <div class="ip-group">
+                                    <input type="text" placeholder="Телефон" class="form-control">
+                                </div>
+                                <div class="ip-group">
+                                    <input type="text" placeholder="Имейл" class="form-control">
+                                </div>
+                                <div class="ip-group">
+                                    <textarea name="Message" rows="4" tabindex="4" placeholder="Съобщение до собственика" aria-required="true"></textarea>
+                                </div>
+                                <div class="ip-group">
+                                    <h6 class="name" id="total-price">Обща цена · </h6>
+                                </div>
+                                <input type="hidden" id="start-date" name="CheckInDate"/>
+                                <input type="hidden" id="end-date" name="CheckOutDate"/>
+                                <input type="hidden" name="PropertyId" value="@Model.Property.Id"/>
+                                <button type="submit" class="tf-btn btn-view primary hover-btn-view w-100">Резервирай <span class="icon icon-arrow-right2"></span></button>
+                            </form>
+                        }
                     </div>
                 </div>
             </div>
