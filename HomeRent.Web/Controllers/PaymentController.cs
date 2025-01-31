@@ -46,6 +46,8 @@ namespace HomeRent.Web.Controllers
                     return NotFound(new { message = "Booking not found." });
                 }
 
+                ViewBag.HideFooter = true;
+
                 return this.View(viewModel);
             }
             catch (Exception ex)
@@ -124,6 +126,7 @@ namespace HomeRent.Web.Controllers
                     if (isConfirmed)
                     {
                         ViewBag.BookingId = bookingId;
+                        ViewBag.HideFooter = true;
                         return View();
                     }
                     return RedirectToAction(nameof(PaymentFailure), new { bookingId });
@@ -146,6 +149,7 @@ namespace HomeRent.Web.Controllers
                     await this.bookingService.SavePaymentAndConfirmBooking(bookingId, payment);
 
                     ViewBag.BookingId = bookingId;
+                    ViewBag.HideFooter = true;
                     return View();
                 }
 
@@ -163,6 +167,7 @@ namespace HomeRent.Web.Controllers
             try
             {
                 ViewBag.BookingId = bookingId;
+                ViewBag.HideFooter = true;
                 return this.View();
             }
             catch (Exception ex)

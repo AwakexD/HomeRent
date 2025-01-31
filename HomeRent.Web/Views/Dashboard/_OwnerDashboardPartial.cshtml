@@ -13,7 +13,7 @@
                 <span class="icon icon-listing"></span>
             </div>
             <div class="content-box">
-                <div class="title-count text-variant-1">Ваши обяви</div>
+                <div class="title-count text-variant-1">Oбяви</div>
                 <div class="box-count d-flex align-items-end">
                     <h3 class="fw-8">@Model.ListingsCount</h3>
                 </div>
@@ -25,7 +25,7 @@
                 <span class="icon icon-pending"></span>
             </div>
             <div class="content-box">
-                <div class="title-count text-variant-1">Наети</div>
+                <div class="title-count text-variant-1">Резервации</div>
                 <div class="box-count d-flex align-items-end">
                     <h3 class="fw-8">@Model.RentedProperties</h3>
                 </div>
@@ -36,7 +36,7 @@
                 <span class="icon icon-review"></span>
             </div>
             <div class="content-box">
-                <div class="title-count text-variant-1">Ревюта</div>
+                <div class="title-count text-variant-1">Средна оценка от ревюта</div>
                 <div class="d-flex align-items-end">
                     <h3 class="fw-8">@Model.AverageReviewRating.ToString("F2")</h3>
                 </div>
@@ -49,35 +49,12 @@
         <div class="col-xl-10" style="margin: auto;">
             <div class="widget-box-2 wd-listing">
                 <h5 class="title">Вашите обяви</h5>
-                <div class="wd-filter">
-                    <div class="ip-group icon-left">
-                        <input type="text" placeholder="Search">
-                        <span class="icon icon-search"></span>
-                    </div>
-                    <div class="ip-group icon">
-                        <input type="text" id="" class="icon" placeholder="From Date">
-                    </div>
-                    <div class="ip-group icon">
-                        <input type="text" id="" class="icon" placeholder="To Date">
-                    </div>
-                    <div class="ip-group">
-                        <div class="nice-select" tabindex="0">
-                            <span class="current">Select</span>
-                            <ul class="list">
-                                <li data-value="1" class="option selected">Select</li>
-                                <li data-value="2" class="option">Today</li>
-                                <li data-value="3" class="option">Yesterday</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
                 <div class="wrap-table">
                     <div class="table-responsive">
                         <table> 
                             <thead>
                                 <tr>
                                     <th>Обява</th>
-                                    <th>Статус</th>
                                     <th>Опции</th>
                                 </tr>
                             </thead>
@@ -98,26 +75,13 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <div class="status-wrap">
-                                                <a href="#" class="btn-status"> Свободно</a>
-                                            </div>
-                                        </td>
-                                        <td>
                                             <ul class="list-action">
                                                 <li>
-                                                    <a class="item">
+                                                    <a class="item" asp-action="Edit" asp-controller="Property" asp-route-id="@property.Id">
                                                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                             <path d="M11.2413 2.9915L12.366 1.86616C12.6005 1.63171 12.9184 1.5 13.25 1.5C13.5816 1.5 13.8995 1.63171 14.134 1.86616C14.3685 2.10062 14.5002 2.4186 14.5002 2.75016C14.5002 3.08173 14.3685 3.39971 14.134 3.63416L4.55467 13.2135C4.20222 13.5657 3.76758 13.8246 3.29 13.9668L1.5 14.5002L2.03333 12.7102C2.17552 12.2326 2.43442 11.7979 2.78667 11.4455L11.242 2.9915H11.2413ZM11.2413 2.9915L13 4.75016" stroke="#A3ABB0" stroke-linecap="round" stroke-linejoin="round"></path>
                                                         </svg>
                                                         Редакция
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a class="item">
-                                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M12.2427 12.2427C13.3679 11.1175 14.0001 9.59135 14.0001 8.00004C14.0001 6.40873 13.3679 4.8826 12.2427 3.75737C11.1175 2.63214 9.59135 2 8.00004 2C6.40873 2 4.8826 2.63214 3.75737 3.75737M12.2427 12.2427C11.1175 13.3679 9.59135 14.0001 8.00004 14.0001C6.40873 14.0001 4.8826 13.3679 3.75737 12.2427C2.63214 11.1175 2 9.59135 2 8.00004C2 6.40873 2.63214 4.8826 3.75737 3.75737M12.2427 12.2427L3.75737 3.75737" stroke="#A3ABB0" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                        </svg>
-                                                        Деактивиране
                                                     </a>
                                                 </li>
                                                 <li>

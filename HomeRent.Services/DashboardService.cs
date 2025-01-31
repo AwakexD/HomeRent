@@ -15,16 +15,19 @@ namespace HomeRent.Services
 
         private readonly IDeletableEntityRepository<Property> propertyRepository;
         private readonly IDeletableEntityRepository<Review> reviewRepository;
+        private readonly IDeletableEntityRepository<Booking> bookingReposiotry;
         public DashboardService(IMapper mapper, 
             IDeletableEntityRepository<Property> propertyRepository,
-            IDeletableEntityRepository<Review> reviewRepository)
+            IDeletableEntityRepository<Review> reviewRepository,
+            IDeletableEntityRepository<Booking> bookingReposiotry)
         {
             this.mapper = mapper;
             this.propertyRepository = propertyRepository;
             this.reviewRepository = reviewRepository;
+            this.bookingReposiotry = bookingReposiotry;
         }
 
-        public async Task<OwnerDashboardViewModel> GetOwenerDashboardVM(Guid userId)
+        public async Task<OwnerDashboardViewModel> GetOwnerDashboardVM(Guid userId)
         {
             var properties = await this.propertyRepository.AllAsNoTracking()
                 .Where(p => p.OwnerId == userId)
@@ -33,9 +36,9 @@ namespace HomeRent.Services
 
             int listingsCount = properties.Count();
 
-            // ToDO : Retrieve rented properties
-            // Bookings not working yet.
-            int rentedPropeties = 2;
+            var rentedPropeties = await this.bookingReposiotry.AllAsNoTracking()
+                .Where(b => b.Property.OwnerId == userId)
+                .CountAsync();
 
             double averageRating = 0;
 
@@ -59,9 +62,12 @@ namespace HomeRent.Services
 
         public async Task<TenantDashboardViewModel> GetTenantDashboardVM(Guid userId)
         {
-            // ToDO : Complete method
-            int bookingsCount = 0;
-            int favoritesCount = 0;
+            int bookingsCount = await this.bookingReposiotry.AllAsNoTracking()
+                .Where(b => b.TenantId == userId)
+                .CountAsync();
+
+            int favoritesCount = 2;
+            
             int reviewsCount = await this.reviewRepository.AllAsNoTracking()
                 .Where(r => r.TenantId == userId)
                 .CountAsync();
