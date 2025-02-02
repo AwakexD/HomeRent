@@ -80,7 +80,6 @@ async function handleFormSubmit(event) {
             body: JSON.stringify(data),
         });
 
-        // Redirect to the provided URL
         window.location.href = redirectUrl;
     } catch (error) {
         console.error("Failed to submit booking:", error);

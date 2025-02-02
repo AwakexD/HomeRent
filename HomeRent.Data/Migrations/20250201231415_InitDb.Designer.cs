@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HomeRent.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250122073230_PaymentIdFix")]
-    partial class PaymentIdFix
+    [Migration("20250201231415_InitDb")]
+    partial class InitDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -121,9 +121,7 @@ namespace HomeRent.Data.Migrations
 
                     b.HasIndex("IsDeleted");
 
-                    b.HasIndex("PaymentId")
-                        .IsUnique()
-                        .HasFilter("[PaymentId] IS NOT NULL");
+                    b.HasIndex("PaymentId");
 
                     b.HasIndex("PropertyId");
 
@@ -138,8 +136,12 @@ namespace HomeRent.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("AmountPaid")
+                    b.Property<decimal?>("AmountPaid")
+                        .IsRequired()
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("BookingId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -153,6 +155,9 @@ namespace HomeRent.Data.Migrations
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(30)
@@ -163,6 +168,8 @@ namespace HomeRent.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BookingId");
 
                     b.HasIndex("IsDeleted");
 
@@ -610,8 +617,8 @@ namespace HomeRent.Data.Migrations
             modelBuilder.Entity("HomeRent.Data.Models.Entities.Booking", b =>
                 {
                     b.HasOne("HomeRent.Data.Models.Entities.Payment", "Payment")
-                        .WithOne("Booking")
-                        .HasForeignKey("HomeRent.Data.Models.Entities.Booking", "PaymentId");
+                        .WithMany()
+                        .HasForeignKey("PaymentId");
 
                     b.HasOne("HomeRent.Data.Models.Entities.Property", "Property")
                         .WithMany("Bookings")
@@ -630,6 +637,17 @@ namespace HomeRent.Data.Migrations
                     b.Navigation("Property");
 
                     b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("HomeRent.Data.Models.Entities.Payment", b =>
+                {
+                    b.HasOne("HomeRent.Data.Models.Entities.Booking", "Booking")
+                        .WithMany()
+                        .HasForeignKey("BookingId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Booking");
                 });
 
             modelBuilder.Entity("HomeRent.Data.Models.Entities.Property", b =>
@@ -729,12 +747,6 @@ namespace HomeRent.Data.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("HomeRent.Data.Models.Entities.Payment", b =>
-                {
-                    b.Navigation("Booking")
                         .IsRequired();
                 });
 

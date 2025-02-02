@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using CloudinaryDotNet;
 using Ganss.Xss;
 using Stripe;
+using System.Globalization;
 
 namespace HomeRent.Web
 {
@@ -24,6 +25,11 @@ namespace HomeRent.Web
             ConfigureServices(builder.Services, builder.Configuration);
 
             builder.Services.AddAutoMapper(typeof(Program));
+
+            // Set default culture to Bulgarian (bg-BG)
+            var cultureInfo = new CultureInfo("bg-BG");
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
             var app = builder.Build();
             Configure(app);
