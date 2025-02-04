@@ -1,4 +1,6 @@
-﻿namespace HomeRent.Models.ViewModels.Dashboard
+﻿using HomeRent.Models.ViewModels.Booking;
+
+namespace HomeRent.Models.ViewModels.Dashboard
 {
     public class TenantDashboardViewModel
     {
@@ -8,7 +10,6 @@
         
         public int ReviewsCount { get; set; }
 
-        // ToDO : Display tenant bookings
-        // IEnumerable<int> Bookings { get; set; }
+        public IEnumerable<BookingTableViewModel> Bookings { get; set; }
     }
 }

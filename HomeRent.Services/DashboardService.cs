@@ -2,6 +2,7 @@
 using HomeRent.Data.Models.Entities;
 using HomeRent.Data.Repositories.Contracts;
 using HomeRent.Models.Shared;
+using HomeRent.Models.ViewModels.Booking;
 using HomeRent.Models.ViewModels.Dashboard;
 using HomeRent.Services.Contracts;
 using Microsoft.EntityFrameworkCore;
@@ -80,6 +81,7 @@ namespace HomeRent.Services
                 BookingsCount = bookingsCount,
                 FavoritesCount = favoritesCount,
                 ReviewsCount = reviewsCount,
+                Bookings = await this.GetTenantBookings(userId)
             };
 
             return viewModel;
@@ -93,6 +95,16 @@ namespace HomeRent.Services
                 .ToListAsync();
 
             return this.mapper.Map<IEnumerable<SinglePropertyViewModel>>(properties);
+        }
+
+        private async Task<IEnumerable<BookingTableViewModel>> GetTenantBookings(Guid userId)
+        {
+            var bookings = await this.bookingRepository.AllAsNoTrackingWithDeleted()
+                .Include(b => b.Property)
+                .Include(b => b.Property.Owner)
+                .ToListAsync();
+
+            return this.mapper.Map<IEnumerable<BookingTableViewModel>>(bookings);
         }
     }
 }

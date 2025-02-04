@@ -1,22 +1,24 @@
 ﻿using HomeRent.Data.Models.User;
 using HomeRent.Models.ViewModels.Dashboard;
 using HomeRent.Services.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HomeRent.Web.Controllers
 {
+    [Authorize]
     public class DashboardController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;
 
-        private readonly IDashboardService dashbaordService;
+        private readonly IDashboardService dashboardService;
 
         public DashboardController(UserManager<ApplicationUser> userManager,
             IDashboardService dashboardService)
         {
             this.userManager = userManager;
-            this.dashbaordService = dashboardService;
+            this.dashboardService = dashboardService;
         }
 
         public async Task<IActionResult> Index()
@@ -34,11 +36,11 @@ namespace HomeRent.Web.Controllers
 
             if (isOwner)
             {
-                viewModel.OwnerDashboard = await this.dashbaordService.GetOwnerDashboardVm(currentUser.Id);
+                viewModel.OwnerDashboard = await this.dashboardService.GetOwnerDashboardVm(currentUser.Id);
             }
             else if (isTenant)
             {
-                viewModel.TenantDashboard = await this.dashbaordService.GetTenantDashboardVm(currentUser.Id);
+                viewModel.TenantDashboard = await this.dashboardService.GetTenantDashboardVm(currentUser.Id);
             }
 
             ViewBag.HideFooter = true;

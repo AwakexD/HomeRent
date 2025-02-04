@@ -65,6 +65,10 @@ namespace HomeRent.Web.Mappings
                 .ForMember(dest => dest.PropertyAddress, opt => opt.MapFrom(b => b.Property.Address))
                 .ForMember(dest => dest.OwnerPhone, opt => opt.MapFrom(b => b.Property.Owner.PhoneNumber))
                 .ForMember(dest => dest.OwnerEmail, opt => opt.MapFrom(b => b.Property.Owner.Email));
+
+            CreateMap<Booking, BookingTableViewModel>()
+                .ForMember(dest => dest.PropertyTitle, opt => opt.MapFrom(b => b.Property.Title))
+                .ForMember(dest => dest.PropertyImage, opt => opt.MapFrom(b => b.Property.Images.Select(i => i.ImageUrl)));
         }
     }
 }
