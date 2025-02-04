@@ -34,11 +34,11 @@ namespace HomeRent.Web.Controllers
 
             if (isOwner)
             {
-                viewModel.OwnerDashboard = await this.dashbaordService.GetOwnerDashboardVM(currentUser.Id);
+                viewModel.OwnerDashboard = await this.dashbaordService.GetOwnerDashboardVm(currentUser.Id);
             }
             else if (isTenant)
             {
-                viewModel.TenantDashboard = await this.dashbaordService.GetTenantDashboardVM(currentUser.Id);
+                viewModel.TenantDashboard = await this.dashbaordService.GetTenantDashboardVm(currentUser.Id);
             }
 
             ViewBag.HideFooter = true;

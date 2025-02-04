@@ -4,8 +4,8 @@ namespace HomeRent.Services.Contracts
 {
     public interface IDashboardService
     {
-        Task<OwnerDashboardViewModel> GetOwnerDashboardVM(Guid userId);
+        Task<OwnerDashboardViewModel> GetOwnerDashboardVm(Guid userId);
 
-        Task<TenantDashboardViewModel> GetTenantDashboardVM(Guid userId);
+        Task<TenantDashboardViewModel> GetTenantDashboardVm(Guid userId);
     }
 }
