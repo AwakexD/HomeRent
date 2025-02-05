@@ -68,7 +68,7 @@ namespace HomeRent.Web.Mappings
 
             CreateMap<Booking, BookingTableViewModel>()
                 .ForMember(dest => dest.PropertyTitle, opt => opt.MapFrom(b => b.Property.Title))
-                .ForMember(dest => dest.PropertyImage, opt => opt.MapFrom(b => b.Property.Images.Select(i => i.ImageUrl)));
+                .ForMember(dest => dest.PropertyImage, opt => opt.MapFrom(b => b.Property.Images.FirstOrDefault().ImageUrl));
         }
     }
 }

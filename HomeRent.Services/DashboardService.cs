@@ -69,7 +69,7 @@ namespace HomeRent.Services
                 .Where(b => b.TenantId == userId)
                 .CountAsync();
 
-            // TODO: Replace hardcoded value with dynamic calculation.
+            // TODO: Favorites count - Replace hardcoded value with dynamic calculation.
             int favoritesCount = 2;
             
             int reviewsCount = await this.reviewRepository.AllAsNoTracking()
@@ -102,6 +102,7 @@ namespace HomeRent.Services
             var bookings = await this.bookingRepository.AllAsNoTrackingWithDeleted()
                 .Include(b => b.Property)
                 .Include(b => b.Property.Owner)
+                .Include(b => b.Property.Images)
                 .ToListAsync();
 
             return this.mapper.Map<IEnumerable<BookingTableViewModel>>(bookings);
