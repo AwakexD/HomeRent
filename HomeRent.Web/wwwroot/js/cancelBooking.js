@@ -1,6 +1,8 @@
 ﻿document.querySelector(".cancel-booking").addEventListener("click", function (event) {
     event.preventDefault();
 
+    console.log("Click")
+
     const antiForgeryToken = document.querySelector("[name='__RequestVerificationToken']").value;
 
     const bookingId = this.getAttribute("data-booking-id");
@@ -13,7 +15,7 @@
         }
     })
         .then(response => {
-           // window.location.href = "/Dashboard/Index";
+           window.location.href = "/Dashboard/Index";
         })
         .catch(error => console.error("Error:", error));
 });
