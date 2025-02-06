@@ -93,7 +93,7 @@ namespace HomeRent.Web.Controllers
                 {
                     var domain = $"{Request.Scheme}://{Request.Host}";
                     var successUrl = $"{domain}/Payment/PaymentSuccess?bookingId={bookingId}&sessionId={{CHECKOUT_SESSION_ID}}";
-                    var cancelUrl = $"{domain}/Payment/PaymentCancel?bookingId={bookingId}";
+                    var cancelUrl = $"{domain}/Payment/CancelBooking?bookingId={bookingId}";
 
                     var totalAmount = await this.bookingService.GetBookingTotalAmount(bookingId);
 
