@@ -60,7 +60,7 @@
                         <!-- Login Buttons -->
                         <partial name="_LoginPartial"/>
                         
-                        @if (SignInManager.IsSignedIn(User))
+                        @if (SignInManager.IsSignedIn(this.User) && this.User.IsInRole("Owner"))
                         {
                             <div class="flat-bt-top">
                                 <a class="tf-btn primary" asp-controller="Property" asp-action="Create">
@@ -94,7 +94,7 @@
                    
                 </div>
                 <div class="button-mobi-sell">
-                    @if (this.SignInManager.IsSignedIn(this.User))
+                    @if (SignInManager.IsSignedIn(User) && this.User.IsInRole("Owner"))
                     {
                         <a asp-controller="Property" asp-action="Create" class="tf-btn primary">Добавяне на обява</a>
                     }
