@@ -1,8 +1,11 @@
-﻿using HomeRent.Data.Models.User;
+﻿using CloudinaryDotNet.Actions;
+using HomeRent.Data.Models.User;
 using HomeRent.Models.DTOs.Booking;
+using HomeRent.Models.ViewModels;
 using HomeRent.Services.Contracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using HomeRent.Common;
 
 namespace HomeRent.Web.Controllers
 {
@@ -20,19 +23,6 @@ namespace HomeRent.Web.Controllers
             this.userManager = userManager;
         }
 
-        [HttpPost]
-        public IActionResult Create(CreateBookingDto bookingDto)
-        {
-            try
-            {
-                return Ok(bookingDto);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = "An error occurred while creating the booking.", error = ex.Message });
-            }
-        }
-
         [HttpGet]
         public async Task<IActionResult> GetPrice(Guid propertyId)
         {
@@ -42,14 +32,14 @@ namespace HomeRent.Web.Controllers
 
                 if (pricePerNight == null)
                 {
-                    return NotFound(new { message = "Property not found." });
+                    return NotFound(new { message = ErrorConstants.PropertyNotFoundError });
                 }
 
                 return Json(new { pricePerNight });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { message = "An error occurred while retrieving the price.", error = ex.Message });
+                return StatusCode(500, new { message = ex.Message });
             }
         }
 
@@ -63,7 +53,7 @@ namespace HomeRent.Web.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { message = "An error occurred while retrieving booked dates.", error = ex.Message });
+                return StatusCode(500, new { message = ex.Message });
             }
         }
 
@@ -75,14 +65,14 @@ namespace HomeRent.Web.Controllers
                 var user = await this.userManager.GetUserAsync(this.User);
                 if (user == null)
                 {
-                    return Unauthorized(new { message = "User not found." });
+                    return Unauthorized(new { message = ErrorConstants.NotFoundUserError });
                 }
 
                 var bookingId = await this.bookingService.CreateBookingAsync(user.Id, bookingDto);
 
                 if (bookingId == null)
                 {
-                    return BadRequest(new { message = "Failed to create the booking." });
+                    return NotFound( new { message = ErrorConstants.CreateBookingError });
                 }
 
                 var redirectUrl = Url.Action("BookingOverview", "Payment", new { bookingId });
@@ -91,7 +81,7 @@ namespace HomeRent.Web.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { message = "An error occurred while creating the booking.", error = ex.Message });
+                return StatusCode(500, new { message = ex.Message });
             }
         }
 
@@ -103,21 +93,21 @@ namespace HomeRent.Web.Controllers
                 var user = await this.userManager.GetUserAsync(this.User);
                 if (user == null)
                 {
-                    return Unauthorized(new { message = "User not found." });
+                    return Unauthorized(new { message = ErrorConstants.NotFoundUserError });
                 }
 
                 var isCanceled = await this.bookingService.CancelBookingAsync(bookingId, user.Id);
 
                 if (!isCanceled)
                 {
-                    return NotFound(new { message = "Booking not found or cannot be canceled." });
+                    return NotFound(new { message = ErrorConstants.CancelBookingError });
                 }
 
                 return RedirectToAction("Index", "Home");
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { message = "An error occurred while canceling the booking.", error = ex.Message });
+                return StatusCode(500, new { message = ex.Message });
             }
         }
     }

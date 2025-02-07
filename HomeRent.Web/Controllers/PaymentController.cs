@@ -1,5 +1,7 @@
-﻿using HomeRent.Data.Models.Entities;
+﻿using HomeRent.Common;
+using HomeRent.Data.Models.Entities;
 using HomeRent.Data.Models.User;
+using HomeRent.Models.ViewModels;
 using HomeRent.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -31,19 +33,19 @@ namespace HomeRent.Web.Controllers
 
                 if (isConfirmed)
                 {
-                    return this.BadRequest(new { message = "Booking is already confirmed." });
+                    return View("Error", new ErrorViewModel { ErrorMessage = ErrorConstants.BookingAlreadyConfirmedError });
                 }
 
                 var user = await this.userManager.GetUserAsync(this.User);
                 if (user == null)
                 {
-                    return Unauthorized(new { message = "User not found." });
+                    return View("Error", new ErrorViewModel { ErrorMessage = ErrorConstants.UserNotFoundError });
                 }
 
                 var viewModel = await this.bookingService.GetBookingOverviewAsync(bookingId, user.Id);
                 if (viewModel == null)
                 {
-                    return NotFound(new { message = "Booking not found." });
+                    return View("Error", new ErrorViewModel { ErrorMessage = ErrorConstants.BookingNotFoundError });
                 }
 
                 ViewBag.HideFooter = true;
@@ -52,7 +54,7 @@ namespace HomeRent.Web.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { message = "An error occurred while retrieving the booking overview.", error = ex.Message });
+                return View("Error", new ErrorViewModel { ErrorMessage = ErrorConstants.BookingOverviewRetrieveError });
             }
         }
 
@@ -66,7 +68,7 @@ namespace HomeRent.Web.Controllers
                     var user = await this.userManager.GetUserAsync(User);
                     if (user == null)
                     {
-                        return Unauthorized(new { message = "User not found." });
+                        return View("Error", new ErrorViewModel { ErrorMessage = ErrorConstants.UserNotFoundError });
                     }
 
                     var viewModel = await this.bookingService.GetBookingOverviewAsync(bookingId, user.Id);
@@ -108,11 +110,11 @@ namespace HomeRent.Web.Controllers
                     return Redirect(session.Url);
                 }
 
-                return BadRequest(new { message = "Invalid payment method." });
+                return View("Error", new ErrorViewModel { ErrorMessage = ErrorConstants.InvalidPaymentMethodError });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { message = "An error occurred while processing the payment.", error = ex.Message });
+                return View("Error", new ErrorViewModel { ErrorMessage = ErrorConstants.PaymentProcessError });
             }
         }
 
@@ -157,7 +159,7 @@ namespace HomeRent.Web.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { message = "An error occurred while confirming the payment.", error = ex.Message });
+                return View("Error", new ErrorViewModel { ErrorMessage = ErrorConstants.PaymentConfirmationError });
             }
         }
 
@@ -172,7 +174,7 @@ namespace HomeRent.Web.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { message = "An error occurred while loading the payment failure page.", error = ex.Message });
+                return View("Error", new ErrorViewModel { ErrorMessage = ErrorConstants.PaymentFailurePageError });
             }
         }
     }

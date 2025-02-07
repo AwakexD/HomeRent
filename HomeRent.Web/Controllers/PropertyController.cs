@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using HomeRent.Data.Models.User;
+﻿using HomeRent.Data.Models.User;
 using HomeRent.Models.DTOs.Property;
 using HomeRent.Models.Shared;
 using HomeRent.Models.ViewModels.Property;
@@ -7,7 +6,6 @@ using HomeRent.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HomeRent.Web.Controllers
 {
@@ -49,7 +47,7 @@ namespace HomeRent.Web.Controllers
             return this.View(viewModel);
         }
 
-        [Authorize]
+        [Authorize(Roles = "Owner")]
         public async Task<IActionResult> Create()
         {
             var viewModel = new CreatePropertyViewModel()
@@ -58,11 +56,12 @@ namespace HomeRent.Web.Controllers
                 Amenities = await this.propertyStaticDataService.GetAmenitiesSelectList(),
             };
 
+            ViewBag.HideFooter = true;
             return this.View(viewModel);
         }
         
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Owner")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreatePropertyViewModel inputModel)
         {

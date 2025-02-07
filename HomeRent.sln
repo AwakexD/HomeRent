@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HomeRent.Data", "HomeRent.D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HomeRent.Services", "HomeRent.Services\HomeRent.Services.csproj", "{FB2A205D-CC56-4066-AE04-DA56CAEB9FFC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeRent.Models", "HomeRent.Models\HomeRent.Models.csproj", "{F41E2D78-1158-4087-AFA0-4FD7710614F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HomeRent.Models", "HomeRent.Models\HomeRent.Models.csproj", "{F41E2D78-1158-4087-AFA0-4FD7710614F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeRent.Common", "HomeRent.Common\HomeRent.Common.csproj", "{6EA29DA5-4CC4-4DF5-845C-B296E870D9CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{F41E2D78-1158-4087-AFA0-4FD7710614F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F41E2D78-1158-4087-AFA0-4FD7710614F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F41E2D78-1158-4087-AFA0-4FD7710614F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EA29DA5-4CC4-4DF5-845C-B296E870D9CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EA29DA5-4CC4-4DF5-845C-B296E870D9CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EA29DA5-4CC4-4DF5-845C-B296E870D9CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EA29DA5-4CC4-4DF5-845C-B296E870D9CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
