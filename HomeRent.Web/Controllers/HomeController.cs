@@ -20,14 +20,21 @@ namespace HomeRent.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var viewModel = new HomeIndexViewModel()
+            try
             {
-                Properties = await this.propertyService.GetMostRecentListingsAsync(),
-                PropertyTypes = await this.propertyStaticDataService.GetPropertyTypesSelectList(),
-                Amenities = await this.propertyStaticDataService.GetAmenitiesSelectList()
-            };
-
-            return View(viewModel);
+                var viewModel = new HomeIndexViewModel()
+                {
+                    Properties = await this.propertyService.GetMostRecentListingsAsync(),
+                    PropertyTypes = await this.propertyStaticDataService.GetPropertyTypesSelectList(),
+                    Amenities = await this.propertyStaticDataService.GetAmenitiesSelectList()
+                };
+                
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                return View("Error");
+            }
         }
 
         public IActionResult Privacy()

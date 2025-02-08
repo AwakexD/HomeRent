@@ -26,5 +26,15 @@
         // Property errors
         public static string PropertyNotFoundError = "Обявата не беше намерена";
 
+        // Review errors 
+        public static string ReviewCreateError = "Възникна грешка при създаването на ревю.";
+
+        // Property errors
+        public static string PropertyListingsRetrieveError = "Възникна грешка при извличането на списъка с имоти.";
+        public static string PropertyCreateRetrieveError = "Възникна грешка при извличането на данните за създаване на имот.";
+        public static string PropertyCreateError = "Възникна грешка при създаването на имота.";
+        public static string PropertyDetailsRetrieveError = "Възникна грешка при извличането на детайлите на имота.";
+        public static string PropertyEditRetrieveError = "Възникна грешка при извличането на данните за редактиране на имота.";
+        public static string PropertyEditUpdateError = "Възникна грешка при актуализирането на имота.";
     }
 }

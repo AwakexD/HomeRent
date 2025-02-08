@@ -86,7 +86,7 @@
                                                                 @foreach (var amenity in Model.Amenities)
                                                                 {
                                                                     <fieldset class="amenities-item">
-                                                                        <input type="checkbox" value="@amenity.Id" name="AmenityIds[]" id="amenity@amenity.Id" class="tf-checkbox style-1">
+                                                                        <input type="checkbox" value="@amenity.Id" name="AmenityIds" id="amenity@amenity.Id" class="tf-checkbox style-1">
                                                                         <i class="@amenity.IconClass"></i>
                                                                         <label name="Property.AmenityIds">@amenity.Name</label>
                                                                     </fieldset>

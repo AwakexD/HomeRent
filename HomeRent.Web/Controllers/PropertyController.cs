@@ -1,6 +1,8 @@
-﻿using HomeRent.Data.Models.User;
+﻿using HomeRent.Common;
+using HomeRent.Data.Models.User;
 using HomeRent.Models.DTOs.Property;
 using HomeRent.Models.Shared;
+using HomeRent.Models.ViewModels;
 using HomeRent.Models.ViewModels.Property;
 using HomeRent.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
@@ -27,37 +29,54 @@ namespace HomeRent.Web.Controllers
             this.reviewService = reviewService;
         }
 
+        [HttpGet]
         public async Task<IActionResult> All([FromQuery] PropertyQueryModel query)
         {
-            var (propertiesList, listingsCount) = await this.propertyService.GetListingsAsync(query);
-
-            var viewModel = new PropertyAllViewModel()
+            try
             {
-                Properties = propertiesList,
-                PropertyTypes = await this.propertyStaticDataService.GetPropertyTypesSelectList(),
-                Amenities = await this.propertyStaticDataService.GetAmenitiesSelectList(),
-                Paging = new PagingViewModel()
+                var (propertiesList, listingsCount) = await propertyService.GetListingsAsync(query);
+
+                var viewModel = new PropertyAllViewModel()
                 {
-                    PageNumber = query.Page,
-                    ListingCount = listingsCount,
-                    ItemsPerPage = query.ItemsPerPage,
-                    QueryParameters = this.GenerateQueryParameters(query)
-                }
-            };
-            return this.View(viewModel);
+                    Properties = propertiesList,
+                    PropertyTypes = await propertyStaticDataService.GetPropertyTypesSelectList(),
+                    Amenities = await propertyStaticDataService.GetAmenitiesSelectList(),
+                    Paging = new PagingViewModel()
+                    {
+                        PageNumber = query.Page,
+                        ListingCount = listingsCount,
+                        ItemsPerPage = query.ItemsPerPage,
+                        QueryParameters = GenerateQueryParameters(query)
+                    }
+                };
+
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new ErrorViewModel { ErrorMessage = ErrorConstants.PropertyListingsRetrieveError });
+            }
         }
 
+        [HttpGet]
         [Authorize(Roles = "Owner")]
         public async Task<IActionResult> Create()
         {
-            var viewModel = new CreatePropertyViewModel()
+            try
             {
-                PropertyTypes = await this.propertyStaticDataService.GetPropertyTypesSelectList(),
-                Amenities = await this.propertyStaticDataService.GetAmenitiesSelectList(),
-            };
+                var viewModel = new CreatePropertyViewModel()
+                {
+                    PropertyTypes = await propertyStaticDataService.GetPropertyTypesSelectList(),
+                    Amenities = await propertyStaticDataService.GetAmenitiesSelectList(),
+                };
 
-            ViewBag.HideFooter = true;
-            return this.View(viewModel);
+                ViewBag.HideFooter = true;
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new ErrorViewModel { ErrorMessage = ErrorConstants.PropertyCreateRetrieveError });
+            }
         }
         
         [HttpPost]
@@ -65,63 +84,89 @@ namespace HomeRent.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreatePropertyViewModel inputModel)
         {
-            if (!this.ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                inputModel.PropertyTypes = await this.propertyStaticDataService.GetPropertyTypesSelectList();
-                inputModel.Amenities = await this.propertyStaticDataService.GetAmenitiesSelectList();
+                inputModel.PropertyTypes = await propertyStaticDataService.GetPropertyTypesSelectList();
+                inputModel.Amenities = await propertyStaticDataService.GetAmenitiesSelectList();
 
-                return this.View(inputModel);
+                return View(inputModel);
             }
 
-            var user = await this.userManager.GetUserAsync(User);
+            var user = await userManager.GetUserAsync(User);
 
             try
             {
-                await this.propertyService.CreatePropertyAsync(user.Id, inputModel.Property);
+                await propertyService.CreatePropertyAsync(user.Id, inputModel.Property);
 
-                return this.RedirectToAction(nameof(All));
+                return RedirectToAction(nameof(All));
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return this.BadRequest(e.Message);
+                return View("Error", new ErrorViewModel { ErrorMessage = ErrorConstants.PropertyCreateError });
             }
         }
 
+        [HttpGet]
         public async Task<IActionResult> Details(string id)
         {
-            var viewModel = new PropertyDetailsViewModel()
+            try
             {
-                Property = await this.propertyService.GetPropertyDetails(new Guid(id)),
-                Reviews = await this.reviewService.GetPropertyReviewsAsync(new Guid(id)),
-            };
+                var propertyId = new Guid(id);
 
-            return this.View(viewModel);
+                var viewModel = new PropertyDetailsViewModel()
+                {
+                    Property = await propertyService.GetPropertyDetails(propertyId),
+                    Reviews = await reviewService.GetPropertyReviewsAsync(propertyId),
+                };
+
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new ErrorViewModel { ErrorMessage = ErrorConstants.PropertyDetailsRetrieveError });
+            }
         }
 
-        [Authorize]
+        [HttpGet]
+        [Authorize(Roles = "Owner")]
         public async Task<IActionResult> Edit(string id)
         {
-            var user = await this.userManager.GetUserAsync(User);
-
-            var viewModel = new CreatePropertyViewModel()
+            try
             {
-                Property = await this.propertyService.GetPropertyEditDataAsync(new Guid(id), user.Id),
-                PropertyTypes = await this.propertyStaticDataService.GetPropertyTypesSelectList(),
-                Amenities = await this.propertyStaticDataService.GetAmenitiesSelectList()
-            };
+                var user = await userManager.GetUserAsync(User);
+                var propertyId = new Guid(id);
 
-            return this.View(viewModel);
+                var viewModel = new CreatePropertyViewModel()
+                {
+                    Property = await propertyService.GetPropertyEditDataAsync(propertyId, user.Id),
+                    PropertyTypes = await propertyStaticDataService.GetPropertyTypesSelectList(),
+                    Amenities = await propertyStaticDataService.GetAmenitiesSelectList()
+                };
+
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new ErrorViewModel { ErrorMessage = ErrorConstants.PropertyEditRetrieveError });
+            }
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Owner")]
         public async Task<IActionResult> Edit(CreatePropertyDto updatedPropertyDto)
         {
-            var user = await this.userManager.GetUserAsync(User);
+            try
+            {
+                var user = await userManager.GetUserAsync(User);
 
-            await this.propertyService.UpdatePropertyAsync(updatedPropertyDto.Id, user.Id, updatedPropertyDto);
+                await propertyService.UpdatePropertyAsync(updatedPropertyDto.Id, user.Id, updatedPropertyDto);
 
-            return this.RedirectToAction(nameof(All));
+                return RedirectToAction(nameof(All));
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new ErrorViewModel { ErrorMessage = ErrorConstants.PropertyEditUpdateError });
+            }
         }
 
         private Dictionary<string, string> GenerateQueryParameters(PropertyQueryModel queryModel)

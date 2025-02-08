@@ -30,6 +30,6 @@ namespace HomeRent.Models.Shared
 
         public int ItemsPerPage { get; set; } = 3;
 
-        public IEnumerable<int> AmenityIds { get; set; } = Enumerable.Empty<int>();
+        public IEnumerable<int> AmenityIds { get; set; } = new HashSet<int>();
     }
 }

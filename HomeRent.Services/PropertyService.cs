@@ -85,7 +85,7 @@ namespace HomeRent.Services
 
             if (query.AmenityIds?.Any() == true)
             {
-                queryable = queryable.Where(p => query.AmenityIds.All(a => p.Amenities.Any(pa => pa.Id == a)));
+                queryable = queryable.Where(p => p.Amenities.Any(q => query.AmenityIds.Contains(q.Id)));
             }
 
             var properties = await queryable
