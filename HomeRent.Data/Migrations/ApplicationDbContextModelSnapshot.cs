@@ -271,8 +271,9 @@ namespace HomeRent.Data.Migrations
                     b.Property<Guid>("PropertyId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("isMainImage")
-                        .HasColumnType("bit");
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

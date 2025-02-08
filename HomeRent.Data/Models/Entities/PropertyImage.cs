@@ -10,11 +10,11 @@ namespace HomeRent.Data.Models.Entities
         [Required]
         public string ImageUrl { get; set; }
 
+        public string PublicId { get; set; }
+
         [Required]
         [ForeignKey(nameof(Property))]
         public Guid PropertyId { get; set; }
-
-        public bool isMainImage { get; set; }
 
         public Property Property { get; set; } = null;
     }
