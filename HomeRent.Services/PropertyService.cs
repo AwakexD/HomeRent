@@ -127,11 +127,18 @@ namespace HomeRent.Services
                 .Where(a => propertyDto.AmenityIds.Contains(a.Id))
                 .ToListAsync();
 
-            foreach (var imageFile in propertyDto.UploadedImages)
-            {
-                var url = await this.cloudinaryService.UploadImageAsync(imageFile);
 
-                property.Images.Add(new PropertyImage() { ImageUrl = url});
+            var uploadResults = await Task.WhenAll(
+                propertyDto.UploadedImages.Select(imageFile => this.cloudinaryService.UploadImageAsync(imageFile))
+            );
+
+            foreach (var result in uploadResults)
+            {
+               property.Images.Add(new PropertyImage()
+               {
+                   ImageUrl = result.secureUrl,
+                   PublicId = result.publicId,
+               });
             }
 
             property.Amenities = selectedAmenities;

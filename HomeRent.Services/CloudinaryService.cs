@@ -15,7 +15,7 @@ namespace HomeRent.Services
             this.cloudinary = cloudinary;
         }
 
-        public async Task<string> UploadImageAsync(IFormFile imageFile)
+        public async Task<(string secureUrl, string publicId)> UploadImageAsync(IFormFile imageFile)
         {
             byte[] imageBytes = await GetBytes(imageFile);
             string fileName = imageFile.FileName;
@@ -32,7 +32,8 @@ namespace HomeRent.Services
             };
 
             var uploadResponse = await this.cloudinary.UploadAsync(uploadParams);
-            return uploadResponse.SecureUrl.ToString();
+
+            return (uploadResponse.SecureUrl.ToString(), uploadResponse.PublicId);
         }
 
         public async Task<bool> DeleteImageAsync(List<string> imagePublicIds)
