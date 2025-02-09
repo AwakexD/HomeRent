@@ -22,8 +22,8 @@ namespace HomeRent.Web.Mappings
             CreateMap<Property, CreatePropertyDto>()
                 .ForMember(dest => dest.AmenityIds, opt =>
                     opt.MapFrom(p => p.Amenities.Select(a => a.Id)))
-                .ForMember(dest => dest.UploadedImagesUrls, opt =>
-                    opt.MapFrom(p => p.Images.Select(i => i.ImageUrl)));
+                .ForMember(dest => dest.UploadedImagesData, opt =>
+                    opt.MapFrom(p => p.Images.Select(i => new UploadedImage { Url = i.ImageUrl, PublicId = i.PublicId})));
 
             CreateMap<Property, PropertyListItemViewModel>()
                 .ForMember(dest => dest.Description, opt => 

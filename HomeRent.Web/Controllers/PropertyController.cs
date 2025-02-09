@@ -4,6 +4,7 @@ using HomeRent.Models.DTOs.Property;
 using HomeRent.Models.Shared;
 using HomeRent.Models.ViewModels;
 using HomeRent.Models.ViewModels.Property;
+using HomeRent.Services;
 using HomeRent.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -14,19 +15,23 @@ namespace HomeRent.Web.Controllers
     public class PropertyController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;
+
         private readonly IPropertyService propertyService;
         private readonly IPropertyStaticDataService propertyStaticDataService;
         private readonly IReviewService reviewService;
+        private readonly ICloudinaryService cloudinaryService;
 
         public PropertyController(UserManager<ApplicationUser> userManager, 
             IPropertyService propertyService,
             IPropertyStaticDataService propertyStaticDataService,
-            IReviewService reviewService)
+            IReviewService reviewService,
+            ICloudinaryService cloudinaryService)
         {
             this.userManager = userManager;
             this.propertyService = propertyService;
             this.propertyStaticDataService = propertyStaticDataService;
             this.reviewService = reviewService;
+            this.cloudinaryService = cloudinaryService;
         }
 
         [HttpGet]
@@ -166,7 +171,24 @@ namespace HomeRent.Web.Controllers
             catch (Exception ex)
             {
                 return View("Error", new ErrorViewModel { ErrorMessage = ErrorConstants.PropertyEditUpdateError });
+            } 
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeletePhoto([FromBody] DeleteImageRequest request)
+        {
+            if (request == null || string.IsNullOrEmpty(request.PublicId))
+            {
+                return Json(new { success = false, message = "Invalid image data." });
             }
+
+            var result = await this.propertyService.DeletePropertyImageAsync(request.PropertyId, request.PublicId);
+            if (result)
+            {
+                return Json(new { success = true });
+            }
+
+            return Json(new { success = false, message = "Failed to delete image." });
         }
 
         private Dictionary<string, string> GenerateQueryParameters(PropertyQueryModel queryModel)

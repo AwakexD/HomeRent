@@ -19,13 +19,15 @@ namespace HomeRent.Services
         private readonly IDeletableEntityRepository<Property> propertyRepository;
         private readonly IDeletableEntityRepository<Amenity> amenityRepository;
         private readonly IDeletableEntityRepository<PropertyType> propertyTypeRepository;
+        private readonly IDeletableEntityRepository<PropertyImage> propertyImageRepository;
 
         public PropertyService(IMapper mapper,
             IHtmlSanitizer htmlSanitizer,
             ICloudinaryService cloudinaryService,
             IDeletableEntityRepository<Property> propertyRepository,
             IDeletableEntityRepository<Amenity> amenityRepository,
-            IDeletableEntityRepository<PropertyType> propertyTypeRepository)
+            IDeletableEntityRepository<PropertyType> propertyTypeRepository,
+            IDeletableEntityRepository<PropertyImage> propertyImageRepository)
         {
             this.mapper = mapper;
             this.htmlSanitizer = htmlSanitizer;
@@ -33,6 +35,7 @@ namespace HomeRent.Services
             this.propertyRepository = propertyRepository;
             this.amenityRepository = amenityRepository;
             this.propertyTypeRepository = propertyTypeRepository;
+            this.propertyImageRepository = propertyImageRepository;
         }
 
         public async Task<(IEnumerable<PropertyListItemViewModel>, int listingsCount)> GetListingsAsync(PropertyQueryModel query)
@@ -208,6 +211,28 @@ namespace HomeRent.Services
                 .FirstOrDefaultAsync(p => p.Id == propertyId);
 
             return this.mapper.Map<SinglePropertyViewModel>(property);
+        }
+
+        public async Task<bool> DeletePropertyImageAsync(Guid propertyId, string publicId)
+        {
+            if (propertyId == Guid.Empty || string.IsNullOrWhiteSpace(publicId))
+            {
+                throw new ArgumentException("Invalid parameters.");
+            }
+
+            var cloudinaryResult = await cloudinaryService.DeleteImageAsync(new List<string> { publicId });
+            if (!cloudinaryResult)
+            {
+                throw new InvalidOperationException("Image deletion failed.");
+            }
+
+            var image = await this.propertyImageRepository.All()
+                .FirstAsync(pi => pi.PropertyId == propertyId && pi.PublicId == publicId);
+
+            this.propertyImageRepository.HardDelete(image);
+            await this.propertyImageRepository.SaveChangesAsync();
+
+            return true;
         }
 
         public async Task<int> GetTotalListingsCountAsync() => await this.propertyRepository.AllAsNoTracking().CountAsync();

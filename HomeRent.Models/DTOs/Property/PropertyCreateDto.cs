@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 using HomeRent.Models.Validation;
+using HomeRent.Models.ViewModels.Property;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HomeRent.Models.DTOs.Property
@@ -50,6 +51,6 @@ namespace HomeRent.Models.DTOs.Property
         [AllowedExtensions(new[] { ".jpg", ".jpeg", ".png", ".webp" })]
         public IEnumerable<IFormFile>? UploadedImages { get; set; }
 
-        public IEnumerable<string> UploadedImagesUrls { get; set; } = Enumerable.Empty<string>();
+        public IEnumerable<UploadedImage> UploadedImagesData { get; set; } = Enumerable.Empty<UploadedImage>();
     }
 }

@@ -18,7 +18,7 @@
     <form asp-action="Edit" method="post" enctype="multipart/form-data">
         <div class="main-content">
             <div class="main-content-inner">
-                <input type="hidden" asp-for="Property.Id" name="Property.Id"/>
+                <input type="hidden" asp-for="Property.Id" name="Property.Id" id="propertyId"/>
                 <div class="widget-box-2 mb-20">
                     <h5 class="title">Добавете снимки</h5>
                     <div class="box-uploadfile text-center">
@@ -34,11 +34,11 @@
                         </div>
                     </div>
                     <div class="box-img-upload">
-                        @foreach (var image in Model.Property.UploadedImagesUrls)
+                        @foreach (var image in Model.Property.UploadedImagesData)
                         {
-                            <div class="item-upload file-delete">
-                                <img src="@image" alt="img">
-                                <span class="icon icon-trash remove-file"></span>
+                            <div class="item-upload file-delete" data-public-id="@image.PublicId">
+                                <img src="@image.Url" alt="Image">
+                                <span class="icon icon-trash remove-file" style="cursor:pointer;"></span>
                             </div>
                         }
                     </div>
@@ -144,5 +144,6 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script type="text/javascript" src="~/js/previewUploadedImages.js"></script>
+    <script type="text/javascript" src="~/js/previewUploadedImages.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/deleteUploadedImage.js" asp-append-version="true"></script>
 }

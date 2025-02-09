@@ -19,6 +19,8 @@ namespace HomeRent.Services.Contracts
 
         Task<SinglePropertyViewModel> GetPropertyDetails(Guid propertyId);
 
+        Task<bool> DeletePropertyImageAsync(Guid propertyId, string publicId);
+
         Task<int> GetTotalListingsCountAsync();
     }
 }
