@@ -13,6 +13,8 @@ using CloudinaryDotNet;
 using Ganss.Xss;
 using Stripe;
 using System.Globalization;
+using HomeRent.Models.Validation;
+using Microsoft.AspNetCore.Localization;
 
 namespace HomeRent.Web
 {
@@ -27,13 +29,17 @@ namespace HomeRent.Web
             builder.Services.AddAutoMapper(typeof(Program));
 
             // Set default culture to Bulgarian (bg-BG)
-            var cultureInfo = new CultureInfo("bg-BG");
-            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
-            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+            var supportedCultures = new[] { new CultureInfo("bg-BG") };
 
             var app = builder.Build();
             Configure(app);
             app.UseAuthentication();
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("bg-BG"),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures
+            });
             app.Run();
         }
 
@@ -58,6 +64,7 @@ namespace HomeRent.Web
                 options =>
                 {
                     options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+                    options.ModelBinderProviders.Insert(0, new CustomDecimalModelBinderProvider());
                 }).AddRazorRuntimeCompilation();
             services.AddRazorPages();
             services.AddDatabaseDeveloperPageExceptionFilter();
