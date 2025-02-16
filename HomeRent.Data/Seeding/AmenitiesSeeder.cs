@@ -21,31 +21,29 @@ namespace HomeRent.Data.Seeding
 
             var data = new Dictionary<string, string>()
             {
-                {"Сешоар", "fi fi-br-scanner-gun"},
-                {"Шампоан", "fi fi-rr-soap"},
-                {"Сапун", "fi fi-tc-soap"},
-                {"Хавлии и кърпи", "fi fi-ts-clothing-rack"},
-                {"Тоалетна хартия", "fi fi-rr-toilet-paper-blank"},
-                {"Спално бельо", "fi fi-rs-mattress-pillow"},
-                {"Място за дрехи", "fi fi-tr-clothing-rack"},
-                {"Пералня и сушилня", "fi fi-rs-washer"},
-                {"Ютия и дъска за гладене", "fi fi-rs-steam-iron"},
-                {"Климатик", "fi fi-rr-snowflakes"},
-                {"Отоплителна система", "fi fi-rs-thermometer-three-quarters"},
-                {"Вентилатори", "fi fi-rs-fan-table"},
-                {"Wi-Fi", "fi fi-br-wifi"},
-                {"Работно място", "fi fi-rr-desk"},
-                {"Офис консумативи", "fi fi-sr-pencil"},
-                {"Напълно оборудвана кухня", "fi fi-rr-hat-chef"},
-                {"Хладилник", "fi fi-rr-refrigerator"},
-                {"Микровълнова машина", "fi fi-rr-microwave"},
-                {"Кафемашина", "fi fi-rr-coffee-pot"},
-                {"Съдомиална машина", "fi fi-bs-plate"},
-                {"Балкон", "fi fi-ts-balcony"},
-                {"Барбекю грил", "fi fi-rr-grill"},
-                {"Открита зона за сядане", "fi fi-rs-bench-tree"},
-                {"Плувен басейн", "fi fi-br-swimming-pool"},
+                {"Оптичен интернет", "bi-wifi"},
+                {"Смарт телевизор", "bi-tv"},
+                {"Климатик", "bi-snow"},
+                {"Подово отопление", "bi-thermometer-high"},
+                {"Бойлер", "bi-droplet"},
+                {"Оборудвана кухня", "bi-utensils"},
+                {"Машина за кафе", "bi-cup-hot"},
+                {"Работно пространство", "bi-laptop"},
+                {"Пречиствател на въздуха", "bi-wind"},
+                {"Шумоизолация", "bi-ear"},
+                {"Балкон или тераса", "bi-house-door"},
+                {"Барбекю зона", "bi-fire"},
+                {"Сейф", "bi-shield-lock"},
+                {"Пералня и сушилня", "bi-house-gear"},
+                {"Прахосмукачка", "bi-cloud-haze"},
+                {"Дъска за гладене", "bi-border-style"},
+                {"Паркомясто или гараж", "bi-car-front"},
+                {"Допускане на домашни любимци", "bi-paw"},
+                {"Хавлии и кърпи", "bi-tags"},
+                {"Хладилник", "bi-box"},
+                {"Басейн", "bi-water"}
             };
+
 
             foreach (var row in data)
             {

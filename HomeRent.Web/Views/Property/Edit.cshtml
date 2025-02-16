@@ -67,6 +67,11 @@
                                 <input type="text" asp-for="Property.PostalCode" name="PostalCode" class="form-control" placeholder="Въведете пощенски код">
                                 <span asp-validation-for="Property.PostalCode" class="text-danger"></span>
                             </fieldset>
+                            <fieldset class="box-fieldset">
+                                <label>Град:<span>*</span></label>
+                                <input type="text" asp-for="Property.City" name="City" class="form-control" placeholder="Името на града">
+                                <span asp-validation-for="Property.City" class="text-danger"></span>
+                            </fieldset>
                         </div>
                     </div>
                 </div>
@@ -96,9 +101,9 @@
                     <h5 class="title">Допълнителна информация</h5>
                     <div class="box grid-2 gap-30">
                         <fieldset class="box-fieldset">
-                            <label>Град:<span>*</span></label>
-                            <input type="text" asp-for="Property.City" name="City" class="form-control" placeholder="Името на града">
-                            <span asp-validation-for="Property.City" class="text-danger"></span>
+                            <label>Размер в кв.м:<span>*</span></label>
+                            <input type="text" asp-for="Property.Size" name="Size" class="form-control" placeholder="Размер">
+                            <span asp-validation-for="Property.Size" class="text-danger"></span>
                         </fieldset>
                         <fieldset class="box-fieldset">
                             <label>Тип на имота:<span>*</span></label>

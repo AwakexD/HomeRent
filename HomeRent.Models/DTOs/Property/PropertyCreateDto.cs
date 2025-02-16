@@ -44,6 +44,10 @@ namespace HomeRent.Models.DTOs.Property
         public int Bathrooms { get; set; }
 
         [Required(ErrorMessage = "Полето е задължително")]
+        [Range(0, 30000)]
+        public int Size { get; set; }
+
+        [Required(ErrorMessage = "Полето е задължително")]
         public int PropertyTypeId { get; set; }
 
         public IEnumerable<int> AmenityIds { get; set; } = new List<int>();
