@@ -1,0 +1,54 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<HomeRent.Models.ViewModels.Dashboard.DashboardReviewViewModel>
+@{
+    this.ViewData["Title"] = "Вашите ревюта";
+}
+
+<div class="layout-wrap">
+    @* Sidebar Menu *@
+    <partial name="_SidebarMenuDashboard" />
+
+    <div class="main-content">
+        <div class="main-content-inner">
+            <div class="button-show-hide show-mb">
+                <span class="body-1">Покажи страничното меню</span>
+            </div>
+            <div class="widget-box-2 mess-box">
+                <h5 class="title">Ревюта</h5>
+                <ul class="list-mess">
+                    @foreach (var review in Model)
+                    {
+                        <li class="mess-item" style="position: relative;">
+                            <div class="user-box">
+                                <div class="content justify-content-start">
+                                    @if (this.User.IsInRole("Owner"))
+                                    {
+                                        <div class="name fw-6">@review.TenantEmail</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="name fw-6">
+                                            @review.TenantEmail - 
+                                            <a asp-controller="Property" asp-action="Details" asp-route-id="@review.PropertyId"></a>
+                                        </div>
+                                    }
+                                    <span class="caption-2 text-variant-3">Преди @((DateTime.Now - review.DateReviewed).Days) дни</span>
+                                </div>
+                            </div>
+                            <p>@review.Comment</p>
+                            <ul class="list-star">
+                                @for (int i = 0; i < review.Rating; i++)
+                                {
+                                    <li class="icon icon-star"></li>
+                                }
+                            </ul>
+                            <input type="hidden" name="ReviewId" value="@review.Id"/>
+                            <span class="icon icon-trash" style="position: absolute; top: 5px; right: 5px; font-size: 20px; color: red; cursor: pointer;"></span>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+

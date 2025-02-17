@@ -13,12 +13,15 @@ namespace HomeRent.Web.Controllers
         private readonly UserManager<ApplicationUser> userManager;
 
         private readonly IDashboardService dashboardService;
+        private readonly IReviewService reviewService;
 
         public DashboardController(UserManager<ApplicationUser> userManager,
-            IDashboardService dashboardService)
+            IDashboardService dashboardService,
+            IReviewService reviewService)
         {
             this.userManager = userManager;
             this.dashboardService = dashboardService;
+            this.reviewService = reviewService;
         }
 
         public async Task<IActionResult> Index()
@@ -45,6 +48,17 @@ namespace HomeRent.Web.Controllers
 
             ViewBag.HideFooter = true;
             return this.View(viewModel);
+        }
+
+        public async Task<IActionResult> Reviews()
+        {
+            var user = await this.userManager.GetUserAsync(User);
+            var roles = await this.userManager.GetRolesAsync(user);
+
+            var reviews = await this.reviewService.GetReviewsDashboard(user.Id, roles);
+
+            ViewBag.HideFooter = true;
+            return this.View(reviews);
         }
     }
 }

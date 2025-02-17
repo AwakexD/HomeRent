@@ -40,7 +40,7 @@
                 </a>
             </li>
             <li class="nav-menu-item">
-                <a class="nav-menu-link" href="reviews.html">
+                <a class="nav-menu-link" asp-area="" asp-controller="Dashboard" asp-action="Reviews">
                     <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g opacity="0.2">
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M17.4808 17.4814C14.6793 20.2831 10.531 20.8885 7.13625 19.3185C6.6351 19.1167 6.22423 18.9537 5.83362 18.9537C4.74565 18.9601 3.39143 20.015 2.68761 19.3121C1.98379 18.6082 3.03952 17.2529 3.03952 16.1583C3.03952 15.7677 2.88291 15.3641 2.68116 14.862C1.11046 11.4678 1.71663 7.31811 4.5181 4.51726C8.09433 0.939714 13.9045 0.939714 17.4808 4.51634C21.0635 8.09941 21.057 13.9047 17.4808 17.4814Z" stroke="#F1FAEE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -52,6 +52,15 @@
                     Ревюта
                 </a>
             </li>
+            @if (this.User.IsInRole("Owner"))
+            {
+                <li class="nav-menu-item">
+                    <a class="nav-menu-link" href="reviews.html">
+                        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3.5 0V5M11.5 0V5M3 7.5H6M12 7.5H9M3 10.5H6M9 10.5H12M1.5 2.5H13.5C14.0523 2.5 14.5 2.94772 14.5 3.5V13.5C14.5 14.0523 14.0523 14.5 13.5 14.5H1.5C0.947716 14.5 0.5 14.0523 0.5 13.5V3.5C0.5 2.94772 0.947715 2.5 1.5 2.5Z" stroke="#737881"></path> </g></svg>
+                        Резервации
+                    </a>
+                </li>
+            }
             <li class="nav-menu-item">
                 <a class="nav-menu-link" asp-area="Identity" asp-page="/Account/Manage/Index">
                     <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">

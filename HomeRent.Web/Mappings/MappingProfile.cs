@@ -4,6 +4,7 @@ using HomeRent.Models.DTOs.Property;
 using HomeRent.Models.DTOs.Review;
 using HomeRent.Models.Shared;
 using HomeRent.Models.ViewModels.Booking;
+using HomeRent.Models.ViewModels.Dashboard;
 using HomeRent.Models.ViewModels.Property;
 
 namespace HomeRent.Web.Mappings
@@ -69,6 +70,10 @@ namespace HomeRent.Web.Mappings
             CreateMap<Booking, BookingTableViewModel>()
                 .ForMember(dest => dest.PropertyTitle, opt => opt.MapFrom(b => b.Property.Title))
                 .ForMember(dest => dest.PropertyImage, opt => opt.MapFrom(b => b.Property.Images.FirstOrDefault().ImageUrl));
+
+            CreateMap<Review, DashboardReviewViewModel>()
+                .ForMember(dest => dest.TenantEmail, 
+                    opt => opt.MapFrom(r => r.Tenant.Email));
         }
     }
 }

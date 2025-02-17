@@ -2,9 +2,12 @@
 using HomeRent.Data.Models.Entities;
 using HomeRent.Data.Repositories.Contracts;
 using HomeRent.Models.DTOs.Review;
+using HomeRent.Models.Shared;
+using HomeRent.Models.ViewModels.Dashboard;
 using HomeRent.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Stripe;
 
 namespace HomeRent.Services
 {
@@ -13,11 +16,11 @@ namespace HomeRent.Services
         private readonly IMapper mapper;
 
         private readonly IDeletableEntityRepository<Property> propertyRepository;
-        private readonly IDeletableEntityRepository<Review> reviewRepository;
+        private readonly IDeletableEntityRepository<Data.Models.Entities.Review> reviewRepository;
 
         public ReviewService(IMapper mapper,
             IDeletableEntityRepository<Property> propertyRepository,
-            IDeletableEntityRepository<Review> reviewRepository)
+            IDeletableEntityRepository<Data.Models.Entities.Review> reviewRepository)
         {
             this.mapper = mapper;
             this.propertyRepository = propertyRepository;
@@ -35,7 +38,7 @@ namespace HomeRent.Services
                 return false;
             }
 
-            var review = this.mapper.Map<Review>(reviewDto);
+            var review = this.mapper.Map<Data.Models.Entities.Review>(reviewDto);
             review.TenantId = tenantId;
 
             property.Reviews.Add(review);
@@ -52,6 +55,30 @@ namespace HomeRent.Services
                 .ToListAsync();
 
             return this.mapper.Map<IEnumerable<ReviewViewModel>>(reviews);
+        }
+
+        public async Task<IEnumerable<DashboardReviewViewModel>> GetReviewsDashboard(Guid userId, IEnumerable<string> roles)
+        {
+            var reviews =  new List<Data.Models.Entities.Review>();
+
+            if (roles.Contains("Tenant"))
+            {
+                reviews = await reviewRepository.AllAsNoTracking()
+                    .Where(r => r.TenantId == userId && !r.IsDeleted)
+                    .ToListAsync();
+            }
+            else if (roles.Contains("Owner"))
+            {
+                reviews = await reviewRepository.AllAsNoTracking()
+                    .Where(r =>
+                        !r.IsDeleted &&
+                        !r.Property.IsDeleted &&
+                        r.Property.OwnerId == userId
+                    )
+                    .ToListAsync();
+            }
+
+            return this.mapper.Map<IEnumerable<DashboardReviewViewModel>>(reviews);
         }
 
         public async Task<bool> DeleteReviewAsync(int reviewId, Guid tenantId)
