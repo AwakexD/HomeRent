@@ -58,18 +58,26 @@ namespace HomeRent.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(DeleteReviewDto reviewDto)
         {
-            var user = await userManager.GetUserAsync(User);
-            if (user == null)
+            try
             {
-                return Unauthorized(new { message = "User not found!" });
-            }
+                var user = await userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return Unauthorized(new { message = "User not found!" });
+                }
 
-            var result = await reviewService.DeleteReviewAsync(reviewDto.ReviewId, user.Id);
-            if (result)
-            {
-                return Ok(new { message = "Sucessfully delete review" });
+                var result = await reviewService.DeleteReviewAsync(reviewDto.ReviewId, user.Id);
+                if (!result)
+                {
+                    return StatusCode(500, new { message = "An error occur while deleting review." });
+                }
+
+                return Ok(new { message = "Successfully delete review" });
             }
-            return StatusCode(500, new { message = "An error ocurr while deleting review." });
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occur while deleting review." });
+            }
         }
     }
 }

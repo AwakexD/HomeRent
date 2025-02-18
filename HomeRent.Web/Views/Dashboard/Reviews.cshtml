@@ -2,6 +2,7 @@
 @model IEnumerable<HomeRent.Models.ViewModels.Dashboard.DashboardReviewViewModel>
 @{
     this.ViewData["Title"] = "Вашите ревюта";
+    var isOwner = this.User.IsInRole("Owner");
 }
 
 <div class="layout-wrap">
@@ -15,13 +16,17 @@
             </div>
             <div class="widget-box-2 mess-box">
                 <h5 class="title">Ревюта</h5>
+                @if (isOwner)
+                {
+                    <p class="text-variant-1 mb-3">Тук са позазани ревютата оставени от наематели под вашите имоти.</p>
+                }
                 <ul class="list-mess">
                     @foreach (var review in Model)
                     {
                         <li class="mess-item" style="position: relative;">
                             <div class="user-box">
                                 <div class="content justify-content-start">
-                                    @if (this.User.IsInRole("Owner"))
+                                    @if (isOwner)
                                     {
                                         <div class="name fw-6">@review.TenantEmail</div>
                                     }
@@ -43,7 +48,7 @@
                                 }
                             </ul>
                             <input type="hidden" name="ReviewId" value="@review.Id"/>
-                            @if (!this.User.IsInRole("Owner"))
+                            @if (!isOwner)
                             {
                                 <span class="icon icon-trash" style="position: absolute; top: 5px; right: 5px; font-size: 20px; color: red; cursor: pointer;"></span>
                             }
@@ -56,7 +61,7 @@
 </div>
 
 @section Scripts {
-    @if (!this.User.IsInRole("Owner"))
+    @if (!isOwner)
     {
          <script type="text/javascript" src="~/js/dashboardReviewDelete.js"></script>
     }
