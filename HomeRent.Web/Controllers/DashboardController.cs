@@ -60,5 +60,14 @@ namespace HomeRent.Web.Controllers
             ViewBag.HideFooter = true;
             return this.View(reviews);
         }
+
+        [Authorize(Roles = "Owner")]
+        public async Task<IActionResult> Bookings()
+        {
+            // ToDO : Complete action : Create service method and retrieve bookings from the DB.
+
+            ViewBag.HideFooter = true;
+            return this.View();
+        }
     }
 }

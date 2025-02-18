@@ -1,0 +1,107 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<HomeRent.Models.ViewModels.Booking.BookingTableViewModel>
+@{
+    this.ViewData["Title"] = "Резервации";
+}
+
+<div class="layout-wrap">
+    @* Sidebar Menu *@
+    <partial name="_SidebarMenuDashboard" />
+
+    <div class="main-content">
+        <div class="main-content-inner">
+            <div class="button-show-hide show-mb">
+                <span class="body-1">Show Dashboard</span>
+            </div>
+            <div class="widget-box-2 wd-listing">
+                <h5 class="title">Резервации</h5>
+                <div class="wrap-table">
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Резервация</th>
+                                <th>Статус</th>
+                                <th>Наемател</th>
+                                <th>Съобщение</th>
+                                <th>Опции</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach (var booking in Model)
+                            {
+                                    <tr class="file-delete">
+                                        <td>
+                                            <div class="listing-box">
+                                                <div class="images">
+                                                    <img src="" alt="images">
+                                                </div>
+                                                <div class="content">
+                                                    <div class="title"><a asp-controller="Property" asp-action="Details" 
+                                                                         asp-route-id="@booking.Id" class="link">@booking.PropertyTitle</a> </div>
+                                                    <div class="text-date">Дата на настаняване: @booking.CheckInDate.ToString("d.M.yyyy'г.'")</div>
+                                                    <div class="text-date">Дата на напускане: @booking.CheckOutDate.ToString("d.M.yyyy'г.'")</div>
+                                                    <div class="text-btn text-primary">Обща цена: @booking.TotalAmount.ToString("C2")</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="btn-status">@booking.IsConfirmed</div>
+                                        </td>
+                                        <td>
+                                            <span class="d-block mb-1">@booking.TenantEmail</span>
+                                            <span class="d-block mb-1">@booking.TenantPhone</span>
+                                            <span class="d-block mb-1">@booking.PaymentMethod</span>
+                                        </td>
+                                        <td>
+                                            <span style="overflow-wrap: break-word; white-space: normal;">
+                                                @booking.Message
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <ul class="list-action">
+                                                <li>
+                                                    <input type="hidden" name="BookingId" value="@booking.Id"/>
+                                                    <a class="item">
+                                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M11.2413 2.9915L12.366 1.86616C12.6005 1.63171 12.9184 1.5 13.25 1.5C13.5816 1.5 13.8995 1.63171 14.134 1.86616C14.3685 2.10062 14.5002 2.4186 14.5002 2.75016C14.5002 3.08173 14.3685 3.39971 14.134 3.63416L4.55467 13.2135C4.20222 13.5657 3.76758 13.8246 3.29 13.9668L1.5 14.5002L2.03333 12.7102C2.17552 12.2326 2.43442 11.7979 2.78667 11.4455L11.242 2.9915H11.2413ZM11.2413 2.9915L13 4.75016" stroke="#A3ABB0" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                        </svg>
+                                                        Отказване
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles
+{
+    <style>
+        .wrap-table table {
+          width: 100%;
+          table-layout: auto;
+        }
+
+            .wrap-table table th:nth-child(4),
+            .wrap-table table td:nth-child(4) {
+                width: 40%; 
+                min-width: 200px;
+            }
+
+        @@media (min-width: 768px) {
+          .wrap-table table th:first-child,
+          .wrap-table table td:first-child {
+            width: 15%;
+            min-width: 150px;
+          }
+        }
+    </style>
+}

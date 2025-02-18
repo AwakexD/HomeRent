@@ -69,7 +69,11 @@ namespace HomeRent.Web.Mappings
 
             CreateMap<Booking, BookingTableViewModel>()
                 .ForMember(dest => dest.PropertyTitle, opt => opt.MapFrom(b => b.Property.Title))
-                .ForMember(dest => dest.PropertyImage, opt => opt.MapFrom(b => b.Property.Images.FirstOrDefault().ImageUrl));
+                .ForMember(dest => dest.PropertyImage,
+                    opt => opt.MapFrom(b => b.Property.Images.FirstOrDefault().ImageUrl))
+                .ForMember(dest => dest.TenantEmail, opt => opt.MapFrom(b => b.Tenant.Email))
+                .ForMember(dest => dest.TenantPhone, opt => opt.MapFrom(b => b.Tenant.PhoneNumber))
+                .ForMember(dest => dest.PaymentMethod, opt => opt.MapFrom(b => b.Payment.StripeTransactionId));
 
             CreateMap<Review, DashboardReviewViewModel>()
                 .ForMember(dest => dest.TenantEmail,
