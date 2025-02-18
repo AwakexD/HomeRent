@@ -131,7 +131,7 @@ namespace HomeRent.Services
 
             if (booking == null) 
             {
-                return false;   
+                return false;
             }
 
             this.bookingReposotory.Delete(booking);

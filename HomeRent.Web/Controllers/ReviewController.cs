@@ -54,10 +54,22 @@ namespace HomeRent.Web.Controllers
             }
         }
 
-        //ToDO : Review Delete Implementation
-        public IActionResult Delete()
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(DeleteReviewDto reviewDto)
         {
-            throw new NotImplementedException();
+            var user = await userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Unauthorized(new { message = "User not found!" });
+            }
+
+            var result = await reviewService.DeleteReviewAsync(reviewDto.ReviewId, user.Id);
+            if (result)
+            {
+                return Ok(new { message = "Sucessfully delete review" });
+            }
+            return StatusCode(500, new { message = "An error ocurr while deleting review." });
         }
     }
 }

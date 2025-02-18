@@ -72,8 +72,9 @@ namespace HomeRent.Web.Mappings
                 .ForMember(dest => dest.PropertyImage, opt => opt.MapFrom(b => b.Property.Images.FirstOrDefault().ImageUrl));
 
             CreateMap<Review, DashboardReviewViewModel>()
-                .ForMember(dest => dest.TenantEmail, 
-                    opt => opt.MapFrom(r => r.Tenant.Email));
+                .ForMember(dest => dest.TenantEmail,
+                    opt => opt.MapFrom(r => r.Tenant.Email))
+                .ForMember(dest => dest.PropertyTitle, opt => opt.MapFrom(r => r.Property.Title));
         }
     }
 }

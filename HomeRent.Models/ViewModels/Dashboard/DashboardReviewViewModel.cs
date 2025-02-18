@@ -9,5 +9,7 @@ namespace HomeRent.Models.ViewModels.Dashboard
         public Guid PropertyId { get; set; }
 
         public string TenantEmail { get; set; }
+
+        public string PropertyTitle { get; set; }
     }
 }

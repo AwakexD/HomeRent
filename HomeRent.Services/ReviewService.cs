@@ -65,6 +65,8 @@ namespace HomeRent.Services
             {
                 reviews = await reviewRepository.AllAsNoTracking()
                     .Where(r => r.TenantId == userId && !r.IsDeleted)
+                    .Include(r => r.Tenant)
+                    .Include(r => r.Property)
                     .ToListAsync();
             }
             else if (roles.Contains("Owner"))
@@ -75,6 +77,7 @@ namespace HomeRent.Services
                         !r.Property.IsDeleted &&
                         r.Property.OwnerId == userId
                     )
+                    .Include(r => r.Tenant)
                     .ToListAsync();
             }
 

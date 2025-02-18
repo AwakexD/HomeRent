@@ -29,7 +29,7 @@
                                     {
                                         <div class="name fw-6">
                                             @review.TenantEmail - 
-                                            <a asp-controller="Property" asp-action="Details" asp-route-id="@review.PropertyId"></a>
+                                            <a asp-controller="Property" asp-action="Details" asp-route-id="@review.PropertyId">@review.PropertyTitle</a>
                                         </div>
                                     }
                                     <span class="caption-2 text-variant-3">Преди @((DateTime.Now - review.DateReviewed).Days) дни</span>
@@ -43,7 +43,10 @@
                                 }
                             </ul>
                             <input type="hidden" name="ReviewId" value="@review.Id"/>
-                            <span class="icon icon-trash" style="position: absolute; top: 5px; right: 5px; font-size: 20px; color: red; cursor: pointer;"></span>
+                            @if (!this.User.IsInRole("Owner"))
+                            {
+                                <span class="icon icon-trash" style="position: absolute; top: 5px; right: 5px; font-size: 20px; color: red; cursor: pointer;"></span>
+                            }
                         </li>
                     }
                 </ul>
@@ -51,4 +54,11 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @if (!this.User.IsInRole("Owner"))
+    {
+         <script type="text/javascript" src="~/js/dashboardReviewDelete.js"></script>
+    }
+}
 
