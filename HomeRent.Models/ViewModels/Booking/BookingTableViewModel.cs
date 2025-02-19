@@ -1,4 +1,6 @@
-﻿namespace HomeRent.Models.ViewModels.Booking
+﻿using HomeRent.Data.Enums;
+
+namespace HomeRent.Models.ViewModels.Booking
 {
     public class BookingTableViewModel : BookingBase
     {
@@ -6,7 +8,7 @@
 
         public string PropertyImage { get; set; }
 
-        public bool IsConfirmed { get; set; }
+        public BookingStatus BookingStatus { get; set; }
 
         public bool IsDeleted { get; set; }
 

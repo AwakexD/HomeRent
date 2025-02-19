@@ -1,6 +1,7 @@
 ﻿using HomeRent.Data.Infrastructure;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using HomeRent.Data.Enums;
 
 namespace HomeRent.Data.Models.Entities
 {
@@ -11,8 +12,7 @@ namespace HomeRent.Data.Models.Entities
             this.Id = Guid.NewGuid();
         }
 
-        [Required]
-        public string StripeTransactionId { get; set; }
+        public string? StripeTransactionId { get; set; }
 
         [Required]
         [Column(TypeName = "decimal(18, 2)")]
@@ -21,6 +21,9 @@ namespace HomeRent.Data.Models.Entities
         [Required]
         [StringLength(30)]
         public string Status { get; set; }
+
+        [Required]
+        public PaymentType PaymentType { get; set; }
 
         public DateTime PaymentDate { get; set; }
 

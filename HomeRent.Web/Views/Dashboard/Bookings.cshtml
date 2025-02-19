@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using HomeRent.Data.Enums
 @model IEnumerable<HomeRent.Models.ViewModels.Booking.BookingTableViewModel>
 @{
     ViewData["Title"] = "Моите резервации";
@@ -56,18 +57,16 @@
                                     </td>
                                     <td>
                                         <div class="status-wrap">
-                                            @if (booking.IsConfirmed)
-                                            {
-                                                <span class="btn-status w-75 w-auto">Потвърдена</span>
+                                            @{
+                                                var statusClass = booking.BookingStatus switch
+                                                {
+                                                    BookingStatus.Confirmed      => "btn-status w-75",
+                                                    BookingStatus.Cancelled      => "btn-status sold w-75",
+                                                    BookingStatus.OwnerCancelled => "btn-status pending w-75",
+                                                    _ => "btn-status pending w-75"
+                                                };
                                             }
-                                            else if (booking.IsDeleted)
-                                            {
-                                                <span class="btn-status sold w-auto">Отказана</span>
-                                            }
-                                            else
-                                            {
-                                                <span class="btn-status pending w-auto">Непотвърдена</span>
-                                            }
+                                            <a class="@statusClass">@booking.BookingStatus</a>
                                         </div>
                                     </td>
                                     <td>
@@ -83,7 +82,7 @@
                                     <td>
                                         <ul class="list-action">
                                             <li>
-                                                @if (!booking.IsConfirmed && !booking.IsDeleted)
+                                                @if (booking.BookingStatus == BookingStatus.Unconfirmed && !booking.IsDeleted)
                                                 {
                                                     <form>
                                                         <a class="item cancel-booking" data-booking-id="@booking.Id" href="#">

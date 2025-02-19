@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
+using HomeRent.Data.Enums;
 using HomeRent.Data.Models.Entities;
 using HomeRent.Data.Repositories.Contracts;
 using HomeRent.Models.DTOs.Booking;
 using HomeRent.Models.ViewModels.Booking;
 using HomeRent.Services.Contracts;
 using Microsoft.EntityFrameworkCore;
-using System.Drawing.Drawing2D;
-using System.Security.Policy;
 
 namespace HomeRent.Services
 {
@@ -14,24 +13,24 @@ namespace HomeRent.Services
     {
         private readonly IMapper mapper;
 
-        private readonly IDeletableEntityRepository<Property> propertyReposiotry;
-        private readonly IDeletableEntityRepository<Booking> bookingReposotory;
+        private readonly IDeletableEntityRepository<Property> propertyRepository;
+        private readonly IDeletableEntityRepository<Booking> bookingRepository;
         private readonly IDeletableEntityRepository<Payment> paymentReposiotry;
 
         public BookingService(IMapper mapper,
-            IDeletableEntityRepository<Property> propertyReposiotry,
+            IDeletableEntityRepository<Property> propertyRepository,
             IDeletableEntityRepository<Booking> bookingRepository,
             IDeletableEntityRepository<Payment> paymentRepository)
         {
             this.mapper = mapper;
-            this.propertyReposiotry = propertyReposiotry;
-            this.bookingReposotory = bookingRepository;
+            this.propertyRepository = propertyRepository;
+            this.bookingRepository = bookingRepository;
             this.paymentReposiotry = paymentRepository;
         }
 
         public async Task<decimal?> GetPropertyPriceAsync(Guid propertyId)
         {
-            return await this.propertyReposiotry.AllAsNoTracking()
+            return await this.propertyRepository.AllAsNoTracking()
                 .Where(p => p.Id == propertyId)
                 .Select(p => (decimal?)p.PricePerNight)
                 .FirstOrDefaultAsync();
@@ -39,7 +38,7 @@ namespace HomeRent.Services
 
         public async Task<IEnumerable<BookedDateRangeDto>> GetBookedDateRanges(Guid propertyId)
         {
-            var bookedDates = await this.bookingReposotory.AllAsNoTracking()
+            var bookedDates = await this.bookingRepository.AllAsNoTracking()
                 .Where(b => b.PropertyId == propertyId && b.IsDeleted == false)
                 .Select (b => new BookedDateRangeDto
                 {
@@ -53,7 +52,7 @@ namespace HomeRent.Services
 
         public async Task<Guid?> CreateBookingAsync(Guid userId, CreateBookingDto bookingDto)
         {
-            var property = await this.propertyReposiotry.AllAsNoTracking()
+            var property = await this.propertyRepository.AllAsNoTracking()
                 .FirstOrDefaultAsync(p => p.Id == bookingDto.PropertyId);
 
             if (property == null)
@@ -72,19 +71,19 @@ namespace HomeRent.Services
                 Message = bookingDto.Message,
                 TenantId = userId,
                 PaymentId = null,
-                IsConfirmed = false,
+                BookingStatus = BookingStatus.Unconfirmed
 
             };
 
-            await bookingReposotory.AddAsync(booking);
-            await bookingReposotory.SaveChangesAsync();
+            await bookingRepository.AddAsync(booking);
+            await bookingRepository.SaveChangesAsync();
 
             return booking.Id;
         }
 
         public async Task<BookingOverviewViewModel> GetBookingOverviewAsync(Guid bookingId, Guid userId)
         {
-            var booking = await this.bookingReposotory.AllAsNoTracking()
+            var booking = await this.bookingRepository.AllAsNoTracking()
                 .Include(b => b.Property)
                 .Include(b => b.Property.Owner)
                 .FirstOrDefaultAsync(b => b.Id == bookingId && b.TenantId == userId);
@@ -94,12 +93,12 @@ namespace HomeRent.Services
 
         public async Task<decimal> GetBookingTotalAmount(Guid bookingId)
         {
-            var totalAmount = await this.bookingReposotory.AllAsNoTracking()
+            var totalAmount = await this.bookingRepository.AllAsNoTracking()
                  .Where(b => b.Id == bookingId)
                  .Select(b => b.TotalAmount)
                  .FirstOrDefaultAsync();
 
-            if (totalAmount == default(decimal) && !await this.bookingReposotory.AllAsNoTracking().AnyAsync(b => b.Id == bookingId))
+            if (totalAmount == default(decimal) && !await this.bookingRepository.AllAsNoTracking().AnyAsync(b => b.Id == bookingId))
             {
                 throw new InvalidOperationException($"No booking found with ID {bookingId}.");
             }
@@ -110,23 +109,23 @@ namespace HomeRent.Services
         public async Task SavePaymentAndConfirmBooking(Guid bookingId, Payment payment)
         {
             await this.paymentReposiotry.AddAsync(payment);
-            await this.propertyReposiotry.SaveChangesAsync();
+            await this.propertyRepository.SaveChangesAsync();
 
-            var booking = await this.bookingReposotory.All()
+            var booking = await this.bookingRepository.All()
                 .FirstOrDefaultAsync(b => b.Id == bookingId);
 
             if (booking != null)
             {
                 booking.PaymentId = payment.Id;
-                booking.IsConfirmed = true;
+                booking.BookingStatus = BookingStatus.Confirmed;
 
-                await this.bookingReposotory.SaveChangesAsync();
+                await this.bookingRepository.SaveChangesAsync();
             }
         }
 
         public async Task<bool> CancelBookingAsync(Guid bookingId, Guid userId)
         {
-            var booking = await this.bookingReposotory.All()
+            var booking = await this.bookingRepository.All()
                 .FirstOrDefaultAsync(b => b.Id == bookingId && (b.TenantId == userId || b.Property.OwnerId == userId));
 
             if (booking == null) 
@@ -134,16 +133,25 @@ namespace HomeRent.Services
                 return false;
             }
 
-            this.bookingReposotory.Delete(booking);
-            await this.bookingReposotory.SaveChangesAsync();
+            if (booking.Property.OwnerId == userId)
+            {
+                booking.BookingStatus = BookingStatus.OwnerCancelled;
+            }
+            else
+            {
+                booking.BookingStatus = BookingStatus.Cancelled;
+            }
+
+            this.bookingRepository.Delete(booking);
+            await this.bookingRepository.SaveChangesAsync();
 
             return true;
         }
 
         public async Task<bool> IsConfirmed(Guid bookingId)
         {
-            return await this.bookingReposotory.AllAsNoTracking()
-                .AnyAsync(b => b.Id == bookingId && b.IsConfirmed);
+            return await this.bookingRepository.AllAsNoTracking()
+                .AnyAsync(b => b.Id == bookingId && b.BookingStatus == BookingStatus.Confirmed);
         }
     }
 }

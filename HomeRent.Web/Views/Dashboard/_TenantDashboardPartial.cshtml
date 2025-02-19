@@ -1,4 +1,5 @@
-﻿@model HomeRent.Models.ViewModels.Dashboard.TenantDashboardViewModel
+﻿@using HomeRent.Data.Enums
+@model HomeRent.Models.ViewModels.Dashboard.TenantDashboardViewModel
 @{
     
 }
@@ -81,23 +82,21 @@
                                     </td>
                                     <td>
                                         <div class="status-wrap">
-                                            @if (booking.IsConfirmed)
-                                            {
-                                                <a class="btn-status w-75"> Потвърдена</a>
+                                            @{
+                                                var statusClass = booking.BookingStatus switch
+                                                {
+                                                    BookingStatus.Confirmed      => "btn-status w-75",
+                                                    BookingStatus.Cancelled      => "btn-status sold w-75",
+                                                    BookingStatus.OwnerCancelled => "btn-status pending w-75",
+                                                    _  => "btn-status pending w-75"
+                                                };
                                             }
-                                            else if (booking.IsDeleted)
-                                            {
-                                                <a class="btn-status sold w-75">Отказана</a>
-                                            }
-                                            else
-                                            {
-                                                <a class="btn-status pending w-75">Непотвърдена</a>
-                                            }
+                                            <a class="@statusClass">@booking.BookingStatus</a>
                                         </div>
                                     </td>
                                     <td>
                                         <ul class="list-action">
-                                            @if (!booking.IsConfirmed && !booking.IsDeleted)
+                                            @if ((booking.BookingStatus == BookingStatus.Unconfirmed) && !booking.IsDeleted)
                                             {
                                                 <li>
                                                     <a asp-controller="Payment" asp-action="BookingOverview" asp-route-bookingId="@booking.Id" class="item">

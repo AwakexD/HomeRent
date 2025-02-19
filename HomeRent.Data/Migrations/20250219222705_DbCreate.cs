@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HomeRent.Data.Migrations
 {
-    public partial class CreateDB : Migration
+    public partial class DbCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -326,7 +326,7 @@ namespace HomeRent.Data.Migrations
                     CheckInDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CheckOutDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    IsConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    BookingStatus = table.Column<int>(type: "int", nullable: false),
                     Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PropertyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -358,9 +358,10 @@ namespace HomeRent.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    StripeTransactionId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StripeTransactionId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AmountPaid = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    PaymentType = table.Column<int>(type: "int", nullable: false),
                     PaymentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     BookingId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),

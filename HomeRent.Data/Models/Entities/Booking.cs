@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using HomeRent.Data.Enums;
 using HomeRent.Data.Infrastructure;
 using HomeRent.Data.Models.User;
 
@@ -23,7 +24,7 @@ namespace HomeRent.Data.Models.Entities
         public decimal TotalAmount { get; set; }    
 
         [Required]
-        public bool IsConfirmed { get; set; }
+        public BookingStatus BookingStatus { get; set; }
 
         [Required]
         public string Message { get; set; }
