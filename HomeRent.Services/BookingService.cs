@@ -127,7 +127,7 @@ namespace HomeRent.Services
         public async Task<bool> CancelBookingAsync(Guid bookingId, Guid userId)
         {
             var booking = await this.bookingReposotory.All()
-                .FirstOrDefaultAsync(b => b.Id == bookingId && b.TenantId == userId);
+                .FirstOrDefaultAsync(b => b.Id == bookingId && (b.TenantId == userId || b.Property.OwnerId == userId));
 
             if (booking == null) 
             {

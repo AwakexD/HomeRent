@@ -64,10 +64,12 @@ namespace HomeRent.Web.Controllers
         [Authorize(Roles = "Owner")]
         public async Task<IActionResult> Bookings()
         {
-            // ToDO : Complete action : Create service method and retrieve bookings from the DB.
+            var user = await this.userManager.GetUserAsync(User);
+
+            var viewModel = await this.dashboardService.GetOwnerBookings(user.Id);
 
             ViewBag.HideFooter = true;
-            return this.View();
+            return this.View(viewModel);
         }
     }
 }

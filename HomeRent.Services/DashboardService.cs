@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Collections;
+using AutoMapper;
 using HomeRent.Data.Models.Entities;
 using HomeRent.Data.Repositories.Contracts;
 using HomeRent.Models.Shared;
@@ -87,10 +88,23 @@ namespace HomeRent.Services
             return viewModel;
         }
 
+        public async Task<IEnumerable<BookingTableViewModel>> GetOwnerBookings(Guid userId)
+        {
+            var bookings = await this.bookingRepository.AllAsNoTrackingWithDeleted()
+                .Where(b => b.Property.OwnerId == userId)
+                .Include(b => b.Property)
+                .Include(b => b.Property.Images.Where(i => i.IsDeleted == false))
+                .Include(b => b.Tenant)
+                .Include(b => b.Payment)
+                .ToListAsync();
+
+            return this.mapper.Map<IEnumerable<BookingTableViewModel>>(bookings);
+        }
+
         private async Task<IEnumerable<SinglePropertyViewModel>> GetOwnerProperties(Guid userId)
         {
             var properties = await this.propertyRepository.AllAsNoTrackingWithDeleted()
-                .Include(p => p.Images)
+                .Include(p => p.Images.Where(i => i.IsDeleted == false))
                 .Where(p => p.OwnerId == userId)
                 .ToListAsync();
 
@@ -102,7 +116,7 @@ namespace HomeRent.Services
             var bookings = await this.bookingRepository.AllAsNoTrackingWithDeleted()
                 .Include(b => b.Property)
                 .Include(b => b.Property.Owner)
-                .Include(b => b.Property.Images)
+                .Include(b => b.Property.Images.Where(i => i.IsDeleted == false))
                 .ToListAsync();
 
             return this.mapper.Map<IEnumerable<BookingTableViewModel>>(bookings);

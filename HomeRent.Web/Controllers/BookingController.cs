@@ -1,7 +1,5 @@
-﻿using CloudinaryDotNet.Actions;
-using HomeRent.Data.Models.User;
+﻿using HomeRent.Data.Models.User;
 using HomeRent.Models.DTOs.Booking;
-using HomeRent.Models.ViewModels;
 using HomeRent.Services.Contracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

@@ -70,7 +70,7 @@
                                                 <div class="content">
                                                     <div class="title"><a asp-controller="Property" asp-action="Details" asp-route-id="@property.Id" class="link">@property.Title</a> </div>
                                                     <div class="text-date">Публикувана на: @property.CreatedOn.ToString("MMMM, d, yyyy")</div>
-                                                    <div class="text-btn text-primary">@property.PricePerNight.ToString("C0") / нощ.</div>
+                                                    <div class="text-btn text-primary">@property.PricePerNight.ToString("C2") / нощ.</div>
                                                 </div>
                                             </div>
                                         </td>
