@@ -69,9 +69,6 @@ namespace HomeRent.Services
             int bookingsCount = await this.bookingRepository.AllAsNoTracking()
                 .Where(b => b.TenantId == userId)
                 .CountAsync();
-
-            // TODO: Favorites count - Replace hardcoded value with dynamic calculation.
-            int favoritesCount = 2;
             
             int reviewsCount = await this.reviewRepository.AllAsNoTracking()
                 .Where(r => r.TenantId == userId)
@@ -80,7 +77,6 @@ namespace HomeRent.Services
             var viewModel = new TenantDashboardViewModel
             {
                 BookingsCount = bookingsCount,
-                FavoritesCount = favoritesCount,
                 ReviewsCount = reviewsCount,
                 Bookings = await this.GetTenantBookings(userId)
             };
