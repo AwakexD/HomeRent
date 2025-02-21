@@ -22,9 +22,9 @@ namespace HomeRent.Models.Shared
         [Range(0, 100)]
         public int? MinBathrooms { get; set; }
 
-        public int MinSize { get; set; }
+        public int? MinSize { get; set; }
 
-        public int MaxSize { get; set; }
+        public int? MaxSize { get; set; }
 
         public int Page { get; set; } = 1;
 

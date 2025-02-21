@@ -44,6 +44,7 @@ namespace HomeRent.Services
                 .Include(p => p.Owner)
                 .Include(p => p.Images)
                 .Include(p => p.Amenities)
+                .Include(p => p.PropertyType)
                 .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(query.City))
@@ -74,6 +75,16 @@ namespace HomeRent.Services
             if (query.MaxPrice.HasValue)
             {
                 queryable = queryable.Where(p => p.PricePerNight <= query.MaxPrice.Value);
+            }
+
+            if (query.MinSize.HasValue)
+            {
+                queryable = queryable.Where(p => p.Size >= query.MinSize.Value);
+            }
+
+            if (query.MaxSize.HasValue)
+            {
+                queryable = queryable.Where(p => p.Size <= query.MaxSize.Value);
             }
 
             if (query.MinBedrooms.HasValue)

@@ -124,7 +124,7 @@
                                                 </div>
                                                 <div class="top">
                                                     <ul class="d-flex gap-6 flex-wrap">
-                                                        <li class="flag-tag style-1">Под наем</li>
+                                                        <li class="flag-tag style-1">@listing.PropertyTypeName</li>
                                                     </ul>
                                                 </div>
                                             </a>
@@ -165,7 +165,7 @@
                                                 <div class="d-flex gap-8 align-items-center">
                                                     <span>@listing.OwnerFullName</span>
                                                 </div>
-                                                <h6 class="price">@listing.PricePerNight</h6>
+                                                <h6 class="price">@listing.PricePerNight.ToString("C2") / нощ.</h6>
                                             </div>
                                         </div>
 
