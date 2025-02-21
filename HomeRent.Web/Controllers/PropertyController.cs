@@ -134,7 +134,6 @@ namespace HomeRent.Web.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Owner")]
-        // Problem here
         public async Task<IActionResult> Edit(string id)
         {
             try

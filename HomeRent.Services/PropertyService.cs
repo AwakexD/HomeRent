@@ -193,7 +193,7 @@ namespace HomeRent.Services
                 .Include(p => p.Images)
                 .Include(p => p.Amenities)
                 .Include(p => p.PropertyType)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(p => p.Id == updatedPropertyDto.Id);
 
             if (property == null)
             {
