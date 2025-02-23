@@ -5,6 +5,7 @@
 
 ## Ingore the appsettings which contains an api key
 appsettings.Development.json
+appsettings.Production.json
 
 # User-specific files
 *.rsuser
