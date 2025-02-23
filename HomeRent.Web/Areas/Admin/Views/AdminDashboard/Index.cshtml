@@ -1,0 +1,78 @@
+﻿@{
+    ViewData["Title"] = "Администраторски панел";
+}
+
+<section class="flat-section flat-service-v3">
+    <div class="container">
+        <div class="box-title text-center">
+            <div class="text-subtitle text-primary" style="font-size: 3em;">@this.ViewData["Title"]</div>
+        </div>
+        <div class="row">
+            <!-- All Users -->
+            <div class="box col-lg-4 col-md-6">
+                <div class="box-service style-2" style="background-color:#b0e5ff;">
+                    <div class="icon-box">
+                        <i class="fa-regular fa-user" style="font-size: 3em;"></i>
+                    </div>
+                    <div class="content">
+                        <h5 class="title">Потребители</h5>
+                        <p class="description">Данни за всички потребители и статусът им (offline/online).</p>
+                        <a asp-controller="Users" asp-action="Index" class="tf-btn size-1">Всички потребители</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="box col-lg-4 col-md-6">
+                <div class="box-service style-2" style="background-color:#b0e5ff;">
+                    <div class="icon-box">
+                        <span class="icon icon-sale-home" style="font-size:3em;"></span>
+                    </div>
+                    <div class="content">
+                        <h5 class="title">Обяви</h5>
+                        <p class="description">Управление на всички налични обяви за имоти в приложението.</p>
+                        <a  class="tf-btn size-1">Управление на обявите</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box col-lg-4 col-md-6">
+                <div class="box-service style-2" style="background-color:#b0e5ff;">
+                    <div class="icon-box">
+                        <span class="icon icon-sale-home" style="font-size:3em;"></span>
+                    </div>
+                    <div class="content">
+                        <h5 class="title">Резервации и плащания</h5>
+                        <p class="description">Данни за всички резервация и плащания към тях.</p>
+                        <a class="tf-btn size-1">Разгледай</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box col-lg-4 col-md-6">
+                <div class="mt-3  box-service style-2" style="background-color:#b0e5ff;">
+                    <div class="icon-box">
+                        <i class="fa-solid fa-table" style="font-size: 3em;"></i>
+                    </div>
+                    <div class="content">
+                        <h5 class="title">Типове имоти</h5>
+                        <p class="description">Добавяне, редактиране или изтриване на наличните типове имоти.</p>
+                        <a  class="tf-btn size-1">Всчички типове</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box col-lg-4 col-md-6">
+                <div class="mt-3 box-service style-2" style="background-color:#b0e5ff;">
+                    <div class="icon-box">
+                        <i class="fa-solid fa-table" style="font-size: 3em;"></i>
+                    </div>
+                    <div class="content">
+                        <h5 class="title">Удобства</h5>
+                        <p class="description">Добавяне, редактиране или изтрриване на наличните удобвства към обявите.</p>
+                        <a  class="tf-btn size-1">Управление на удобствата</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

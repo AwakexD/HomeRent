@@ -14,7 +14,10 @@ using Ganss.Xss;
 using Stripe;
 using System.Globalization;
 using HomeRent.Models.Validation;
+using HomeRent.Services.Administration;
+using HomeRent.Services.Administration.Contracts;
 using Microsoft.AspNetCore.Localization;
+using HomeRent.Web.Hubs;
 
 namespace HomeRent.Web
 {
@@ -69,6 +72,8 @@ namespace HomeRent.Web
             services.AddRazorPages();
             services.AddDatabaseDeveloperPageExceptionFilter();
 
+            services.AddSignalR();
+
             services.AddSingleton(configuration);
 
             // Data repositories
@@ -84,6 +89,7 @@ namespace HomeRent.Web
             services.AddTransient<IDashboardService, DashboardService>();
             services.AddTransient<IBookingService, BookingService>();
             services.AddTransient<IStripeService, StripeService>();
+            services.AddTransient<IUserService, UserService>();
 
             // Cloudinary
             Cloudinary cloudinary = new Cloudinary(configuration["Cloudinary:CLOUDINARY_URL"]);
@@ -126,6 +132,10 @@ namespace HomeRent.Web
 
             app.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
             app.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHub<UserStatusHub>("/userStatusHub");
+            });
             app.MapRazorPages();
         }
     }

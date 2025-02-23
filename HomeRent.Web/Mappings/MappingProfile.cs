@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using HomeRent.Data.Models.Entities;
+using HomeRent.Data.Models.User;
+using HomeRent.Models.Administration;
 using HomeRent.Models.DTOs.Property;
 using HomeRent.Models.DTOs.Review;
 using HomeRent.Models.Shared;
@@ -84,6 +86,8 @@ namespace HomeRent.Web.Mappings
                 .ForMember(dest => dest.TenantEmail,
                     opt => opt.MapFrom(r => r.Tenant.Email))
                 .ForMember(dest => dest.PropertyTitle, opt => opt.MapFrom(r => r.Property.Title));
+
+            CreateMap<ApplicationUser, UserViewModel>();
         }
     }
 }

@@ -1,0 +1,48 @@
+﻿@model IEnumerable<HomeRent.Models.Administration.UserViewModel>
+@{
+    ViewData["Title"] = "Всички потребители";
+}
+
+<section class="flat-title-page style-2" style="padding: 30px 0px 30px;">
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Admin Dashboard</a></li>
+            <li><a>/ All Users</a></li>
+        </ul>
+        <h2 class="text-center">@ViewData["Title"]</h2>
+    </div>
+</section>
+
+<div class="container mt-5">
+    <table id="usersTable" class="display">
+        <thead>
+        <tr>
+            <th>Имена</th>
+            <th>Имейл</th>
+            <th>Телефонен номер</th>
+            <th>Статус</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var user in Model)
+        {
+            <tr data-userId="@user.Id">
+                <td>@(user.FirstName + " " + user.LastName)</td>
+                <td>@user.Email</td>
+                <td>@user.PhoneNumber</td>
+                   
+                <td>
+                    <div class="status-wrap">
+                            <a class="btn btn-sm btn-danger rounded-pill user-status">Офлайн</a>
+                    </div>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/adminUserDashboardStatus.js" asp-append-version="true"></script>
+}
