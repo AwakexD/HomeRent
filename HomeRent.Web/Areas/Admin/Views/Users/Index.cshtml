@@ -1,15 +1,25 @@
 ﻿@model IEnumerable<HomeRent.Models.Administration.UserViewModel>
 @{
-    ViewData["Title"] = "Всички потребители";
+    ViewData["Title"] = "Потребители";
 }
 
-<section class="flat-title-page style-2" style="padding: 30px 0px 30px;">
-    <div class="container">
-        <ul class="breadcrumb">
-            <li><a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Admin Dashboard</a></li>
-            <li><a>/ All Users</a></li>
-        </ul>
-        <h2 class="text-center">@ViewData["Title"]</h2>
+<section class="py-4" style="background-color: #fff;">
+    <div class="container text-center">
+        <nav aria-label="breadcrumb" class="d-flex justify-content-center">
+            <ol class="breadcrumb bg-white">
+                <li class="breadcrumb-item">
+                    <a asp-area="Admin" asp-controller="AdminDashboard" asp-action="Index" style="color: #1563DF;">Администраторски панел</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page" style="color: #1563DF;">
+                    Потребители
+                </li>
+            </ol>
+        </nav>
+
+        <h2 style="color: #1563DF;">
+            @ViewData["Title"]
+        </h2>
+
     </div>
 </section>
 

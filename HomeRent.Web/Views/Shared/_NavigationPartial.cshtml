@@ -37,19 +37,35 @@
                                             </ul>
                                             <div class="dropdown2-btn"></div>
                                         </li>
-                                        <li class="dropdown2">
-                                            <a asp-area="" asp-controller="Dashboard" asp-action="Index">Табло</a>
-                                            <ul>
-                                                <li><a asp-area="" asp-controller="Dashboard" asp-action="Index">Табло за управление</a></li>
-                                                @if (this.User.IsInRole("Owner"))
-                                                {
-                                                    <li><a asp-controller="Dashboard" asp-action="Bookings">Резервации</a></li>
-                                                }
-                                                <li><a asp-area="" asp-controller="Dashboard" asp-action="Reviews">Ревюта</a></li>
-                                                <li><a asp-area="Identity" asp-page="/Account/Manage/Index">Профил</a></li>
-                                            </ul>
-                                            <div class="dropdown2-btn"></div>
-                                        </li>
+                                        @if (SignInManager.IsSignedIn(this.User) && !this.User.IsInRole("Administrator"))
+                                        {
+                                            <li class="dropdown2">
+                                                <a asp-area="" asp-controller="Dashboard" asp-action="Index">Табло</a>
+                                                <ul>
+                                                    <li><a asp-area="" asp-controller="Dashboard" asp-action="Index">Табло за управление</a></li>
+                                                    @if (this.User.IsInRole("Owner"))
+                                                    {
+                                                        <li><a asp-controller="Dashboard" asp-action="Bookings">Резервации</a></li>
+                                                    }
+                                                    <li><a asp-area="" asp-controller="Dashboard" asp-action="Reviews">Ревюта</a></li>
+                                                    <li><a asp-area="Identity" asp-page="/Account/Manage/Index">Профил</a></li>
+                                                </ul>
+                                                <div class="dropdown2-btn"></div>
+                                            </li>
+                                        }
+                                        
+                                        @if (this.User.IsInRole("Administrator"))
+                                        {
+                                            <li class="dropdown2">
+                                                <a asp-area="Admin" asp-controller="AdminDashboard" asp-action="Index">Администраторски панел</a>
+                                                <ul>
+                                                    <li><a asp-area="Admin" asp-controller="AdminDashboard" asp-action="Index">Начало</a></li>
+                                                    <li><a asp-area="Admin" asp-controller="Users" asp-action="Index">Потребители</a></li>
+                                                    <li><a asp-area="Admin" asp-controller="Users" asp-action="Index">Управление на протребителите</a></li>
+                                                </ul>
+                                                <div class="dropdown2-btn"></div>
+                                            </li>
+                                        }
                                     </ul>
                                 </div>
                             </nav>
