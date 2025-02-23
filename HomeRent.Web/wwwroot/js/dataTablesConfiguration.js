@@ -5,4 +5,10 @@
         "info": true,
         "responsive": true
     });
+    $('#amenitiesTable').DataTable({
+        "paging": true,
+        "searching": true,
+        "info": true,
+        "responsive": true
+    });
 });

@@ -87,7 +87,13 @@ namespace HomeRent.Web.Mappings
                     opt => opt.MapFrom(r => r.Tenant.Email))
                 .ForMember(dest => dest.PropertyTitle, opt => opt.MapFrom(r => r.Property.Title));
 
+            // Admin Related Mapping Profiles
+
             CreateMap<ApplicationUser, UserViewModel>();
+
+            CreateMap<Amenity, AmenityAdminModel>();
+
+            CreateMap<AmenityAdminModel, Amenity>();
         }
     }
 }

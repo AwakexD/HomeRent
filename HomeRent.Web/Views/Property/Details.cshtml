@@ -261,7 +261,7 @@
                         </div>
 
                         @* Booking From *@
-                        @if (!isOwner)
+                        @if (!isOwner && this.SignInManager.IsSignedIn(this.User))
                         {
                             <form id="booking-form" class="contact-form">
                                 <div class="ip-group">

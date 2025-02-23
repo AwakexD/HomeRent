@@ -1,0 +1,47 @@
+﻿@model HomeRent.Models.Administration.AmenityAdminModel
+@{
+    ViewData["Title"] = "Добавяне на удобство";
+}
+
+<section class="py-4" style="background-color: #fff;">
+    <div class="container text-center">
+        <nav aria-label="breadcrumb" class="d-flex justify-content-center">
+            <ol class="breadcrumb bg-white">
+                <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="AdminDashboard" asp-action="Index" style="color: #1563DF;">Администраторски панел</a></li>
+                <li class="breadcrumb-item active" style="color: #1563DF;"><a asp-area="Admin" asp-controller="Amenities" asp-action="All">/ Удобства</a></li>
+                <li class="breadcrumb-item active" aria-current="page" style="color: #1563DF;"><а> / Добавяне</а></li>
+            </ol>
+        </nav>
+
+        <h2 style="color: #1563DF;">
+            @ViewData["Title"]
+        </h2>
+
+    </div>
+</section>
+
+<div class="text-center my-3">
+    <p>Добавете ново удобство, за да подобрите обявите за имоти. Осигурете ясно име и клас на иконата за удобството, за да бъде лесно разпознаваемо и полезно за категоризацията на имотите.</p>
+</div>
+
+<div class="container col-md-4 mt-3">
+    <div class="flat-account bg-surface">
+        <h4 class="text-center mb-3">Добавяне на ново удобство</h4>
+        <form method="post">
+            <fieldset class="box-fieldset">
+                <label for="Name">Наименование</label>
+                <input type="text" class="form-control" id="Name" name="Name" asp-for="Name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </fieldset>
+            <fieldset class="box-fieldset">
+                <label for="IconClass">Клас на иконата</label>
+                <input type="text" class="form-control" id="IconClass" name="IconClass" asp-for="IconClass" />
+                <span asp-validation-for="IconClass" class="text-danger"></span>
+            </fieldset>
+            <div class="text-center mt-3">
+                <button type="submit" class="btn btn-primary">Запази</button>
+                <a asp-area="Admin" asp-controller="Amenities" asp-action="All" class="btn btn-secondary">Отказ</a>
+            </div>
+        </form>
+    </div>
+</div>

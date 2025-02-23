@@ -90,6 +90,7 @@ namespace HomeRent.Web
             services.AddTransient<IBookingService, BookingService>();
             services.AddTransient<IStripeService, StripeService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IDataManagementService, DataManagementService>();
 
             // Cloudinary
             Cloudinary cloudinary = new Cloudinary(configuration["Cloudinary:CLOUDINARY_URL"]);
