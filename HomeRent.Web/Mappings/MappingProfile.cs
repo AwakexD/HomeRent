@@ -94,6 +94,10 @@ namespace HomeRent.Web.Mappings
             CreateMap<Amenity, AmenityAdminModel>();
 
             CreateMap<AmenityAdminModel, Amenity>();
+
+            CreateMap<PropertyType, PropertyTypeAdminModel>();
+
+            CreateMap<PropertyTypeAdminModel, PropertyType>();
         }
     }
 }

@@ -1,0 +1,44 @@
+﻿@model HomeRent.Models.Administration.PropertyTypeAdminModel
+@{
+    ViewData["Title"] = "Добавяне на тип имот";
+}
+
+<section class="py-4" style="background-color: #fff;">
+    <div class="container text-center">
+        <nav aria-label="breadcrumb" class="d-flex justify-content-center">
+            <ol class="breadcrumb bg-white">
+                <li class="breadcrumb-item">
+                    <a asp-area="Admin" asp-controller="AdminDashboard" asp-action="Index" style="color: #1563DF;">Администраторски панел</a>
+                </li>
+                <li class="breadcrumb-item active" style="color: #1563DF;">
+                    <a asp-area="Admin" asp-controller="PropertyTypes" asp-action="All">Типове имоти</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page" style="color: #1563DF;">Добавяне</li>
+            </ol>
+        </nav>
+
+        <h2 style="color: #1563DF;">@ViewData["Title"]</h2>
+    </div>
+</section>
+
+<div class="text-center my-3">
+    <p>Добавете нов тип имот, за да класифицирате по-добре обявите. Осигурете ясно наименование и описание, за да бъде типът лесно разпознаваем.</p>
+</div>
+
+<div class="container mt-5">
+    <div class="card mx-auto shadow" style="max-width: 500px;">
+        <div class="card-body">
+            <form method="post">
+                <div class="mb-3">
+                    <label for="Name" class="form-label">Наименование</label>
+                    <input type="text" class="form-control" id="Name" name="Name" asp-for="Name" placeholder="Въведете наименование">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="d-flex justify-content-center mt-4">
+                    <button type="submit" class="tf-btn primary me-2">Запази</button>
+                    <a asp-area="Admin" asp-controller="PropertyTypes" asp-action="All" class="tf-btn btn-line">Отказ</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

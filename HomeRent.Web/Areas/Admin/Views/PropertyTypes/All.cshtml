@@ -1,0 +1,82 @@
+﻿@model IEnumerable<HomeRent.Models.Administration.PropertyTypeAdminModel>
+@{
+    ViewData["Title"] = "Управление на типовете имоти";
+}
+
+<section class="py-4" style="background-color: #fff;">
+    <div class="container text-center">
+        <nav aria-label="breadcrumb" class="d-flex justify-content-center">
+            <ol class="breadcrumb bg-white">
+                <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="AdminDashboard" asp-action="Index" style="color: #1563DF;">Администраторски панел</a></li>
+                <li class="breadcrumb-item active" aria-current="page" style="color: #1563DF;">Типове имоти</li>
+            </ol>
+        </nav>
+
+        <h2 style="color: #1563DF;">
+            @ViewData["Title"]
+        </h2>
+
+    </div>
+</section>
+
+<div class="text-center my-3">
+    <p>Това са удобствата за имотите съхранени в базата данни. Като администратор, можете да редактирате, изтривате или добавяте нови удобства според нуждите.</p>
+    <a asp-area="Admin" asp-controller="PropertyTypes" asp-action="Add" class="btn btn-primary mt-3">Добавяне на нов тип имоти</a>
+</div>
+
+<div class="container mt-5">
+    <table id="amenitiesTable" class="display">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Имотен тип</th>
+                <th>Изтрито</th>
+                <th>Опции</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var propertyType in Model)
+            {
+                <tr>
+                    <td>@propertyType.Id</td>
+                    <td>@propertyType.Name</td>
+                    <td>
+                        @if (propertyType.IsDeleted)
+                        {
+                            <span class="btn btn-sm btn-success">Да</span>
+                        }
+                        else
+                        {
+                            <span class="btn btn-sm btn-danger">Не</span>
+                        }
+                    </td>
+                    <td class="align-items-center">
+                        <a asp-controller="PropertyTypes" asp-action="Edit" asp-route-id="@propertyType.Id" class="btn btn-sm btn-info">Редакция</a>
+
+                        @if (propertyType.IsDeleted)
+                        {
+                            <form asp-controller="PropertyTypes" asp-action="Activate" class="activate-form" method="post" style="display:inline">
+                                <input type="hidden" name="id" value="@propertyType.Id" />
+                                <button type="submit" class="btn btn-sm btn-success">Активиране</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-controller="PropertyTypes" asp-action="Delete" class="delete-form" method="post" style="display:inline">
+                                <input type="hidden" name="id" value="@propertyType.Id" />
+                                <input type="hidden" name="hardDelete" value="false" />
+                                <button type="submit" id="softDeleteBtn" class="btn btn-sm btn-warning">Временно изтриване</button>
+                            </form>
+                        }
+
+                        <form asp-controller="PropertyTypes" asp-action="Delete" class="delete-form" method="post" style="display:inline">
+                            <input type="hidden" name="id" value="@propertyType.Id" />
+                            <input type="hidden" name="hardDelete" value="true" />
+                            <button type="submit" id="hardDeleteBtn" class="btn btn-sm btn-danger">Изтриване</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
