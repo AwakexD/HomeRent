@@ -26,24 +26,27 @@
     <p>Актуализирайте детайлите на съществуващо удобство. Уверете се, че името на удобството и класът на иконата са точни, за да се поддържа консистентност в обявите за имоти в платформата.</p>
 </div>
 
-<div class="container col-md-4 mt-3">
-    <div class="flat-account bg-surface">
-        <h4 class="text-center mb-3">Редактиране на удобство</h4>
-        <form asp-controller="Amenities" asp-action="Edit" method="post">
-            <fieldset class="box-fieldset">
-                <label asp-for="Name">Наименование</label>
-                <input type="text" class="form-control" name="Name" asp-for="Name" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </fieldset>
-            <fieldset class="box-fieldset">
-                <label asp-for="IconClass">Клас на иконата</label>
-                <input type="text" class="form-control"  name="IconClass" asp-for="IconClass" />
-                <span asp-validation-for="IconClass" class="text-danger"></span>
-            </fieldset>
-            <div class="text-center mt-3">
-                <button type="submit" class="btn btn-primary">Запази</button>
-                <a asp-area="Admin" asp-controller="Amenities" asp-action="All" class="btn btn-secondary">Отказ</a>
-            </div>
-        </form>
+<div class="container mt-5">
+    <div class="card mx-auto shadow" style="max-width: 500px;">
+        <div class="card-body">
+            <h4 class="text-center mb-3">Редактиране на удобство</h4>
+            <form asp-controller="Amenities" asp-action="Edit" method="post">
+                <div class="mb-3">
+                    <label for="Name" class="form-label">Наименование</label>
+                    <input type="text" class="form-control" id="Name" name="Name" asp-for="Name" placeholder="Въведете наименование">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="IconClass" class="form-label">Клас на иконата</label>
+                    <input type="text" class="form-control" id="IconClass" name="IconClass" asp-for="IconClass" placeholder="Въведете клас на иконата">
+                    <span asp-validation-for="IconClass" class="text-danger"></span>
+                </div>
+                <div class="d-flex justify-content-center mt-4">
+                    <button type="submit" class="tf-btn primary me-2">Запази</button>
+                    <a asp-area="Admin" asp-controller="Amenities" asp-action="All" class="tf-btn btn-line">Отказ</a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
+

@@ -51,7 +51,7 @@ namespace HomeRent.Web.Areas.Admin.Controllers
 
                 await this.dataManagementService.AddAmenityAsync(model);
 
-                return this.RedirectToAction("All", "Features");
+                return this.RedirectToAction("All", "Amenities");
             }
             catch (Exception e)
             {
@@ -84,7 +84,7 @@ namespace HomeRent.Web.Areas.Admin.Controllers
 
                 await this.dataManagementService.UpdateAmenityAsync(model.Id, model);
 
-                return this.RedirectToAction("All", "Features");
+                return this.RedirectToAction("All", "Amenities");
             }
             catch (Exception e)
             {
@@ -99,7 +99,7 @@ namespace HomeRent.Web.Areas.Admin.Controllers
             {
                 await this.dataManagementService.DeleteAmenityAsync(id, hardDelete);
 
-                return this.RedirectToAction("All", "Features");
+                return this.RedirectToAction("All", "Amenities");
             }
             catch (Exception e)
             {
@@ -115,7 +115,7 @@ namespace HomeRent.Web.Areas.Admin.Controllers
             {
                 await this.dataManagementService.ActivateAmenityAsync(id);
 
-                return this.RedirectToAction("All", "Features");
+                return this.RedirectToAction("All", "Amenities");
             }
             catch (Exception e)
             {
