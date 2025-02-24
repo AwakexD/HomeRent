@@ -32,6 +32,8 @@ namespace HomeRent.Web
             builder.Services.AddAutoMapper(typeof(Program));
 
             // Set default culture to Bulgarian (bg-BG)
+            CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("bg-BG");
+            CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("bg-BG");
             var supportedCultures = new[] { new CultureInfo("bg-BG") };
 
             var app = builder.Build();
