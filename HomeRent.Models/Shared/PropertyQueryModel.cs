@@ -28,7 +28,7 @@ namespace HomeRent.Models.Shared
 
         public int Page { get; set; } = 1;
 
-        public int ItemsPerPage { get; set; } = 3;
+        public int ItemsPerPage { get; set; } = 6;
 
         public IEnumerable<int> AmenityIds { get; set; } = new HashSet<int>();
     }

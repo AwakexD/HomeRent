@@ -133,7 +133,7 @@ namespace HomeRent.Web.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Owner")]
+        [Authorize(Roles = "Owner,Administrator")]
         public async Task<IActionResult> Edit(string id)
         {
             try
@@ -141,9 +141,11 @@ namespace HomeRent.Web.Controllers
                 var user = await userManager.GetUserAsync(User);
                 var propertyId = new Guid(id);
 
+                bool isAdmin = this.User.IsInRole("Administrator");
+
                 var viewModel = new CreatePropertyViewModel()
                 {
-                    Property = await propertyService.GetPropertyEditDataAsync(propertyId, user.Id),
+                    Property = await propertyService.GetPropertyEditDataAsync(propertyId, user.Id, isAdmin),
                     PropertyTypes = await propertyStaticDataService.GetPropertyTypesSelectList(),
                     Amenities = await propertyStaticDataService.GetAmenitiesSelectList()
                 };
@@ -157,7 +159,7 @@ namespace HomeRent.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Owner")]
+        [Authorize(Roles = "Owner,Administrator")]
         public async Task<IActionResult> Edit(CreatePropertyDto updatedPropertyDto)
         {
             try

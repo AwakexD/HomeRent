@@ -162,10 +162,10 @@ namespace HomeRent.Services
             await this.propertyRepository.SaveChangesAsync();
         }
 
-        public async Task<CreatePropertyDto> GetPropertyEditDataAsync(Guid propertyId, Guid userId)
+        public async Task<CreatePropertyDto> GetPropertyEditDataAsync(Guid propertyId, Guid userId, bool isAdmin)
         {
             var property = await this.propertyRepository.AllAsNoTracking()
-                .Where(p => p.Id == propertyId && p.OwnerId == userId)
+                .Where(p => p.Id == propertyId && (isAdmin || p.OwnerId == userId))
                 .Include(p => p.Amenities)
                 .Include(p => p.PropertyType)
                 .Include(p => p.Images)
@@ -242,6 +242,55 @@ namespace HomeRent.Services
 
             this.propertyImageRepository.HardDelete(image);
             await this.propertyImageRepository.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> DeactivatePropertyAsync(Guid propertyId, Guid userId, bool isAdmin)
+        {
+            var property = await this.propertyRepository.All()
+                .FirstOrDefaultAsync(p => p.Id == propertyId && (isAdmin || p.OwnerId == userId));
+
+            if (property == null)
+            {
+                throw new InvalidOperationException("Property deactivation failed.");
+            }
+
+            this.propertyRepository.Delete(property);
+            await this.propertyRepository.SaveChangesAsync();
+
+            return true;
+        }
+
+        // Refactor make one method to handle both soft and hard delete
+        public async Task<bool> DeletePropertyAsync(Guid propertyId, Guid userId, bool isAdmin)
+        {
+            var property = await this.propertyRepository.All()
+                .FirstOrDefaultAsync(p => p.Id == propertyId && (isAdmin || p.OwnerId == userId));
+
+            if (property == null)
+            {
+                throw new InvalidOperationException("Property hard delete failed.");
+            }
+
+            this.propertyRepository.HardDelete(property);
+            await this.propertyRepository.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> ActivatePropertyAsync(Guid propertyId, Guid userId, bool isAdmin)
+        {
+            var property = await this.propertyRepository.All()
+                .FirstOrDefaultAsync(p => p.Id == propertyId && (isAdmin || p.OwnerId == userId));
+
+            if (property == null)
+            {
+                throw new InvalidOperationException("Property activation failed.");
+            }
+
+            this.propertyRepository.Undelete(property);
+            await this.propertyRepository.SaveChangesAsync();
 
             return true;
         }

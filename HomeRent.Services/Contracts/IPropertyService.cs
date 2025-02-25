@@ -13,7 +13,7 @@ namespace HomeRent.Services.Contracts
 
         Task CreatePropertyAsync(Guid creatorId, CreatePropertyDto propertyDto);
 
-        Task<CreatePropertyDto> GetPropertyEditDataAsync(Guid propertyId, Guid userId);
+        Task<CreatePropertyDto> GetPropertyEditDataAsync(Guid propertyId, Guid userId, bool isAdmin);
 
         Task UpdatePropertyAsync(Guid propertyId, Guid userId, CreatePropertyDto updatedPropertyDto);
 
