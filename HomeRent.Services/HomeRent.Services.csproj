@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HomeRent.Common\HomeRent.Common.csproj" />
     <ProjectReference Include="..\HomeRent.Data\HomeRent.Data.csproj" />
     <ProjectReference Include="..\HomeRent.Models\HomeRent.Models.csproj" />
   </ItemGroup>

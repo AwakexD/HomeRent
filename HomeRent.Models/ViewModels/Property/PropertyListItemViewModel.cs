@@ -25,5 +25,7 @@
         public string ImageUrl { get; set; } 
 
         public string PropertyTypeName { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }

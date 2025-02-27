@@ -113,6 +113,27 @@ namespace HomeRent.Services
             return (mappedProperties, listingsCount);
         }
 
+        public async Task<(IEnumerable<PropertyListItemViewModel>, int listingsCount)> GetListingsAdminDashboard(PropertyQueryModel query)
+        {
+            var queryable = this.propertyRepository.AllAsNoTrackingWithDeleted()
+                .Include(p => p.Owner)
+                .Include(p => p.Images)
+                .Include(p => p.Amenities)
+                .Include(p => p.PropertyType)
+                .AsQueryable();
+
+            var listingsCount = await queryable.CountAsync();
+
+            var properties = await queryable
+            .Skip((query.Page - 1) * query.ItemsPerPage)
+                .Take(query.ItemsPerPage)
+                .ToListAsync();
+
+            var mappedProperties = mapper.Map<IEnumerable<PropertyListItemViewModel>>(properties);
+
+            return (mappedProperties, listingsCount);
+        }
+
         public async Task<IEnumerable<PropertyListItemViewModel>> GetMostRecentListingsAsync()
         {
             var properties = await this.propertyRepository.AllAsNoTracking()
@@ -246,43 +267,23 @@ namespace HomeRent.Services
             return true;
         }
 
-        public async Task<bool> DeactivatePropertyAsync(Guid propertyId, Guid userId, bool isAdmin)
+        public async Task<bool> DeletePropertyAsync(Guid propertyId, Guid userId, bool isAdmin)
         {
-            var property = await this.propertyRepository.All()
-                .FirstOrDefaultAsync(p => p.Id == propertyId && (isAdmin || p.OwnerId == userId));
-
+            var property = await GetAuthorizedPropertyAsync(propertyId, userId, isAdmin);
             if (property == null)
             {
-                throw new InvalidOperationException("Property deactivation failed.");
+                throw new InvalidOperationException($"Property deletion failed.");
             }
 
             this.propertyRepository.Delete(property);
+
             await this.propertyRepository.SaveChangesAsync();
-
-            return true;
-        }
-
-        // Refactor make one method to handle both soft and hard delete
-        public async Task<bool> DeletePropertyAsync(Guid propertyId, Guid userId, bool isAdmin)
-        {
-            var property = await this.propertyRepository.All()
-                .FirstOrDefaultAsync(p => p.Id == propertyId && (isAdmin || p.OwnerId == userId));
-
-            if (property == null)
-            {
-                throw new InvalidOperationException("Property hard delete failed.");
-            }
-
-            this.propertyRepository.HardDelete(property);
-            await this.propertyRepository.SaveChangesAsync();
-
             return true;
         }
 
         public async Task<bool> ActivatePropertyAsync(Guid propertyId, Guid userId, bool isAdmin)
         {
-            var property = await this.propertyRepository.All()
-                .FirstOrDefaultAsync(p => p.Id == propertyId && (isAdmin || p.OwnerId == userId));
+            var property = await GetAuthorizedPropertyAsync(propertyId, userId, isAdmin);
 
             if (property == null)
             {
@@ -296,6 +297,14 @@ namespace HomeRent.Services
         }
 
         public async Task<int> GetTotalListingsCountAsync() => await this.propertyRepository.AllAsNoTracking().CountAsync();
+
+        private async Task<Property> GetAuthorizedPropertyAsync(Guid propertyId, Guid userId, bool isAdmin)
+        {
+            var property = await this.propertyRepository.AllWithDeleted()
+                .FirstOrDefaultAsync(p => p.Id == propertyId && (isAdmin || p.OwnerId == userId));
+
+            return property;
+        }
 
         private async Task<bool> ValidatePropertyForm(CreatePropertyDto propertyDto)
         {

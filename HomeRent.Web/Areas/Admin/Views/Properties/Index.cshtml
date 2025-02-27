@@ -61,6 +61,11 @@
                                                     <i class="icon icon-sqft"></i>
                                                     <span class="text-variant-1">Кв.м:</span>
                                                     <span class="fw-6">@property.Size</span>
+                                                </li> 
+                                                <li class="item">
+                                                    <i class="bi bi-check-circle"></i>
+                                                    <span class="text-variant-1">Статус: </span>
+                                                    <span class="fw-6">@(property.IsDeleted ? "Деактивирана" : "Активна")</span>
                                                 </li>
                                             </ul>
                                         </div>
@@ -73,23 +78,30 @@
                                         </div>
 
                                         <div class="d-grid gap-2 mt-3">
-                                            <a asp-area="" asp-controller="Property" asp-action="Edit" asp-route-id="@property.Id" class="tf-btn w-100" style="background-color: #007bff; color: white;">
+                                            <a asp-area="" asp-controller="Property" asp-action="Edit" asp-route-id="@property.Id" 
+                                               class="tf-btn w-100" style="background-color: #007bff; color: white;">
                                                 Редактирай
                                             </a>
+                                            
+                                            @if (property.IsDeleted)
+                                            {
+                                                <form asp-area="" asp-controller="Property" asp-action="Activate" method="post" class="w-100">
+                                                    <input type="hidden" name="PropertyId" value="@property.Id" />
+                                                    <button type="submit" class="tf-btn w-100" style="background-color: #28a745; color: white;">
+                                                        Активирай
+                                                    </button>
+                                                </form>
+                                            }
+                                            else
+                                            {
+                                                <form asp-area="" asp-controller="Property" asp-action="SoftDelete" method="post" class="w-100">
+                                                    <input type="hidden" name="PropertyId" value="@property.Id" />
+                                                    <button type="submit" class="tf-btn w-100" style="background-color: #ffc107; color: black;">
+                                                        Деактивирай
+                                                    </button>
+                                                </form>
+                                            }
 
-                                            <form asp-area="Admin" asp-controller="Properties" asp-action="" method="post" class="w-100">
-                                                <input type="hidden" name="id" value="@property.Id" />
-                                                <button type="submit" class="tf-btn w-100" style="background-color: #ffc107; color: black;">
-                                                    Деактивирай
-                                                </button>
-                                            </form>
-
-                                            <form asp-area="Admin" asp-controller="Properties" asp-action="" method="post" class="w-100" onsubmit="return confirm('Сигурни ли сте, че искате да изтриете този имот?');">
-                                                <input type="hidden" name="id" value="@property.Id" />
-                                                <button type="submit" class="tf-btn w-100" style="background-color: #dc3545; color: white;">
-                                                    Изтрий
-                                                </button>
-                                            </form>
                                         </div>
 
                                     </div>
@@ -97,7 +109,7 @@
                             </div>
                         }
                     </div>
-                    <partial name="_PaginationPartial" model="@Model.Paging" />
+                    <partial name="_PaginationPartial" model="@Model.Paging"/>
                 </div>
             </div>
         </div>

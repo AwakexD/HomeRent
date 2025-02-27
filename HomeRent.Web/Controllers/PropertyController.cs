@@ -4,7 +4,6 @@ using HomeRent.Models.DTOs.Property;
 using HomeRent.Models.Shared;
 using HomeRent.Models.ViewModels;
 using HomeRent.Models.ViewModels.Property;
-using HomeRent.Services;
 using HomeRent.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -191,6 +190,44 @@ namespace HomeRent.Web.Controllers
             }
 
             return Json(new { success = false, message = "Failed to delete image." });
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Owner,Administrator")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SoftDelete(Guid propertyId)
+        {
+            var user = await userManager.GetUserAsync(User);
+            bool isAdmin = User.IsInRole("Administrator");
+
+            try
+            {
+                await propertyService.DeletePropertyAsync(propertyId, user.Id, isAdmin);
+                return RedirectToAction(nameof(All));
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new ErrorViewModel { ErrorMessage = "Property soft delete (deactivation) failed." });
+            }
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Owner,Administrator")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Activate(Guid propertyId)
+        {
+            var user = await userManager.GetUserAsync(User);
+            bool isAdmin = User.IsInRole("Administrator");
+
+            try
+            {
+                await propertyService.ActivatePropertyAsync(propertyId, user.Id, isAdmin);
+                return RedirectToAction(nameof(All));
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new ErrorViewModel { ErrorMessage = "Property activation (undelete) failed." });
+            }
         }
 
         private Dictionary<string, string> GenerateQueryParameters(PropertyQueryModel queryModel)

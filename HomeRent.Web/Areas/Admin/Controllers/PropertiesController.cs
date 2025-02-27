@@ -22,8 +22,8 @@ namespace HomeRent.Web.Areas.Admin.Controllers
         {
             try
             {
-                var (propertiesList, listingsCount) = await propertyService.GetListingsAsync(query);
-
+                var (propertiesList, listingsCount) = await propertyService.GetListingsAdminDashboard(query);
+                
                 var viewModel = new PropertiesIndexViewModel()
                 {
                     Properties = propertiesList,
