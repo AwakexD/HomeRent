@@ -98,6 +98,10 @@ namespace HomeRent.Web.Mappings
             CreateMap<PropertyType, PropertyTypeAdminModel>();
 
             CreateMap<PropertyTypeAdminModel, PropertyType>();
+
+            CreateMap<Booking, BookingPaymentViewModel>()
+                .ForMember(dest => dest.AmountPaid, opt => opt.MapFrom(b => b.Payment.AmountPaid))
+                .ForMember(dest => dest.StripeTransactionId, opt => opt.MapFrom(b => b.Payment.StripeTransactionId));
         }
     }
 }

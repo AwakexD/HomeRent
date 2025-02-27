@@ -11,4 +11,10 @@
         "info": true,
         "responsive": true
     });
+    $('#bookingsTable').DataTable({
+        "paging": true,
+        "searching": true,
+        "info": true,
+        "responsive": true
+    });
 });

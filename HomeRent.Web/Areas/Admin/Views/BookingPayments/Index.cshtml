@@ -1,0 +1,110 @@
+﻿@model IEnumerable<HomeRent.Models.Administration.BookingPaymentViewModel>
+@{
+    this.ViewData["Title"] = "Резервации и разплащания";
+}
+
+<section class="py-4" style="background-color: #fff;">
+    <div class="container text-center">
+        <nav aria-label="breadcrumb" class="d-flex justify-content-center">
+            <ol class="breadcrumb bg-white">
+                <li class="breadcrumb-item">
+                    <a asp-area="Admin" asp-controller="AdminDashboard" asp-action="Index" style="color: #1563DF;">Администраторски панел</a>
+                </li>
+                <li class="breadcrumb-item active" style="color: #1563DF;">
+                    <a asp-area="Admin" asp-controller="Properties" asp-action="Index">Обяви</a>
+                </li>
+            </ol>
+        </nav>
+
+        <h2 style="color: #1563DF;">
+            @ViewData["Title"]
+        </h2>
+    </div>
+</section>
+
+<div class="container mt-5">
+    <table id="bookingsTable" class="display">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Информация за резервацията</th>
+                <th>Статус</th>
+                <th>Наемател</th>
+                <th>ID на Плащане</th>
+                <th>Детайли</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var booking in Model)
+            {
+                <tr>
+                    <td>@booking.Id</td>
+                    <td>
+                        <div>
+                            <div>
+                                <span class="text-variant-1">Настаняване:</span>
+                                <span class="fw-6">@booking.CheckInDate.ToString("dd.M.yyyy'г.'")</span>
+                            </div>
+                            <div>
+                                <span class="text-variant-1">Напускане:</span>
+                                <span class="fw-6">@booking.CheckOutDate.ToString("dd.M.yyyy'г.'")</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>@booking.BookingStatus</td>
+                    <td>
+                        <div>
+                            <div>
+                                <span class="text-variant-1">@booking.TenantEmail</span>
+                            </div>
+                            <div>
+                                <span class="text-variant-1">@booking.TenantPhoneNumber</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <span>@booking.PaymentId</span>
+                    </td>
+                    <td>
+                        <!-- Button trigger using Bootstrap's data attributes -->
+                        <button type="button" class="tf-btn primary" data-bs-toggle="modal" data-bs-target="#modal-@booking.PaymentId">
+                            Детайли за плащането
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal Markup for Payment Details using your theme's structure -->
+@foreach (var booking in Model)
+{
+    <div class="modal modal-account fade" id="modal-@booking.PaymentId" tabindex="-1" aria-hidden="true" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content" style="padding: 20px;">
+                <div class="flat-account">
+                    <div class="row">
+                        <!-- Single column: Payment details -->
+                        <div class="col-12">
+                            <div class="title-box">
+                                <h4>Данни за плащане : @booking.PaymentId</h4>
+                            </div>
+                            <div class="box">
+                                <p><strong>Stripe Transaction ID:</strong> @booking.StripeTransactionId</p>
+                                <p><strong>Amount Paid:</strong> @booking.AmountPaid.ToString("C")</p>
+                                <p><strong>Payment Type:</strong> @booking.PaymentType</p>
+                                <p><strong>Payment Status:</strong> @booking.PaymentStatus</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal Footer with centered Close button -->
+                <div class="modal-footer justify-content-center" style="border: none; padding-top: 20px;">
+                    <button type="button" class="tf-btn btn-line" data-bs-dismiss="modal">Затваряне</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
