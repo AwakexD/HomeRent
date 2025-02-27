@@ -33,5 +33,7 @@
         public IEnumerable<string> Images { get; set; }
 
         public IEnumerable<AmenityViewModel> Amenities { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }

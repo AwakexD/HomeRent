@@ -66,7 +66,6 @@
                         <span>@booking.PaymentId</span>
                     </td>
                     <td>
-                        <!-- Button trigger using Bootstrap's data attributes -->
                         <button type="button" class="tf-btn primary" data-bs-toggle="modal" data-bs-target="#modal-@booking.PaymentId">
                             Детайли за плащането
                         </button>
@@ -77,7 +76,6 @@
     </table>
 </div>
 
-<!-- Modal Markup for Payment Details using your theme's structure -->
 @foreach (var booking in Model)
 {
     <div class="modal modal-account fade" id="modal-@booking.PaymentId" tabindex="-1" aria-hidden="true" role="dialog">
@@ -85,7 +83,6 @@
             <div class="modal-content" style="padding: 20px;">
                 <div class="flat-account">
                     <div class="row">
-                        <!-- Single column: Payment details -->
                         <div class="col-12">
                             <div class="title-box">
                                 <h4>Данни за плащане : @booking.PaymentId</h4>
@@ -99,7 +96,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- Modal Footer with centered Close button -->
                 <div class="modal-footer justify-content-center" style="border: none; padding-top: 20px;">
                     <button type="button" class="tf-btn btn-line" data-bs-dismiss="modal">Затваряне</button>
                 </div>
