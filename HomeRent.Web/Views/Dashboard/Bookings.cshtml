@@ -57,16 +57,17 @@
                                     </td>
                                     <td>
                                         <div class="status-wrap">
-                                            @{
-                                                var statusClass = booking.BookingStatus switch
-                                                {
-                                                    BookingStatus.Confirmed      => "btn-status w-auto",
-                                                    BookingStatus.Cancelled      => "btn-status sold w-auto",
-                                                    BookingStatus.OwnerCancelled => "btn-status pending w-auto",
-                                                    _ => "btn-status pending w-auto"
-                                                };
-                                            }
-                                            <a class="@statusClass">@booking.BookingStatus</a>
+                                                @{
+                                                    var (statusClass, statusText) = booking.BookingStatus switch
+                                                    {
+                                                        BookingStatus.Confirmed => ("btn-status w-75", "Потвърдена"),
+                                                        BookingStatus.Unconfirmed => ("btn-status pending w-75", "Непотвърдена"),
+                                                        BookingStatus.Cancelled => ("btn-status sold w-75", "Отказана"),
+                                                        BookingStatus.OwnerCancelled => ("btn-status pending w-75", "Отказана от наемодател"),
+                                                        _ => ("btn-status pending w-75", "Неизвестен статус")
+                                                    };
+                                                }
+                                                <a class="@statusClass">@statusText</a>
                                         </div>
                                     </td>
                                     <td>

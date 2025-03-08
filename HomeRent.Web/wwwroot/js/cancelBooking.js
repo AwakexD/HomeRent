@@ -13,7 +13,7 @@
         }
     })
         .then(response => {
-            window.location.reload();
+            window.location.href = window.location.origin + "/Dashboard/Index";
         })
         .catch(error => console.error("Error:", error));
 });
