@@ -60,11 +60,11 @@
                                                 @{
                                                     var (statusClass, statusText) = booking.BookingStatus switch
                                                     {
-                                                        BookingStatus.Confirmed => ("btn-status w-75", "Потвърдена"),
-                                                        BookingStatus.Unconfirmed => ("btn-status pending w-75", "Непотвърдена"),
-                                                        BookingStatus.Cancelled => ("btn-status sold w-75", "Отказана"),
-                                                        BookingStatus.OwnerCancelled => ("btn-status pending w-75", "Отказана от наемодател"),
-                                                        _ => ("btn-status pending w-75", "Неизвестен статус")
+                                                        BookingStatus.Confirmed => ("btn-status w-auto", "Потвърдена"),
+                                                        BookingStatus.Unconfirmed => ("btn-status pending w-auto", "Непотвърдена"),
+                                                        BookingStatus.Cancelled => ("btn-status sold w-auto", "Отказана"),
+                                                        BookingStatus.OwnerCancelled => ("btn-status pending w-auto", "Отказана от наемодател"),
+                                                        _ => ("btn-status pending w-auto", "Неизвестен статус")
                                                     };
                                                 }
                                                 <a class="@statusClass">@statusText</a>
@@ -85,14 +85,13 @@
                                             <li>
                                                 @if (booking.BookingStatus == BookingStatus.Unconfirmed && !booking.IsDeleted)
                                                 {
-                                                    <form>
-                                                        <a class="item cancel-booking" data-booking-id="@booking.Id" href="#">
-                                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path d="M11.2413 2.9915L12.366 1.86616C12.6005 1.63171 12.9184 1.5 13.25 1.5C13.5816 1.5 13.8995 1.63171 14.134 1.86616C14.3685 2.10062 14.5002 2.4186 14.5002 2.75016C14.5002 3.08173 14.3685 3.39971 14.134 3.63416L4.55467 13.2135C4.20222 13.5657 3.76758 13.8246 3.29 13.9668L1.5 14.5002L2.03333 12.7102C2.17552 12.2326 2.43442 11.7979 2.78667 11.4455L11.242 2.9915H11.2413ZM11.2413 2.9915L13 4.75016" stroke="#A3ABB0" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                            </svg>
-                                                            Отказване
-                                                        </a>
-                                                    </form>
+                                                        @Html.AntiForgeryToken()
+                                                        <a class="cancel-booking item" data-booking-id="@booking.Id">
+                                                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                        <path d="M11.2413 2.9915L12.366 1.86616C12.6005 1.63171 12.9184 1.5 13.25 1.5C13.5816 1.5 13.8995 1.63171 14.134 1.86616C14.3685 2.10062 14.5002 2.4186 14.5002 2.75016C14.5002 3.08173 14.3685 3.39971 14.134 3.63416L4.55467 13.2135C4.20222 13.5657 3.76758 13.8246 3.29 13.9668L1.5 14.5002L2.03333 12.7102C2.17552 12.2326 2.43442 11.7979 2.78667 11.4455L11.242 2.9915H11.2413ZM11.2413 2.9915L13 4.75016" stroke="#A3ABB0" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                                    </svg>
+                                                                    Отказване
+                                                                </a>
                                                 }
                                             </li>
                                         </ul>
