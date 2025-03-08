@@ -1,4 +1,5 @@
 ﻿@inject SignInManager<ApplicationUser> SignInManager;
+@inject UserManager<ApplicationUser> UserManager
 @using HomeRent.Data.Models.User
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc.TagHelpers
@@ -14,9 +15,13 @@
         .GroupBy(x => x.index / itemsPerColumn)
         .ToList();
 
-     var userEmail = User.Identity?.Name;
-     var ownerEmail = Model.Property.OwnerEmail;
-     bool isOwner = string.Equals(userEmail, ownerEmail, StringComparison.OrdinalIgnoreCase);
+    var user = await UserManager.GetUserAsync(User);
+    var userEmail = user?.Email ?? "";
+    var userPhone = user?.PhoneNumber ?? "";
+    var ownerEmail = Model.Property.OwnerEmail;
+    bool isOwner = string.Equals(userEmail, ownerEmail, StringComparison.OrdinalIgnoreCase);
+
+    // Fetch user details
 }
 
 
@@ -268,10 +273,10 @@
                                     <input placeholder="Изберете дати" class="booking-calendar form-control">
                                 </div>
                                 <div class="ip-group">
-                                    <input type="text" placeholder="Телефон" value="@Model.Property.OwnerPhone" class="form-control">
+                                    <input type="text" placeholder="Телефон" value="@userPhone" class="form-control">
                                 </div>
                                 <div class="ip-group">
-                                    <input type="text" placeholder="Имейл" value="@Model.Property.OwnerEmail" class="form-control">
+                                    <input type="text" placeholder="Имейл" value="@userEmail" class="form-control">
                                 </div>
                                 <div class="ip-group">
                                     <textarea name="Message" rows="4" tabindex="4" placeholder="Съобщение до собственика" aria-required="true"></textarea>
