@@ -60,10 +60,10 @@
                                             @{
                                                 var statusClass = booking.BookingStatus switch
                                                 {
-                                                    BookingStatus.Confirmed      => "btn-status w-75",
-                                                    BookingStatus.Cancelled      => "btn-status sold w-75",
-                                                    BookingStatus.OwnerCancelled => "btn-status pending w-75",
-                                                    _ => "btn-status pending w-75"
+                                                    BookingStatus.Confirmed      => "btn-status w-auto",
+                                                    BookingStatus.Cancelled      => "btn-status sold w-auto",
+                                                    BookingStatus.OwnerCancelled => "btn-status pending w-auto",
+                                                    _ => "btn-status pending w-auto"
                                                 };
                                             }
                                             <a class="@statusClass">@booking.BookingStatus</a>
