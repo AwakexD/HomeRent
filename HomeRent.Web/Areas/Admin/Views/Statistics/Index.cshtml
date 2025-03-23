@@ -1,0 +1,64 @@
+﻿@model HomeRent.Models.Administration.AdminStatisticsViewModel
+@{
+    ViewData["Title"] = "Admin Statistics";
+}
+
+<div class="container py-4">
+    <h2 class="mb-4 text-center">Статистики - HomeRent</h2>
+    
+    <hr class="my-5" />
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-body text-center">
+                    <h5 class="card-title">👥 Регистрирани Потребители</h5>
+                    <h3>@Model.TotalUsers</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-body text-center">
+                    <h5 class="card-title">🏡 Активни Обяви</h5>
+                    <h3>@Model.TotalActiveProperties</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-body text-center">
+                    <h5 class="card-title">📅 Общ Брой Резервации</h5>
+                    <h3>@Model.TotalBookings</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-body text-center">
+                    <h5 class="card-title">⭐ Общ Брой Ревюта</h5>
+                    <h3>@Model.TotalReviews</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-body text-center">
+                    <h5 class="card-title">💰 Оборот</h5>
+                    <h3>@Model.TotalRevenue.ToString("C")</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-body text-center">
+                    <h5 class="card-title">📈 Средна цена на резервация</h5>
+                    <h3>@Model.AverageReservationPrice.ToString("C")</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="my-5" />
+</div>

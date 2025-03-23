@@ -31,6 +31,7 @@
             <th>Имейл</th>
             <th>Телефонен номер</th>
             <th>Статус</th>
+            <th>Изтриване</th>
         </tr>
         </thead>
         <tbody>
@@ -43,8 +44,11 @@
                    
                 <td>
                     <div class="status-wrap">
-                            <a class="btn btn-sm btn-danger rounded-pill user-status">Офлайн</a>
+                        <a class="btn btn-sm btn-danger rounded-pill user-status">Офлайн</a>
                     </div>
+                </td>
+                <td>
+                    <a class="btn btn-sm btn-danger" asp-controller="Users" asp-action="Delete" asp-route-userId="@user.Id">Изтриване</a>
                 </td>
             </tr>
         }

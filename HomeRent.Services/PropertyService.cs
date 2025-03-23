@@ -185,7 +185,7 @@ namespace HomeRent.Services
 
         public async Task<CreatePropertyDto> GetPropertyEditDataAsync(Guid propertyId, Guid userId, bool isAdmin)
         {
-            var property = await this.propertyRepository.AllAsNoTracking()
+            var property = await this.propertyRepository.AllAsNoTrackingWithDeleted()
                 .Where(p => p.Id == propertyId && (isAdmin || p.OwnerId == userId))
                 .Include(p => p.Amenities)
                 .Include(p => p.PropertyType)
@@ -210,7 +210,7 @@ namespace HomeRent.Services
                 throw new ArgumentException("Invalid data in property edit form.");
             }
 
-            var property = await this.propertyRepository.All()
+            var property = await this.propertyRepository.AllWithDeleted()
                 .Include(p => p.Images)
                 .Include(p => p.Amenities)
                 .Include(p => p.PropertyType)

@@ -1,4 +1,5 @@
-﻿using HomeRent.Models.ViewModels;
+﻿using System.Security.Cryptography.X509Certificates;
+using HomeRent.Models.ViewModels;
 using HomeRent.Services.Administration.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,6 +32,12 @@ namespace HomeRent.Web.Areas.Admin.Controllers
             {
                 return View("Error", new ErrorViewModel());
             }
+        }
+
+        [HttpGet]
+        public IActionResult Delete(string userId)
+        {
+            return this.View();
         }
     }
 }
