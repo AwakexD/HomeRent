@@ -102,6 +102,14 @@ namespace HomeRent.Web.Mappings
             CreateMap<Booking, BookingPaymentViewModel>()
                 .ForMember(dest => dest.AmountPaid, opt => opt.MapFrom(b => b.Payment.AmountPaid))
                 .ForMember(dest => dest.StripeTransactionId, opt => opt.MapFrom(b => b.Payment.StripeTransactionId));
+            
+            CreateMap<ApplicationUser, UserDeleteViewModel>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
+                .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
+                .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName))
+                .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber))
+                .ForMember(dest => dest.Role, opt => opt.Ignore());
         }
     }
 }

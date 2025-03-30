@@ -2,12 +2,9 @@
 using HomeRent.Data.Models.Entities;
 using HomeRent.Data.Repositories.Contracts;
 using HomeRent.Models.DTOs.Review;
-using HomeRent.Models.Shared;
 using HomeRent.Models.ViewModels.Dashboard;
 using HomeRent.Services.Contracts;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Stripe;
 
 namespace HomeRent.Services
 {

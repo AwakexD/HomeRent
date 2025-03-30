@@ -3,6 +3,26 @@
     ViewData["Title"] = "Потребители";
 }
 
+@if (TempData["Error"] != null)
+{
+    <div class="d-flex justify-content-center mt-4">
+        <div class="alert alert-danger shadow-lg fade show animate__animated animate__fadeInDown position-relative"
+             role="alert"
+             style="max-width: 600px; width: 100%; border-left: 5px solid #dc3545; border-radius: 0.75rem; font-size: 1rem; padding-right: 3rem;">
+
+            <button type="button" class="btn-close position-absolute top-0 end-0 mt-2 me-2"
+                    data-bs-dismiss="alert" aria-label="Затвори"></button>
+
+            <div class="d-flex align-items-center">
+                <i class="bi bi-exclamation-triangle-fill me-2 fs-4"></i>
+                <div>
+                    @TempData["Error"]
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
 <section class="py-4" style="background-color: #fff;">
     <div class="container text-center">
         <nav aria-label="breadcrumb" class="d-flex justify-content-center">

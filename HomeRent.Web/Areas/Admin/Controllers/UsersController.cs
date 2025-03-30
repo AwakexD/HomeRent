@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
-using HomeRent.Models.ViewModels;
+﻿using HomeRent.Models.ViewModels;
 using HomeRent.Services.Administration.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,16 +27,61 @@ namespace HomeRent.Web.Areas.Admin.Controllers
 
                 return View(users);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return View("Error", new ErrorViewModel());
             }
         }
 
         [HttpGet]
-        public IActionResult Delete(string userId)
+        public async Task<IActionResult> Delete(string userId)
         {
-            return this.View();
+            try
+            {
+                var user = await this.userService.GetUserByIdAsync(userId);
+
+                if (user == null)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+
+                var canBeDeleted = await this.userService.CanBeDeletedAsync(userId);
+
+                if (!canBeDeleted)
+                {
+                    TempData["Error"] = "Потребителят не може да бъде изтрит, тъй като има свързани данни (имоти, резервации или ревюта).";
+                    return RedirectToAction(nameof(Index));
+                }
+
+                return View(user);
+            }
+            catch (Exception)
+            {
+                return View("Error", new ErrorViewModel());
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ConfirmDelete(string userId)
+        {
+            try
+            {
+                var canBeDeleted = await this.userService.CanBeDeletedAsync(userId);
+
+                if (!canBeDeleted)
+                {
+                    return View("Error", new ErrorViewModel());
+                }
+
+                await this.userService.DeleteUserAsync(userId);
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception)
+            {
+                return View("Error", new ErrorViewModel());
+            }
         }
     }
 }

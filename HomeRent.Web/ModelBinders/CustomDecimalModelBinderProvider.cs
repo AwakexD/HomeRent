@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace HomeRent.Models.Validation
+namespace HomeRent.Web.ModelBinders
 {
     public class CustomDecimalModelBinderProvider : IModelBinderProvider
     {
@@ -10,7 +10,7 @@ namespace HomeRent.Models.Validation
             {
                 throw new ArgumentNullException(nameof(context));
             }
-                
+
             if (context.Metadata.ModelType == typeof(decimal) ||
                 context.Metadata.ModelType == typeof(decimal?))
             {

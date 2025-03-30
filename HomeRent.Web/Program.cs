@@ -8,16 +8,15 @@ using HomeRent.Services;
 using HomeRent.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 using CloudinaryDotNet;
 using Ganss.Xss;
 using Stripe;
 using System.Globalization;
-using HomeRent.Models.Validation;
 using HomeRent.Services.Administration;
 using HomeRent.Services.Administration.Contracts;
 using Microsoft.AspNetCore.Localization;
 using HomeRent.Web.Hubs;
+using HomeRent.Web.ModelBinders;
 
 namespace HomeRent.Web
 {
