@@ -94,7 +94,7 @@ namespace HomeRent.Services
 
             if (query.MinBathrooms.HasValue)
             {
-                queryable = queryable.Where(p => p.Bathrooms == query.MinBathrooms.Value);
+                queryable = queryable.Where(p => p.Bathrooms >= query.MinBathrooms.Value);
             }
 
             if (query.AmenityIds?.Any() == true)

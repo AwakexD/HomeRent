@@ -112,6 +112,7 @@ namespace HomeRent.Services
                 .Include(b => b.Property)
                 .Include(b => b.Property.Owner)
                 .Include(b => b.Property.Images.Where(i => i.IsDeleted == false))
+                .Where(b => b.TenantId == userId)
                 .ToListAsync();
 
             return this.mapper.Map<IEnumerable<BookingTableViewModel>>(bookings);
