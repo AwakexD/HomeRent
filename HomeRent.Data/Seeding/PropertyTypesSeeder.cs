@@ -19,7 +19,7 @@ namespace HomeRent.Data.Seeding
         {
             var propertyTypes = new HashSet<PropertyType>();
 
-            var typeNames = new string[] { "Апартамент", "Къща", "Вила", "Къщичка", "Пентхаус", "Бунгало"};
+            var typeNames = new string[] { "Апартамент", "Къща", "Вила", "Мезонет", "Гараж", "Бунгало"};
 
             foreach (var type in typeNames)
             {

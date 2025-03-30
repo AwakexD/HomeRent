@@ -47,10 +47,14 @@ namespace HomeRent.Services.Administration
                 .Where(p => !p.IsDeleted && p.Status == "Succeeded")
                 .SumAsync(p => (decimal?)p.AmountPaid ?? 0);
 
-            var avgReservationPrice = await bookingRepository.AllAsNoTracking()
+            var reservationQuery = await bookingRepository.AllAsNoTracking()
                 .Where(b => !b.IsDeleted)
-                .AverageAsync(b => (decimal?)b.TotalAmount ?? 0);
+                .Select(b => (decimal?)b.TotalAmount)
+                .ToListAsync();
 
+            var avgReservationPrice = reservationQuery.Any()
+                ? reservationQuery.Average() ?? 0
+                : 0;
 
             return new AdminStatisticsViewModel
             {
