@@ -14,6 +14,8 @@ namespace HomeRent.Services.Administration.Contracts
 
         Task DeletePropertyTypeAsync(int id, bool hardDelete);
 
+        Task<bool> HasPropertiesOfTypeAsync(int propertyTypeId);
+
         Task ActivatePropertyTypeAsync(int id);
 
         Task<IEnumerable<AmenityAdminModel>> GetAllAmenitiesAsync();
@@ -21,6 +23,8 @@ namespace HomeRent.Services.Administration.Contracts
         Task<AmenityAdminModel> GetAmenityByIdAsync(int id);
 
         Task AddAmenityAsync(AmenityAdminModel model);
+
+        Task<bool> HasRelatedPropertiesAsync(int amenityId);
 
         Task UpdateAmenityAsync(int id, AmenityAdminModel model);
 

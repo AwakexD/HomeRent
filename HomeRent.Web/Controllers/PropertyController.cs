@@ -50,7 +50,7 @@ namespace HomeRent.Web.Controllers
                         PageNumber = query.Page,
                         ListingCount = listingsCount,
                         ItemsPerPage = query.ItemsPerPage,
-                        QueryParameters = GenerateQueryParameters(query)
+                        QueryString = BuildQueryString(query)
                     }
                 };
 
@@ -230,40 +230,38 @@ namespace HomeRent.Web.Controllers
             }
         }
 
-        private Dictionary<string, string> GenerateQueryParameters(PropertyQueryModel queryModel)
+        private string BuildQueryString(PropertyQueryModel q)
         {
-            var queryParams = new Dictionary<string, string>();
+            var parts = new List<string>();
 
-            if (!string.IsNullOrEmpty(queryModel.Keyword))
-                queryParams["Keyword"] = queryModel.Keyword;
+            if (!string.IsNullOrWhiteSpace(q.Keyword))
+                parts.Add($"Keyword={Uri.EscapeDataString(q.Keyword)}");
 
-            if (!string.IsNullOrEmpty(queryModel.Address))
-                queryParams["Address"] = queryModel.Address;
+            if (!string.IsNullOrWhiteSpace(q.Address))
+                parts.Add($"Address={Uri.EscapeDataString(q.Address)}");
 
-            if (!string.IsNullOrEmpty(queryModel.City))
-                queryParams["City"] = queryModel.City;
+            if (!string.IsNullOrWhiteSpace(q.City))
+                parts.Add($"City={Uri.EscapeDataString(q.City)}");
 
-            if (queryModel.PropertyTypeId.HasValue)
-                queryParams["PropertyTypeId"] = queryModel.PropertyTypeId.Value.ToString();
+            if (q.PropertyTypeId.HasValue)
+                parts.Add($"PropertyTypeId={q.PropertyTypeId.Value}");
 
-            if (queryModel.MinBathrooms.HasValue)
-                queryParams["MinBathrooms"] = queryModel.MinBathrooms.Value.ToString();
+            if (q.MinBathrooms.HasValue)
+                parts.Add($"MinBathrooms={q.MinBathrooms.Value}");
 
-            if (queryModel.MinBedrooms.HasValue)
-                queryParams["MinBedrooms"] = queryModel.MinBedrooms.Value.ToString();
+            if (q.MinBedrooms.HasValue)
+                parts.Add($"MinBedrooms={q.MinBedrooms.Value}");
 
-            if (queryModel.MinPrice.HasValue)
-                queryParams["MinPrice"] = queryModel.MinPrice.Value.ToString();
+            if (q.MinPrice.HasValue)
+                parts.Add($"MinPrice={q.MinPrice.Value}");
 
-            if (queryModel.MaxPrice.HasValue)
-                queryParams["MaxPrice"] = queryModel.MaxPrice.Value.ToString();
+            if (q.MaxPrice.HasValue)
+                parts.Add($"MaxPrice={q.MaxPrice.Value}");
 
-            if (queryModel.AmenityIds?.Any() == true)
-            {
-                queryParams["SelectedAmenities"] = string.Join(",", queryModel.AmenityIds);
-            }
+            foreach (var id in q.AmenityIds ?? Enumerable.Empty<int>())
+                parts.Add($"AmenityIds={id}");
 
-            return queryParams;
+            return string.Join("&", parts);
         }
     }
 }

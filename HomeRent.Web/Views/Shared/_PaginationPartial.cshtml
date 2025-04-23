@@ -1,69 +1,43 @@
 ﻿@model HomeRent.Models.Shared.PagingViewModel
 
-<ul class="wd-navigation mt-20 justify-content-center">
-    <!-- Previous Page Link -->
-    @if (Model.HasPreviousPage)
-    {
-        <li>
-            <a href="@GeneratePageUrl(Model.PreviousPageNumber, Model.QueryParameters)" class="nav-item">
-                <i class="icon icon-arr-l"></i>
-            </a>
-        </li>
-    }
-    else
-    {
-        <li class="disabled">
-            <a href="#" class="nav-item">
-                <i class="icon icon-arr-l"></i>
-            </a>
-        </li>
-    }
+@{
+    var prefix = string.IsNullOrEmpty(Model.QueryString)
+        ? "?"
+        : "?" + Model.QueryString + "&";
+}
 
-    <!-- Page Numbers -->
+<ul class="wd-navigation mt-20 justify-content-center">
+    <li class="@(Model.HasPreviousPage ? "" : "disabled")">
+        <a 
+            href="@(Model.HasPreviousPage 
+                      ? prefix + $"page={Model.PreviousPageNumber}" 
+                      : "#")"
+            class="nav-item">
+            <i class="icon icon-arr-l"></i>
+        </a>
+    </li>
+
     @for (int i = 1; i <= Model.PagesCount; i++)
     {
-        if (i == Model.PageNumber)
-        {
-            <li>
+        <li class="@(i == Model.PageNumber ? "active" : "")">
+            @if (i == Model.PageNumber)
+            {
                 <a href="#" class="nav-item active">@i</a>
-            </li>
-        }
-        else
-        {
-            <li>
-                <a href="@GeneratePageUrl(i, Model.QueryParameters)" class="nav-item">@i</a>
-            </li>
-        }
+            }
+            else
+            {
+                <a href="@(prefix + $"page={i}")" class="nav-item">@i</a>
+            }
+        </li>
     }
 
-    <!-- Next Page Link -->
-    @if (Model.HasNextPage)
-    {
-        <li>
-            <a href="@GeneratePageUrl(Model.NextPageNumber, Model.QueryParameters)" class="nav-item">
-                <i class="icon icon-arr-r"></i>
-            </a>
-        </li>
-    }
-    else
-    {
-        <li class="disabled">
-            <a href="#" class="nav-item">
-                <i class="icon icon-arr-r"></i>
-            </a>
-        </li>
-    }
+    <li class="@(Model.HasNextPage ? "" : "disabled")">
+        <a 
+            href="@(Model.HasNextPage 
+                      ? prefix + $"page={Model.NextPageNumber}" 
+                      : "#")"
+            class="nav-item">
+            <i class="icon icon-arr-r"></i>
+        </a>
+    </li>
 </ul>
-
-@functions {
-    private string GeneratePageUrl(int pageNumber, Dictionary<string, string> queryParams)
-    {
-        queryParams["Page"] = pageNumber.ToString();
-
-        var queryString = string.Join("&", queryParams
-            .Where(q => !string.IsNullOrEmpty(q.Value))
-            .Select(q => $"{q.Key}={Uri.EscapeDataString(q.Value)}"));
-
-        return $"?{queryString}";
-    }
-}

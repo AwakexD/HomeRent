@@ -97,6 +97,14 @@ namespace HomeRent.Web.Areas.Admin.Controllers
         {
             try
             {
+                if (hardDelete &&
+                    await this.dataManagementService.HasRelatedPropertiesAsync(id))
+                {
+                    TempData["ErrorMessage"] =
+                        "Не може да изтриете завинаги това удобство – то е свързано с един или повече имоти.";
+                    return RedirectToAction("All", "Amenities");
+                }
+
                 await this.dataManagementService.DeleteAmenityAsync(id, hardDelete);
 
                 return this.RedirectToAction("All", "Amenities");

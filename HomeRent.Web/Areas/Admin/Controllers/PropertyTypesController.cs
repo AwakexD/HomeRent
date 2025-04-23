@@ -100,6 +100,14 @@ namespace HomeRent.Web.Areas.Admin.Controllers
         {
             try
             {
+                if (hardDelete
+                    && await this.dataManagementService.HasPropertiesOfTypeAsync(id))
+                {
+                    TempData["ErrorMessage"] =
+                        "Не може да изтриете окончателно този тип имот – има свързани имоти.";
+                    return RedirectToAction("All", "PropertyTypes");
+                }
+
                 await this.dataManagementService.DeletePropertyTypeAsync(id, hardDelete);
 
                 return this.RedirectToAction("All", "PropertyTypes");

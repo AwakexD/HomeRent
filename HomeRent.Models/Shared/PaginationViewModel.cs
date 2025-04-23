@@ -21,6 +21,6 @@
 
         public int ItemsPerPage { get; set; } = 6;
 
-        public Dictionary<string, string> QueryParameters { get; set; }
+        public string QueryString { get; set; } = "";
     }
 }

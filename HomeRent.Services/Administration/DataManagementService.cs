@@ -12,15 +12,18 @@ namespace HomeRent.Services.Administration
         private readonly IMapper mapper;
         private readonly IDeletableEntityRepository<PropertyType> propertyTypesRepository;
         private readonly IDeletableEntityRepository<Amenity> amenitiesRepository;
+        private readonly IDeletableEntityRepository<Property> propertiesRepository;
 
         public DataManagementService(
             IMapper mapper,
             IDeletableEntityRepository<PropertyType> propertyTypesRepository,
-            IDeletableEntityRepository<Amenity> amenitiesRepository)
+            IDeletableEntityRepository<Amenity> amenitiesRepository,
+            IDeletableEntityRepository<Property> propertiesRepository)
         {
             this.mapper = mapper;
             this.propertyTypesRepository = propertyTypesRepository;
             this.amenitiesRepository = amenitiesRepository;
+            this.propertiesRepository = propertiesRepository;
         }
 
         public async Task<IEnumerable<PropertyTypeAdminModel>> GetAllPropertyTypesAsync()
@@ -102,6 +105,13 @@ namespace HomeRent.Services.Administration
             }
 
             await propertyTypesRepository.SaveChangesAsync();
+        }
+
+        public async Task<bool> HasPropertiesOfTypeAsync(int propertyTypeId)
+        {
+            return await this.propertiesRepository
+                .AllAsNoTracking()
+                .AnyAsync(p => p.PropertyTypeId == propertyTypeId);
         }
 
         public async Task ActivatePropertyTypeAsync(int id)
@@ -192,6 +202,13 @@ namespace HomeRent.Services.Administration
             }
 
             await amenitiesRepository.SaveChangesAsync();
+        }
+
+        public async Task<bool> HasRelatedPropertiesAsync(int amenityId)
+        {
+            return await this.amenitiesRepository
+                .AllAsNoTracking()
+                .AnyAsync(a => a.Id == amenityId && a.Properties.Any());
         }
 
         public async Task ActivateAmenityAsync(int id)
